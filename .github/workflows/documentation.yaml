@@ -7,20 +7,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/setup-python@v2
-    - uses: actions/checkout@master
-      with:
-        fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
-    - name: Install dependencies
-      run: |
-        pip install sphinx sphinx_rtd_theme
-    - name: Sphinx build
-      run: |
-        sphinx-build docs/sphinx docs/sphinx/_build
-    - name: Build and Commit
-      uses: sphinx-notes/pages@v2
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: gh-pages
+      - uses: actions/setup-python@v2
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+      - name: Install dependencies
+        run: |
+          pip install sphinx sphinx_rtd_theme
+      - name: Sphinx build
+        run: |
+          sphinx-build docs/sphinx docs/sphinx/_build
+      - name: Build and Commit
+        uses: sphinx-notes/pages@v2
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
