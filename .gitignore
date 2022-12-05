@@ -1,0 +1,8 @@
+.vs
+.vscode
+
+__pycache__/
+*.pyc
+
+_autosummary
+_build
