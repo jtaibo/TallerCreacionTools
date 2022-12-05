@@ -1,1 +1,0 @@
-Copy here your art!

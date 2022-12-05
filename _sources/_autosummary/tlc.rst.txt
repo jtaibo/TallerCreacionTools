@@ -1,0 +1,34 @@
+﻿tlc
+===
+
+.. automodule:: tlc
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   tlc.common
+   tlc.modeling
+   tlc.rigging
+
