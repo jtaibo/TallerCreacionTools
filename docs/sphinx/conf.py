@@ -24,7 +24,8 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../../maya/python'))
 # TO-DO: check location for the path below in the installation
-sys.path.append("C:\Program Files\Autodesk\Maya2023\Python\Lib\site-packages")
+#sys.path.append("C:\Program Files\Autodesk\Maya2023\Python\Lib\site-packages")
+sys.path.append("fake_modules") # Find a fake maya module in gitHub server to avoid sphinx failure
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
