@@ -1,23 +1,26 @@
-name: Docs
-on: [push, pull_request, workflow_dispatch]
+name: Pages
+on:
+  push:
+    branches:
+    - master
 jobs:
-  docs:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-      - name: Install dependencies
-        run: |
-          pip install sphinx sphinx_rtd_theme
-      - name: Sphinx build
-        run: |
-          sphinx-build docs/sphinx docs/sphinx/_build
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-        with:
-          documentation_path: docs/sphinx/_build
-          publish_branch: gh-pages
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/sphinx/_build/
-          force_orphan: true
+    - uses: actions/setup-python@v2
+    - uses: actions/checkout@master
+      with:
+        fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+    - name: Install dependencies
+      run: |
+        pip install sphinx sphinx_rtd_theme
+    - name: Sphinx build
+      run: |
+        sphinx-build docs/sphinx docs/sphinx/_build
+    - name: Build and Commit
+      uses: sphinx-notes/pages@v2
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: gh-pages
