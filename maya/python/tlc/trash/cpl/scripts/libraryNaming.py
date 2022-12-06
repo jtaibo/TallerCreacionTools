@@ -3,6 +3,7 @@ This module has the dictionaries that all scripts use for naming convention
 
 """
 
+
 def get_nice_name_shapes(name_obj):
     if (name_obj.find(':')) > 0:
         obj = name_obj.split(':')
@@ -14,6 +15,7 @@ def get_nice_name_shapes(name_obj):
     else:
         return name_obj
 
+
 def get_nice_name(name_obj):
     if (name_obj.find(':')) > 0:
         obj = name_obj.split(':')
@@ -23,15 +25,18 @@ def get_nice_name(name_obj):
         parts_obj = name_obj.split("_")
         return parts_obj
 
-###  ID Propio
+# ID Propio
 
-proyect_id ={
-    "Andres":"MRA",
+
+proyect_id = {
+    """_summary_
+    """
+    "Andres": "MRA",
     "plantilla": "XXX"
 }
 
 ###
-### Ejercicio ID
+# Ejercicio ID
 ###
 task_id = {
     "script": "scr",
@@ -48,7 +53,7 @@ task_id = {
 }
 
 ###
-### Sound Type
+# Sound Type
 ###
 
 sound_type = {
@@ -59,7 +64,7 @@ sound_type = {
 }
 
 ###
-###  Asset Type
+# Asset Type
 ###
 asset_type = {
     "character": "ch",
@@ -79,14 +84,14 @@ asset_type = {
 }
 
 ###
-###  Maya Task ID
+# Maya Task ID
 ###
 maya_task_id = {
     "modelado": "mod",
     "lowPoly": "modlp",
-    "highPoly":"modhp",
-    "sculpting":"modsc",
-    "mod_blendshapes":"modbs",
+    "highPoly": "modhp",
+    "sculpting": "modsc",
+    "mod_blendshapes": "modbs",
     "animRig": "anim",
     "layoutRig": "layout",
     "rig": "rig",
@@ -96,7 +101,7 @@ maya_task_id = {
     "lookdev": "lkdv",
     "assetLighting": "lgt",
     "FX": "fx",
-    ###TaskIDshots
+    # TaskIDshots
     "layout": "layout",
     "blocking": "ablk",
     "breakdowns": "abrd",
@@ -107,10 +112,8 @@ maya_task_id = {
     "render": "render",
 }
 ###
-###  Maya Scene Naming
+# Maya Scene Naming
 ###
-
-
 
 
 separator = "_"
@@ -142,12 +145,12 @@ naming_maya = {
 }
 
 ###
-###  Node Location Flag
+# Node Location Flag
 ###
 
 
 location_flags = {
-"""Node location flags"""
+    """Node location flags"""
     "irrelevant": "x",
     "center": "c",
     "left": "l",
@@ -163,8 +166,5 @@ pipeline_groups = ["geo", "rig", "ctl", "toolkit", "skin", "lct"]
 
 
 ###
-### Chains for Auto Rig
+# Chains for Auto Rig
 ###
-
-
-

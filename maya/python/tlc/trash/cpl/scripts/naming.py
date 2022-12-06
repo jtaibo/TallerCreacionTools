@@ -3,9 +3,8 @@ This Module has the functions to check if nodes in maya correctly use a naming c
 
 """
 
-
 import maya.cmds as cmds
-import libraryNaming as VARS  # Libreria de variables
+from . import libraryNaming as lib  # Libreria de variables
 
 
 def get_nice_name(name_obj):
@@ -67,10 +66,10 @@ def check_syntax(name_obj):
     if len(obj) > 3 or len(obj) < 2:
         LE_WARNINGS.append(name_obj)
     else:
-        if obj[0] not in VARS.naming_maya.values():
+        if obj[0] not in lib.naming_maya.values():
             LE_WARNINGS.append(name_obj)
 
-        elif obj[1] not in VARS.location_flags.values():
+        elif obj[1] not in lib.location_flags.values():
 
             LE_WARNINGS.append(name_obj)
 
