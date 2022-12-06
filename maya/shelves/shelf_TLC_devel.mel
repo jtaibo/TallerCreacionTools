@@ -14,7 +14,7 @@ global proc shelf_TLC_devel () {
         -manage 1
         -visible 1
         -preventOverride 0
-        -annotation "from maya import cmds\ncmds.commandPort(name=\"localhost:7001\", sourceType=\"mel\", echoOutput=True)\n" 
+        -annotation "Open command port (to allow remote debugging)" 
         -enableBackground 0
         -backgroundColor 0 0 0 
         -highlightColor 0.321569 0.521569 0.65098 
