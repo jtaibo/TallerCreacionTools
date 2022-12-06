@@ -1,0 +1,6 @@
+tlc.trash.cpl.scripts.mainWindow.check\_pipeline
+================================================
+
+.. currentmodule:: tlc.trash.cpl.scripts.mainWindow
+
+.. autofunction:: check_pipeline

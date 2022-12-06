@@ -1,6 +1,0 @@
-tlc.trash.checkPipeline.scripts.orient.checkOrient
-==================================================
-
-.. currentmodule:: tlc.trash.checkPipeline.scripts.orient
-
-.. autofunction:: checkOrient

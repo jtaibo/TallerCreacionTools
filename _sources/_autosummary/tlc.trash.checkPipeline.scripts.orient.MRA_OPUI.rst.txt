@@ -1,6 +1,0 @@
-tlc.trash.checkPipeline.scripts.orient.MRA\_OPUI
-================================================
-
-.. currentmodule:: tlc.trash.checkPipeline.scripts.orient
-
-.. autofunction:: MRA_OPUI

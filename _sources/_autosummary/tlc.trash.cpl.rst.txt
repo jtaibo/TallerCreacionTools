@@ -1,7 +1,7 @@
-tlc.trash
-=========
+tlc.trash.cpl
+=============
 
-.. automodule:: tlc.trash
+.. automodule:: tlc.trash.cpl
 
    
    
@@ -28,5 +28,5 @@ tlc.trash
    :template: custom-module-template.rst
    :recursive:
 
-   tlc.trash.cpl
+   tlc.trash.cpl.scripts
 

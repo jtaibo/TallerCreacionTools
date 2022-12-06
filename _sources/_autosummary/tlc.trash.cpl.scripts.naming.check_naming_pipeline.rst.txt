@@ -1,0 +1,6 @@
+tlc.trash.cpl.scripts.naming.check\_naming\_pipeline
+====================================================
+
+.. currentmodule:: tlc.trash.cpl.scripts.naming
+
+.. autofunction:: check_naming_pipeline
