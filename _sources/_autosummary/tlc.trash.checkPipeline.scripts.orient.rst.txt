@@ -1,0 +1,31 @@
+tlc.trash.checkPipeline.scripts.orient
+======================================
+
+.. automodule:: tlc.trash.checkPipeline.scripts.orient
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      MRA_OPUI
+      checkOrient
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
