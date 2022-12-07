@@ -1,6 +1,0 @@
-tlc.trash.cpl.scripts.orient.MRA\_OPUI
-======================================
-
-.. currentmodule:: tlc.trash.cpl.scripts.orient
-
-.. autofunction:: MRA_OPUI

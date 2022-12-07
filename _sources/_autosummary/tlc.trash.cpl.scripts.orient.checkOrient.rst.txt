@@ -1,6 +1,0 @@
-tlc.trash.cpl.scripts.orient.checkOrient
-========================================
-
-.. currentmodule:: tlc.trash.cpl.scripts.orient
-
-.. autofunction:: checkOrient

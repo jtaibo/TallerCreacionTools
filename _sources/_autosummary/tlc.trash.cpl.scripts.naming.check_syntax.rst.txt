@@ -1,6 +1,0 @@
-tlc.trash.cpl.scripts.naming.check\_syntax
-==========================================
-
-.. currentmodule:: tlc.trash.cpl.scripts.naming
-
-.. autofunction:: check_syntax
