@@ -113,6 +113,22 @@ class BoundingBox():
         """
         return self.diameter()/2.
 
+    def min(self):
+        """Get minimum coordinates for AABB
+
+        Returns:
+            float[3]: Coordinates [x,y,z] for the minimum corner of AABB
+        """
+        return [ self.bbox[0], self.bbox[1], self.bbox[2] ]
+
+    def max(self):
+        """Get maximum coordinates for AABB
+
+        Returns:
+            float[3]: Coordinates [x,y,z] for the maximum corner of AABB
+        """
+        return [ self.bbox[3], self.bbox[4], self.bbox[5] ]
+
     def createDebugWireframe(self, name="bbox", hidden=False):
         """Creates a wireframe cube to show the bounding box (debugging 
         information)
