@@ -29,4 +29,5 @@ tlc.common
    :recursive:
 
    tlc.common.about
+   tlc.common.miscutils
 

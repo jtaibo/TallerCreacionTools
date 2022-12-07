@@ -1,0 +1,6 @@
+tlc.common.miscutils.importFile
+===============================
+
+.. currentmodule:: tlc.common.miscutils
+
+.. autofunction:: importFile
