@@ -88,11 +88,8 @@ class MainWindow(QtWidgets.QMainWindow):
         except:
             QtWidgets.QMessageBox.information(self, 'Error', f"Some shots in {sequence_name} already exist")
 
-            
-
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    app.setStyle("Fusion")
+def set_palette(app):
+    
     palette = QtGui.QPalette()
     palette.setColor(QtGui.QPalette.Window, QtGui.QColor(53, 53, 53))
     palette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.white)
@@ -107,18 +104,12 @@ if __name__ == "__main__":
     palette.setColor(QtGui.QPalette.Link, QtGui.QColor(42, 130, 218))
     palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(42, 130, 218))
     palette.setColor(QtGui.QPalette.HighlightedText, QtCore.Qt.black)
-    app.setPalette(palette)
+    app.setPalette(palette)        
 
-    # app.setStyleSheet("""
-    #  QWidget {background-color: #393a3b}
-    #  QLineEdit { color: #c0c2c3 ; background-color: #2e2f30 ; border: 1px solid; border-color: #5d5f61}
-    #  QLabel {color: #e0e0f3}
-    #  QPushButton {color: white; background-color: #575859 }
-    #  QComboBox { background-color: #575859; color : #e0e0f3}
-    #  QComboBox::drop-down { color: #e0e0f3 }
-    # """
-        
-    # )
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    app.setStyle("Fusion")
+    set_palette(app)
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())

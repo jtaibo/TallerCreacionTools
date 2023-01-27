@@ -53,9 +53,9 @@ class MainWindow(QtWidgets.QMainWindow):
             except:
                 QtWidgets.QMessageBox.information(self, 'Error', "Project Already Exists")
 
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    app.setStyle("Fusion")
+
+def set_palette(app):
+    
     palette = QtGui.QPalette()
     palette.setColor(QtGui.QPalette.Window, QtGui.QColor(53, 53, 53))
     palette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.white)
@@ -70,7 +70,13 @@ if __name__ == "__main__":
     palette.setColor(QtGui.QPalette.Link, QtGui.QColor(42, 130, 218))
     palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(42, 130, 218))
     palette.setColor(QtGui.QPalette.HighlightedText, QtCore.Qt.black)
-    app.setPalette(palette)
+    app.setPalette(palette)        
+
+
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    app.setStyle("Fusion")
+    set_palette(app)
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())

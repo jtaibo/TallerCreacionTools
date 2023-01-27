@@ -97,20 +97,22 @@ def create_new_sequence(project_root_folder, sequence_name, shot_list):
     for shot in shot_list:
         sh_shot = f"sh{shot}"
         shot_path = os.path.join(sequence_path, sh_shot).replace('\\','/')
-        if not os.path.exists(shot_path):
-            create_shot_subfolders(shot_path)
-        else:
-            raise FileExistsError()
+        try:
+            if not os.path.exists(shot_path):
+                create_shot_subfolders(sh_shot, shot_path)
+            else:
+                print(f"Shot {os.path.basename(shot_path)} already exists, process will continue skipping that folder")
+                raise FileExistsError()
+        finally:
+            continue
 
-def create_shot_subfolders(shot_path):
+def create_shot_subfolders(shot_num,shot_path):
     for subdir in prodDirs:
         working_subdir = f'{subdir}/00_working'
         shot_subfolder_path = os.path.join(shot_path, working_subdir).replace('\\','/')
         if not os.path.exists(shot_subfolder_path):
             os.makedirs(shot_subfolder_path,exist_ok=True)
-            print(os.path.abspath(shot_subfolder_path))
-
-        
+            print(f"Shot {shot_num} created")
 
 def create_sequence_path(project_root_folder, sequence_name):
     maya_workspace = build_maya_workspace_path(project_root_folder)
