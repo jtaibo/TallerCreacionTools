@@ -144,7 +144,8 @@ def create_new_project_structure(project_path,project_ID="XXX",debug=False):
     if not debug:
         try:
             for f in project_folders:
-                os.makedirs(f,exist_ok=True)
+                if not os.path.isdir(f):
+                    os.makedirs(f,exist_ok=True)
         except:
             raise OSError
 
