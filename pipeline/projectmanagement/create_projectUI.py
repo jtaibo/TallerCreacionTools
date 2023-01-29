@@ -50,8 +50,8 @@ class MainWindow(QtWidgets.QMainWindow):
             try:
                 project_manager.create_new_project_structure(path, name, False)# Your code to run the script goes here
                 QtWidgets.QMessageBox.information(self, 'Success', f'Created project in {path}/{name}')
-            except:
-                QtWidgets.QMessageBox.information(self, 'Error', "Project Already Exists")
+            except OSError:
+                print(OSError)
 
 
 def set_palette(app):

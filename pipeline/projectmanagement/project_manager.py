@@ -119,8 +119,13 @@ def create_sequence_path(project_root_folder, sequence_name):
     sequence_path = os.path.join(maya_workspace, f'scenes/{sequence_name}').replace('\\','/')
     return sequence_path
 
+def make_directories(a,b,c,d,e,f):
+    folders_array=[]
+    folders_array.extend(a+b+c+d+e+f)
+    return folders_array
+
 def create_new_project_structure(project_path,project_ID="XXX",debug=False):
-        # Project top level directory
+    # Project top level directory
     project_root_folder = build_project_path(project_ID, project_path)
 
     top_dirs = build_top_dirs_paths(project_root_folder)
@@ -131,24 +136,17 @@ def create_new_project_structure(project_path,project_ID="XXX",debug=False):
     sourceimages_subfolders = build_asset_subfolders(project_root_folder, 'sourceimages')
 
     library_subfolders = build_libraries(project_root_folder)
+    
+    project_folders = make_directories(top_dirs,maya_workspace_folders,
+                                       asset_subfolders,asset_subfolders,
+                                       sourceimages_subfolders,library_subfolders)
 
     if not debug:
         try:
-            os.makedirs(project_root_folder)
-
-            for t in top_dirs:
-                os.makedirs(t)
-            for m in maya_workspace_folders:
-                os.makedirs(m)
-            for a in asset_subfolders:
-                os.makedirs(a)
-            for s in sourceimages_subfolders:
-                os.makedirs(s)
-            for l in library_subfolders:
-                os.makedirs(l)
-            print(f"Project created in {project_root_folder}")
+            for f in project_folders:
+                os.makedirs(f,exist_ok=True)
         except:
-            raise FileExistsError
+            raise OSError
 
 
 if __name__ == "__main__":

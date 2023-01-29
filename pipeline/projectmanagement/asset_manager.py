@@ -18,7 +18,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def initUI(self):
         self.setFixedSize(240, 320)
 
-        ui_file = QtCore.QFile("E:/TCT/pipeline/projectmanagement/asset_manager/asset_manager.ui")
+        ui_file = QtCore.QFile("asset_manager.ui")
         ui_file.open(QtCore.QFile.ReadOnly)
         loader = QtUiTools.QUiLoader()
         self.ui = loader.load(ui_file,parentWidget=self)
