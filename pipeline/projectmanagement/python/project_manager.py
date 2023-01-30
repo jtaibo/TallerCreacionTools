@@ -44,8 +44,8 @@ def build_asset_subfolder_paths(project_root_folder, subfolder_name):
 def build_asset_subfolders(maya_workspace, subfolder_name):
     assets_path = build_asset_subfolder_paths(maya_workspace, subfolder_name)
     assets_list_paths = []
-    for type in assetTypeDirs:
-        asset_type_path = os.path.join(assets_path, type).replace('\\', '/')
+    for type in asset_type_dict:
+        asset_type_path = os.path.join(assets_path, asset_type_dict[type]).replace('\\', '/')
         assets_list_paths.append(asset_type_path)
 
     return assets_list_paths
@@ -54,9 +54,9 @@ def build_asset_subfolders(maya_workspace, subfolder_name):
 def build_libraries(project_root_folder):
 
     asset_library_path = os.path.join(build_asset_subfolder_paths(
-        project_root_folder, mayaDict['assets']), '99_library').replace('\\', '/')
+        project_root_folder, mayaDict['assets']), asset_type_dict["library"]).replace('\\', '/')
     sourceimages_library_path = os.path.join(build_asset_subfolder_paths(
-        project_root_folder, mayaDict['sourceimages']), '99_library').replace('\\', '/')
+        project_root_folder, mayaDict['sourceimages']), asset_type_dict["library"]).replace('\\', '/')
 
     library_list_paths = []
 
@@ -74,7 +74,7 @@ def build_libraries(project_root_folder):
 
 def create_new_asset(project_root_folder, asset_name, asset_type):
     project_name = os.path.basename(project_root_folder)
-    subfolder = assetTypeDirs[asset_type]
+    subfolder = asset_type_dict[asset_type]
     maya_workspace = build_maya_workspace(project_root_folder)
 
     for folder in maya_workspace:
@@ -89,7 +89,7 @@ def create_new_asset(project_root_folder, asset_name, asset_type):
 
 
 def create_asset_path(project_name, parent_path, asset_name, asset_type):
-    parent_folder = assetTypeDirs[asset_type]
+    parent_folder = asset_type_dict[asset_type]
     parent_path = f"{parent_path}/{parent_folder}"
     asset_nice_name = f"{project_name}_{assetFlag[asset_type]}_{asset_name}"
     asset_path = os.path.join(parent_path, asset_nice_name).replace('\\', '/')
@@ -104,7 +104,7 @@ def create_asset_path(project_name, parent_path, asset_name, asset_type):
 
 
 def create_sourceimages_path(project_name, parent_path, asset_name, asset_type):
-    parent_folder = assetTypeDirs[asset_type]
+    parent_folder = asset_type_dict[asset_type]
     parent_path = f"{parent_path}/{parent_folder}"
     asset_nice_name = f"{project_name}_{assetFlag[asset_type]}_{asset_name}"
     asset_path = os.path.join(parent_path, asset_nice_name).replace('\\', '/')
