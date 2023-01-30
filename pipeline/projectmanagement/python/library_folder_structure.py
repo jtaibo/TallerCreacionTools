@@ -5,10 +5,19 @@ topDirs= {
     "dev": "01_dev",
     "pre&prod": "02_prod",
     "post": "03_post"
-    }
+}
+
+mayaDict={
+    "assets":"assets",
+    "scenes":"scenes",
+    "sourceimages":"sourceimages",
+    "ies":"ies",
+    "shaders":"shaders",
+    "shaders/osl":"shaders/osl"
+
+}
 
 # maya_workspace directories
-mayaDirs = ["assets", "scenes", "sourceimages", "ies", "shaders", "shaders/osl"]
 
 assetFlag ={
     0: "ch",
