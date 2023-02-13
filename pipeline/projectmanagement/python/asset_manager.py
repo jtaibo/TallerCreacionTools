@@ -48,7 +48,7 @@ class MainWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.information(self, 'Error', f"Please, select a valid Project")
             return
         asset_name = self.ui.assetname_lineEdit.text()
-        asset_type = self.ui.assettype_cbox.currentIndex()
+        asset_type = str(self.ui.assettype_cbox.currentText())
         try:
             project_manager.create_new_asset(self.project_root_folder, asset_name, asset_type)
             QtWidgets.QMessageBox.information(self, 'Success', f"{asset_name} created")

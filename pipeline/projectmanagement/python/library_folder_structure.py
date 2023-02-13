@@ -20,15 +20,22 @@ mayaDict={
 # maya_workspace directories
 
 assetFlag ={
-    0: "ch",
-    1: "pr",
-    2: "st",
-    3: "cm"
+    "character": "ch",
+    "prop": "pr",
+    "set": "st",
+    "camera": "cm"
 }
 
 assetParentDirs=["assets","sourceimages"]
 # Asset types and directories
 assetTypeAbbr = [ "ch", "pr", "st", "cm", "lg", "fx" ]
+asset_type_dict = {
+    "character":"00_characters",
+    "prop":"01_props",
+    "set":"02_sets",
+    "camera":"03_cameras",
+    "library": "99_library"
+}
 assetTypeDirs = [ "00_characters", "01_props", "02_sets", "03_cameras", "99_library" ]    # WARNING: Missing 99 library
 # Library elements follow the criteria above, prefixed with "lb"
 assetTypeAbbrLibrary = [ "lb" + x for x in assetTypeAbbr ]
