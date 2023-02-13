@@ -25,6 +25,7 @@ assetFlag ={
     2: "st",
     3: "cm"
 }
+
 assetParentDirs=["assets","sourceimages"]
 # Asset types and directories
 assetTypeAbbr = [ "ch", "pr", "st", "cm", "lg", "fx" ]
