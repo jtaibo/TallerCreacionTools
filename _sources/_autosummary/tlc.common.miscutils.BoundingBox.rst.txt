@@ -23,7 +23,9 @@ tlc.common.miscutils.BoundingBox
       ~BoundingBox.diameter
       ~BoundingBox.get
       ~BoundingBox.height
+      ~BoundingBox.max
       ~BoundingBox.maxDim
+      ~BoundingBox.min
       ~BoundingBox.radius
       ~BoundingBox.width
    

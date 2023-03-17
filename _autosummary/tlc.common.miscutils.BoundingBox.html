@@ -74,8 +74,14 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.miscutils.BoundingBox.height" title="tlc.common.miscutils.BoundingBox.height"><code class="xref py py-obj docutils literal notranslate"><span class="pre">height</span></code></a>()</p></td>
 <td><p>Get AABB height</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.miscutils.BoundingBox.maxDim" title="tlc.common.miscutils.BoundingBox.maxDim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maxDim</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.miscutils.BoundingBox.max" title="tlc.common.miscutils.BoundingBox.max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max</span></code></a>()</p></td>
+<td><p>Get maximum coordinates for AABB</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.miscutils.BoundingBox.maxDim" title="tlc.common.miscutils.BoundingBox.maxDim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maxDim</span></code></a>()</p></td>
 <td><p>Get AABB size in maximum dimension</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.miscutils.BoundingBox.min" title="tlc.common.miscutils.BoundingBox.min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min</span></code></a>()</p></td>
+<td><p>Get minimum coordinates for AABB</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.miscutils.BoundingBox.radius" title="tlc.common.miscutils.BoundingBox.radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radius</span></code></a>()</p></td>
 <td><p>Get AABB radius</p></td>
@@ -177,6 +183,20 @@ information)</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tlc.common.miscutils.BoundingBox.max">
+<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.common.miscutils.BoundingBox.max" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get maximum coordinates for AABB</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Coordinates [x,y,z] for the maximum corner of AABB</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float[3]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tlc.common.miscutils.BoundingBox.maxDim">
 <span class="sig-name descname"><span class="pre">maxDim</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.common.miscutils.BoundingBox.maxDim" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get AABB size in maximum dimension</p>
@@ -186,6 +206,20 @@ information)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.common.miscutils.BoundingBox.min">
+<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.common.miscutils.BoundingBox.min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get minimum coordinates for AABB</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Coordinates [x,y,z] for the minimum corner of AABB</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float[3]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -270,7 +304,9 @@ information)</p>
 <li class="toctree-l6"><a class="reference internal" href="#tlc.common.miscutils.BoundingBox.diameter"><code class="docutils literal notranslate"><span class="pre">BoundingBox.diameter()</span></code></a></li>
 <li class="toctree-l6"><a class="reference internal" href="#tlc.common.miscutils.BoundingBox.get"><code class="docutils literal notranslate"><span class="pre">BoundingBox.get()</span></code></a></li>
 <li class="toctree-l6"><a class="reference internal" href="#tlc.common.miscutils.BoundingBox.height"><code class="docutils literal notranslate"><span class="pre">BoundingBox.height()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#tlc.common.miscutils.BoundingBox.max"><code class="docutils literal notranslate"><span class="pre">BoundingBox.max()</span></code></a></li>
 <li class="toctree-l6"><a class="reference internal" href="#tlc.common.miscutils.BoundingBox.maxDim"><code class="docutils literal notranslate"><span class="pre">BoundingBox.maxDim()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#tlc.common.miscutils.BoundingBox.min"><code class="docutils literal notranslate"><span class="pre">BoundingBox.min()</span></code></a></li>
 <li class="toctree-l6"><a class="reference internal" href="#tlc.common.miscutils.BoundingBox.radius"><code class="docutils literal notranslate"><span class="pre">BoundingBox.radius()</span></code></a></li>
 <li class="toctree-l6"><a class="reference internal" href="#tlc.common.miscutils.BoundingBox.width"><code class="docutils literal notranslate"><span class="pre">BoundingBox.width()</span></code></a></li>
 </ul>
