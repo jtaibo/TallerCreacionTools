@@ -74,16 +74,8 @@ class MeshCheckerUI(QtWidgets.QDialog):
         table_widget.setItem(row, col, title)
         table_widget.resizeColumnToContents(col)
 
-        # Enabled (col 1)
+        # Count (col 1)
         col = 1
-        en_check_box = QtWidgets.QCheckBox()
-        en_check_box.setChecked(True)
-        #en_check_box.setStyleSheet("margin-left:50%; margin-right:50%;")
-        table_widget.setCellWidget(row, col, en_check_box)
-        table_widget.resizeColumnToContents(col)
-
-        # Count (col 2)
-        col = 2
         count = QtWidgets.QTableWidgetItem( str(cond.count) )
         count.setTextAlignment(QtCore.Qt.AlignRight | QtCore.Qt. AlignVCenter)
         count.setFlags(flags)
@@ -107,19 +99,13 @@ class MeshCheckerUI(QtWidgets.QDialog):
         table_widget.setItem(row, col, count)
         table_widget.resizeColumnToContents(col)
 
-        # Autoselect (col 3)
-        col = 3
-        autosel_check_box = QtWidgets.QCheckBox()
-        autosel_check_box.setChecked( cond.autoSelect )
-        table_widget.setCellWidget(row, col, autosel_check_box)
-        table_widget.resizeColumnToContents(col)
-
-        # Select button (col 4)
-        col = 4
+        # Select button (col 2)
+        col = 2
         select_button = QtWidgets.QPushButton("Select")
         table_widget.setCellWidget(row, col, select_button)
         table_widget.resizeColumnToContents(col)
         select_button.clicked.connect( lambda: cond.select() )
+
 
     def populateUI(self, mesh_checker):
         # https://doc.qt.io/qtforpython-5/PySide2/QtWidgets/QTableWidget.html

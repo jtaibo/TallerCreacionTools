@@ -82,17 +82,7 @@
          </column>
          <column>
           <property name="text">
-           <string>En</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
            <string>Count</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>AS</string>
           </property>
          </column>
          <column>
@@ -111,17 +101,7 @@
          </column>
          <column>
           <property name="text">
-           <string>En</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
            <string>Count</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>AS</string>
           </property>
          </column>
          <column>
