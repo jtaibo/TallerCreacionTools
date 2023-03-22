@@ -1,0 +1,31 @@
+tlc.modeling.meshcheck\_ui.MeshCheckerUI
+========================================
+
+.. currentmodule:: tlc.modeling.meshcheck_ui
+
+.. autoclass:: MeshCheckerUI
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~MeshCheckerUI.__init__
+      ~MeshCheckerUI.addConditionChecker
+      ~MeshCheckerUI.check_button
+      ~MeshCheckerUI.createConnections
+      ~MeshCheckerUI.createLayout
+      ~MeshCheckerUI.initUI
+      ~MeshCheckerUI.populateUI
+   
+   
+
+   
+   
+   

@@ -1,0 +1,42 @@
+tlc.modeling.meshcheck.MeshChecker
+==================================
+
+.. currentmodule:: tlc.modeling.meshcheck
+
+.. autoclass:: MeshChecker
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~MeshChecker.__init__
+      ~MeshChecker.addCondition
+      ~MeshChecker.addGeoCondition
+      ~MeshChecker.addUVCondition
+      ~MeshChecker.analyze
+      ~MeshChecker.analyzeFaces
+      ~MeshChecker.reset
+      ~MeshChecker.writeDataCSV
+      ~MeshChecker.writeHeaderCSV
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MeshChecker.bbox
+      ~MeshChecker.geoConditions
+      ~MeshChecker.selection
+      ~MeshChecker.uvConditions
+   
+   

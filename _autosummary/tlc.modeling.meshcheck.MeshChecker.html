@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlc.modeling.meshcheck.MeshChecker &mdash; TLC v0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="tlc.modeling.meshcheck_ui" href="tlc.modeling.meshcheck_ui.html" />
+    <link rel="prev" title="tlc.modeling.meshcheck.getTileID" href="tlc.modeling.meshcheck.getTileID.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            TLC
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="tlc.html">tlc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tlc.common.html">tlc.common</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="tlc.modeling.html">tlc.modeling</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="tlc.modeling.meshcheck.html">tlc.modeling.meshcheck</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="tlc.modeling.meshcheck.checkUVTile.html">tlc.modeling.meshcheck.checkUVTile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.modeling.meshcheck.getTileID.html">tlc.modeling.meshcheck.getTileID</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">tlc.modeling.meshcheck.MeshChecker</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlc.modeling.meshcheck_ui.html">tlc.modeling.meshcheck_ui</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tlc.rigging.html">tlc.rigging</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TLC</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="tlc.html">tlc</a></li>
+          <li class="breadcrumb-item"><a href="tlc.modeling.html">tlc.modeling</a></li>
+          <li class="breadcrumb-item"><a href="tlc.modeling.meshcheck.html">tlc.modeling.meshcheck</a></li>
+      <li class="breadcrumb-item active">tlc.modeling.meshcheck.MeshChecker</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/tlc.modeling.meshcheck.MeshChecker.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tlc-modeling-meshcheck-meshchecker">
+<h1>tlc.modeling.meshcheck.MeshChecker<a class="headerlink" href="#tlc-modeling-meshcheck-meshchecker" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tlc.modeling.meshcheck.</span></span><span class="sig-name descname"><span class="pre">MeshChecker</span></span><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class MeshChecker</p>
+<p>Statistics of a mesh</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Constructor</p>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.__init__" title="tlc.modeling.meshcheck.MeshChecker.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p>Constructor</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.addCondition" title="tlc.modeling.meshcheck.MeshChecker.addCondition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">addCondition</span></code></a>(cond_map, name)</p></td>
+<td><p>Add a checkable condition to a condition map</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.addGeoCondition" title="tlc.modeling.meshcheck.MeshChecker.addGeoCondition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">addGeoCondition</span></code></a>(name)</p></td>
+<td><p>Add a checkable condition to the geometry condition map</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.addUVCondition" title="tlc.modeling.meshcheck.MeshChecker.addUVCondition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">addUVCondition</span></code></a>(name)</p></td>
+<td><p>Add a checkable condition to the UV condition map</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.analyze" title="tlc.modeling.meshcheck.MeshChecker.analyze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze</span></code></a>()</p></td>
+<td><p>Analyze the selected objects</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyzeFaces</span></code>(dag, selected_components)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.reset" title="tlc.modeling.meshcheck.MeshChecker.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>()</p></td>
+<td><p>Initialize object with default values (reset counters)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.writeDataCSV" title="tlc.modeling.meshcheck.MeshChecker.writeDataCSV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">writeDataCSV</span></code></a>(file)</p></td>
+<td><p>Write the CSV data for meshcheck data</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.writeHeaderCSV" title="tlc.modeling.meshcheck.MeshChecker.writeHeaderCSV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">writeHeaderCSV</span></code></a>(file)</p></td>
+<td><p>Write the CSV header for meshcheck data</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.bbox" title="tlc.modeling.meshcheck.MeshChecker.bbox"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bbox</span></code></a></p></td>
+<td><p>Global world-space bounding box for the selection [xmin, ymin, zmin, xmax, ymax, zmax]</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.geoConditions" title="tlc.modeling.meshcheck.MeshChecker.geoConditions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geoConditions</span></code></a></p></td>
+<td><p>Dictionary/map of geometry condition checkers (using name as key)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.selection" title="tlc.modeling.meshcheck.MeshChecker.selection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">selection</span></code></a></p></td>
+<td><p>Original selection to be analized</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.uvConditions" title="tlc.modeling.meshcheck.MeshChecker.uvConditions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uvConditions</span></code></a></p></td>
+<td><p>Dictionary/map of UV condition checkers (using name as key)</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.addCondition">
+<span class="sig-name descname"><span class="pre">addCondition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cond_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.addCondition" title="Permalink to this definition"></a></dt>
+<dd><p>Add a checkable condition to a condition map</p>
+<p>Builds a ConditionChecker with the supplied name and configuration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cond_map</strong> (<a class="reference internal" href="tlc.common.conditionchecker.ConditionChecker.html#tlc.common.conditionchecker.ConditionChecker" title="tlc.common.conditionchecker.ConditionChecker"><em>ConditionChecker</em></a>) – Condition checker</p></li>
+<li><p><strong>name</strong> (<em>string</em>) – Name of condition</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.addGeoCondition">
+<span class="sig-name descname"><span class="pre">addGeoCondition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.addGeoCondition" title="Permalink to this definition"></a></dt>
+<dd><p>Add a checkable condition to the geometry condition map</p>
+<p>Builds a ConditionChecker with the supplied name and configuration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>string</em>) – Name of condition</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.addUVCondition">
+<span class="sig-name descname"><span class="pre">addUVCondition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.addUVCondition" title="Permalink to this definition"></a></dt>
+<dd><p>Add a checkable condition to the UV condition map</p>
+<p>Builds a ConditionChecker with the supplied name and configuration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>string</em>) – Name of condition</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.analyze">
+<span class="sig-name descname"><span class="pre">analyze</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.analyze" title="Permalink to this definition"></a></dt>
+<dd><p>Analyze the selected objects</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.bbox">
+<span class="sig-name descname"><span class="pre">bbox</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[1.7976931348623157e+308,</span> <span class="pre">1.7976931348623157e+308,</span> <span class="pre">1.7976931348623157e+308,</span> <span class="pre">-1.7976931348623157e+308,</span> <span class="pre">-1.7976931348623157e+308,</span> <span class="pre">-1.7976931348623157e+308]</span></em><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.bbox" title="Permalink to this definition"></a></dt>
+<dd><p>Global world-space bounding box for the selection [xmin, ymin, zmin, xmax, ymax, zmax]</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.geoConditions">
+<span class="sig-name descname"><span class="pre">geoConditions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.geoConditions" title="Permalink to this definition"></a></dt>
+<dd><p>Dictionary/map of geometry condition checkers (using name as key)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize object with default values (reset counters)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.selection">
+<span class="sig-name descname"><span class="pre">selection</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.selection" title="Permalink to this definition"></a></dt>
+<dd><p>Original selection to be analized</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.uvConditions">
+<span class="sig-name descname"><span class="pre">uvConditions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.uvConditions" title="Permalink to this definition"></a></dt>
+<dd><p>Dictionary/map of UV condition checkers (using name as key)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.writeDataCSV">
+<span class="sig-name descname"><span class="pre">writeDataCSV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.writeDataCSV" title="Permalink to this definition"></a></dt>
+<dd><p>Write the CSV data for meshcheck data</p>
+<p>NOTE: This function does not write end-of-line because some data may be concatenated later. End-of-line is responsibility of the caller</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>_type_</em>) – _description_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.writeHeaderCSV">
+<span class="sig-name descname"><span class="pre">writeHeaderCSV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.writeHeaderCSV" title="Permalink to this definition"></a></dt>
+<dd><p>Write the CSV header for meshcheck data</p>
+<p>NOTE: This function does not write end-of-line because some data may be concatenated later. End-of-line is responsibility of the caller</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>file</em>) – CSV file object to write into. The file must have been opened</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tlc.modeling.meshcheck.getTileID.html" class="btn btn-neutral float-left" title="tlc.modeling.meshcheck.getTileID" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tlc.modeling.meshcheck_ui.html" class="btn btn-neutral float-right" title="tlc.modeling.meshcheck_ui" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, Universidade da Coruña.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

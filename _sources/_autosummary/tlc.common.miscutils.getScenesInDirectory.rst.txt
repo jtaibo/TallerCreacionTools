@@ -1,0 +1,6 @@
+tlc.common.miscutils.getScenesInDirectory
+=========================================
+
+.. currentmodule:: tlc.common.miscutils
+
+.. autofunction:: getScenesInDirectory

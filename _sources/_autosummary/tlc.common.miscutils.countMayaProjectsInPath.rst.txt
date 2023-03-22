@@ -1,0 +1,6 @@
+tlc.common.miscutils.countMayaProjectsInPath
+============================================
+
+.. currentmodule:: tlc.common.miscutils
+
+.. autofunction:: countMayaProjectsInPath

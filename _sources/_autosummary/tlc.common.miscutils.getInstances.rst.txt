@@ -1,0 +1,6 @@
+tlc.common.miscutils.getInstances
+=================================
+
+.. currentmodule:: tlc.common.miscutils
+
+.. autofunction:: getInstances

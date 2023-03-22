@@ -1,0 +1,6 @@
+tlc.common.miscutils.deleteEmptyGroups
+======================================
+
+.. currentmodule:: tlc.common.miscutils
+
+.. autofunction:: deleteEmptyGroups

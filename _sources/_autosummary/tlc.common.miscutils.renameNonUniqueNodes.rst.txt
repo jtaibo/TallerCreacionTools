@@ -1,0 +1,6 @@
+tlc.common.miscutils.renameNonUniqueNodes
+=========================================
+
+.. currentmodule:: tlc.common.miscutils
+
+.. autofunction:: renameNonUniqueNodes
