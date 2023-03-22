@@ -33,7 +33,7 @@ class DesignerUI(QtWidgets.QDialog):
         self.create_connections()
 
     def init_ui(self):
-        f = QtCore.QFile("E:/TCT/tutorial/tutorial_interfaz.ui")
+        f = QtCore.QFile("D:/devel/TallerCreacionTools/tutorial/tutorial_interfaz.ui")
         f.open(QtCore.QFile.ReadOnly)
 
         loader = QtUiTools.QUiLoader()
