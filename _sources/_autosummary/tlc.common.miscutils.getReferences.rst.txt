@@ -1,6 +1,0 @@
-tlc.common.miscutils.getReferences
-==================================
-
-.. currentmodule:: tlc.common.miscutils
-
-.. autofunction:: getReferences

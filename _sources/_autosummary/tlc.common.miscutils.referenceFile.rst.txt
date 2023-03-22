@@ -1,6 +1,0 @@
-tlc.common.miscutils.referenceFile
-==================================
-
-.. currentmodule:: tlc.common.miscutils
-
-.. autofunction:: referenceFile
