@@ -105,28 +105,25 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.__init__" title="tlc.modeling.meshcheck.MeshChecker.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
 <td><p>Constructor</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.addCondition" title="tlc.modeling.meshcheck.MeshChecker.addCondition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">addCondition</span></code></a>(cond_map, name)</p></td>
-<td><p>Add a checkable condition to a condition map</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.addGeoCondition" title="tlc.modeling.meshcheck.MeshChecker.addGeoCondition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">addGeoCondition</span></code></a>(name)</p></td>
-<td><p>Add a checkable condition to the geometry condition map</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.addUVCondition" title="tlc.modeling.meshcheck.MeshChecker.addUVCondition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">addUVCondition</span></code></a>(name)</p></td>
-<td><p>Add a checkable condition to the UV condition map</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.analyze" title="tlc.modeling.meshcheck.MeshChecker.analyze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.analyze" title="tlc.modeling.meshcheck.MeshChecker.analyze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze</span></code></a>()</p></td>
 <td><p>Analyze the selected objects</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyzeEdges</span></code>(dag, selected_components)</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyzeFaces</span></code>(dag, selected_components)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.reset" title="tlc.modeling.meshcheck.MeshChecker.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyzeVertices</span></code>(dag, selected_components)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.reset" title="tlc.modeling.meshcheck.MeshChecker.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>()</p></td>
 <td><p>Initialize object with default values (reset counters)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.writeDataCSV" title="tlc.modeling.meshcheck.MeshChecker.writeDataCSV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">writeDataCSV</span></code></a>(file)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.writeDataCSV" title="tlc.modeling.meshcheck.MeshChecker.writeDataCSV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">writeDataCSV</span></code></a>(file)</p></td>
 <td><p>Write the CSV data for meshcheck data</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.writeHeaderCSV" title="tlc.modeling.meshcheck.MeshChecker.writeHeaderCSV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">writeHeaderCSV</span></code></a>(file)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.writeHeaderCSV" title="tlc.modeling.meshcheck.MeshChecker.writeHeaderCSV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">writeHeaderCSV</span></code></a>(file)</p></td>
 <td><p>Write the CSV header for meshcheck data</p></td>
 </tr>
 </tbody>
@@ -148,45 +145,6 @@
 </tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.addCondition">
-<span class="sig-name descname"><span class="pre">addCondition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cond_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.addCondition" title="Permalink to this definition"></a></dt>
-<dd><p>Add a checkable condition to a condition map</p>
-<p>Builds a ConditionChecker with the supplied name and configuration</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cond_map</strong> (<a class="reference internal" href="tlc.common.conditionchecker.ConditionChecker.html#tlc.common.conditionchecker.ConditionChecker" title="tlc.common.conditionchecker.ConditionChecker"><em>ConditionChecker</em></a>) – Condition checker</p></li>
-<li><p><strong>name</strong> (<em>string</em>) – Name of condition</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.addGeoCondition">
-<span class="sig-name descname"><span class="pre">addGeoCondition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.addGeoCondition" title="Permalink to this definition"></a></dt>
-<dd><p>Add a checkable condition to the geometry condition map</p>
-<p>Builds a ConditionChecker with the supplied name and configuration</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>string</em>) – Name of condition</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.addUVCondition">
-<span class="sig-name descname"><span class="pre">addUVCondition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.addUVCondition" title="Permalink to this definition"></a></dt>
-<dd><p>Add a checkable condition to the UV condition map</p>
-<p>Builds a ConditionChecker with the supplied name and configuration</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>string</em>) – Name of condition</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.analyze">
 <span class="sig-name descname"><span class="pre">analyze</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.analyze" title="Permalink to this definition"></a></dt>

@@ -91,16 +91,21 @@
 <h1>tlc.common.conditionchecker.ConditionChecker<a class="headerlink" href="#tlc-common-conditionchecker-conditionchecker" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="tlc.common.conditionchecker.ConditionChecker">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tlc.common.conditionchecker.</span></span><span class="sig-name descname"><span class="pre">ConditionChecker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toolTip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.common.conditionchecker.ConditionChecker" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tlc.common.conditionchecker.</span></span><span class="sig-name descname"><span class="pre">ConditionChecker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toolTip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selectable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.common.conditionchecker.ConditionChecker" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class ConditionChecker</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tlc.common.conditionchecker.ConditionChecker.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toolTip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.common.conditionchecker.ConditionChecker.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toolTip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selectable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.common.conditionchecker.ConditionChecker.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Constructor</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – Condition name. Defaults to “”.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – Short name (ID, key) of the condition. Defaults to “”.</p></li>
+<li><p><strong>displayName</strong> (<em>str</em><em>, </em><em>optional</em>) – Condition name used to display on UI. Defaults to “”.</p></li>
+<li><p><strong>toolTip</strong> (<em>str</em><em>, </em><em>optional</em>) – Long description used as a tooltip. Defaults to “”.</p></li>
+<li><p><strong>selectable</strong> (<em>bool</em><em>, </em><em>optional</em>) – Condition elements are selectable. Defaults to True.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -108,7 +113,7 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.conditionchecker.ConditionChecker.__init__" title="tlc.common.conditionchecker.ConditionChecker.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([name, displayName, toolTip])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.conditionchecker.ConditionChecker.__init__" title="tlc.common.conditionchecker.ConditionChecker.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([name, displayName, toolTip, ...])</p></td>
 <td><p>Constructor</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.conditionchecker.ConditionChecker.reset" title="tlc.common.conditionchecker.ConditionChecker.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>()</p></td>
@@ -140,7 +145,10 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.conditionchecker.ConditionChecker.name" title="tlc.common.conditionchecker.ConditionChecker.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
 <td><p>Condition name (short name used as an ID)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.conditionchecker.ConditionChecker.toolTip" title="tlc.common.conditionchecker.ConditionChecker.toolTip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toolTip</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.conditionchecker.ConditionChecker.selectable" title="tlc.common.conditionchecker.ConditionChecker.selectable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">selectable</span></code></a></p></td>
+<td><p>The elements matching the condition can be selected</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.conditionchecker.ConditionChecker.toolTip" title="tlc.common.conditionchecker.ConditionChecker.toolTip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toolTip</span></code></a></p></td>
 <td><p>Text to be showed as a tooltip for this condition</p></td>
 </tr>
 </tbody>
@@ -185,6 +193,12 @@
 <dt class="sig sig-object py" id="tlc.common.conditionchecker.ConditionChecker.select">
 <span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.common.conditionchecker.ConditionChecker.select" title="Permalink to this definition"></a></dt>
 <dd><p>Select components that matched the condition</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tlc.common.conditionchecker.ConditionChecker.selectable">
+<span class="sig-name descname"><span class="pre">selectable</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#tlc.common.conditionchecker.ConditionChecker.selectable" title="Permalink to this definition"></a></dt>
+<dd><p>The elements matching the condition can be selected</p>
 </dd></dl>
 
 <dl class="py method">

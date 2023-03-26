@@ -34,6 +34,7 @@ tlc.common.conditionchecker.ConditionChecker
       ~ConditionChecker.elms
       ~ConditionChecker.errorLevel
       ~ConditionChecker.name
+      ~ConditionChecker.selectable
       ~ConditionChecker.toolTip
    
    

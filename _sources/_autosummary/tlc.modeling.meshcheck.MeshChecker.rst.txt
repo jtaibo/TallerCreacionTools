@@ -17,11 +17,10 @@ tlc.modeling.meshcheck.MeshChecker
    .. autosummary::
    
       ~MeshChecker.__init__
-      ~MeshChecker.addCondition
-      ~MeshChecker.addGeoCondition
-      ~MeshChecker.addUVCondition
       ~MeshChecker.analyze
+      ~MeshChecker.analyzeEdges
       ~MeshChecker.analyzeFaces
+      ~MeshChecker.analyzeVertices
       ~MeshChecker.reset
       ~MeshChecker.writeDataCSV
       ~MeshChecker.writeHeaderCSV

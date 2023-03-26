@@ -90,37 +90,93 @@
 <dt class="sig sig-object py" id="tlc.modeling.meshcheck_ui.MeshCheckerUI">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tlc.modeling.meshcheck_ui.</span></span><span class="sig-name descname"><span class="pre">MeshCheckerUI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck_ui.MeshCheckerUI" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QDialog</span></code></p>
+<p>User interface for MeshChecker</p>
+<p>This checker is based on the QTableWidget</p>
+<p><a class="reference external" href="https://doc.qt.io/qtforpython-5/PySide2/QtWidgets/QTableWidget.html">https://doc.qt.io/qtforpython-5/PySide2/QtWidgets/QTableWidget.html</a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tlc.modeling.meshcheck_ui.MeshCheckerUI.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">shiboken2.wrapInstance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck_ui.MeshCheckerUI.__init__" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Constructor</p>
+</dd></dl>
 
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck_ui.MeshCheckerUI.__init__" title="tlc.modeling.meshcheck_ui.MeshCheckerUI.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([parent])</p></td>
-<td><p></p></td>
+<td><p>Constructor</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">addConditionChecker</span></code>(table_widget, cond)</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck_ui.MeshCheckerUI.addConditionChecker" title="tlc.modeling.meshcheck_ui.MeshCheckerUI.addConditionChecker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">addConditionChecker</span></code></a>(table_widget, cond)</p></td>
+<td><p>Add a condition checker This method adds a new row to the table in the UI, fill the cells with the data in a ConditionChecker object, and configures the button to select the elements meeting the condition</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_button</span></code>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck_ui.MeshCheckerUI.check_button" title="tlc.modeling.meshcheck_ui.MeshCheckerUI.check_button"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_button</span></code></a>()</p></td>
+<td><p>Check button function/callback</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">createConnections</span></code>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck_ui.MeshCheckerUI.createConnections" title="tlc.modeling.meshcheck_ui.MeshCheckerUI.createConnections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">createConnections</span></code></a>()</p></td>
+<td><p>Connect buttons to functions</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">createLayout</span></code>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck_ui.MeshCheckerUI.createLayout" title="tlc.modeling.meshcheck_ui.MeshCheckerUI.createLayout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">createLayout</span></code></a>()</p></td>
+<td><p>Build UI layout</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">initUI</span></code>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck_ui.MeshCheckerUI.initUI" title="tlc.modeling.meshcheck_ui.MeshCheckerUI.initUI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initUI</span></code></a>()</p></td>
+<td><p>Load interface from .ui file</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">populateUI</span></code>(mesh_checker)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck_ui.MeshCheckerUI.populateUI" title="tlc.modeling.meshcheck_ui.MeshCheckerUI.populateUI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">populateUI</span></code></a>(mesh_checker)</p></td>
+<td><p>Clear the tables and repopulate them from the supplied MeshChecker</p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck_ui.MeshCheckerUI.addConditionChecker">
+<span class="sig-name descname"><span class="pre">addConditionChecker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cond</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck_ui.MeshCheckerUI.addConditionChecker" title="Permalink to this definition"></a></dt>
+<dd><p>Add a condition checker
+This method adds a new row to the table in the UI, fill the cells with
+the data in a ConditionChecker object, and configures the button to
+select the elements meeting the condition</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table_widget</strong> (<em>QTableWidget</em>) – Table widget object in the UI</p></li>
+<li><p><strong>cond</strong> (<a class="reference internal" href="tlc.common.conditionchecker.ConditionChecker.html#tlc.common.conditionchecker.ConditionChecker" title="tlc.common.conditionchecker.ConditionChecker"><em>ConditionChecker</em></a>) – Condition checker object</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck_ui.MeshCheckerUI.check_button">
+<span class="sig-name descname"><span class="pre">check_button</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck_ui.MeshCheckerUI.check_button" title="Permalink to this definition"></a></dt>
+<dd><p>Check button function/callback</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck_ui.MeshCheckerUI.createConnections">
+<span class="sig-name descname"><span class="pre">createConnections</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck_ui.MeshCheckerUI.createConnections" title="Permalink to this definition"></a></dt>
+<dd><p>Connect buttons to functions</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck_ui.MeshCheckerUI.createLayout">
+<span class="sig-name descname"><span class="pre">createLayout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck_ui.MeshCheckerUI.createLayout" title="Permalink to this definition"></a></dt>
+<dd><p>Build UI layout</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck_ui.MeshCheckerUI.initUI">
+<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck_ui.MeshCheckerUI.initUI" title="Permalink to this definition"></a></dt>
+<dd><p>Load interface from .ui file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.modeling.meshcheck_ui.MeshCheckerUI.populateUI">
+<span class="sig-name descname"><span class="pre">populateUI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh_checker</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.modeling.meshcheck_ui.MeshCheckerUI.populateUI" title="Permalink to this definition"></a></dt>
+<dd><p>Clear the tables and repopulate them from the supplied MeshChecker</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mesh_checker</strong> (<a class="reference internal" href="tlc.modeling.meshcheck.MeshChecker.html#tlc.modeling.meshcheck.MeshChecker" title="tlc.modeling.meshcheck.MeshChecker"><em>MeshChecker</em></a>) – MeshChecker object to populate the table</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
