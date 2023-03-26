@@ -55,7 +55,6 @@ def checkUVTile(u, v, the_set):
     the_set.add(tile_id)
 
 
-
 class MeshChecker():
     """Class MeshChecker
 
@@ -82,77 +81,51 @@ class MeshChecker():
         """Constructor
         """
 
-        self.addGeoCondition("meshes")
-        self.addGeoCondition("shells")
-        self.addGeoCondition("history")
+        self.geoConditions["meshes"] = ConditionChecker("meshes", "Meshes", "Number of meshes in selected elements", False)
+        #self.addGeoCondition("history")
+
+        # Poly evaluate
+        self.geoConditions["shells"] = ConditionChecker("shells", "Shells", "Number of shells in selected elements", False)
+        self.geoConditions["vertices"] = ConditionChecker("vertices", "Vertices", "Number of vertices in selected elements", False)
+        self.geoConditions["edges"] = ConditionChecker("edges", "Edges", "Number of edges in selected elements", False)
+        self.geoConditions["faces"] = ConditionChecker("faces", "Faces", "Number of faces/polygons in selected elements", False)
+        self.geoConditions["area"] = ConditionChecker("area")
 
         # Face checks
-        self.addGeoCondition("quads")
-        self.addGeoCondition("tris")
-        self.addGeoCondition("ngons")
+        self.geoConditions["quads"] = ConditionChecker("quads", "Quads", "Number of quads in selected elements")
+        self.geoConditions["tris"] = ConditionChecker("tris", "Tris", "Number of triangles in selected elements")
+        self.geoConditions["ngons"] = ConditionChecker("ngons", "n-Gons", "Number of n-gons in selected elements")
         # Degenerated faces (only quads)
-        self.addGeoCondition("quadsToTris")        # Two vertices in the same position
-        self.addGeoCondition("quadsToLines")       # 2+2 or 3+1 vertices grouped
-        self.addGeoCondition("quadsToPoints")      # All four vertices in the same position
-        self.addGeoCondition("zeroAreaFaces")      # More than two vertices in the same position
+        self.geoConditions["quadsToTris"] = ConditionChecker("quadsToTris", "Quads to tris", "Number of quads degenerated to triangles (two vertices in the same position)")        # Two vertices in the same position
+        self.geoConditions["quadsToLines"] = ConditionChecker("quadsToLines", "Quads to lines", "Number of quads degenerated to lines (vertices in two different positions)")       # 2+2 or 3+1 vertices grouped
+        self.geoConditions["quadsToPoints"] = ConditionChecker("quadsToPoints", "Quads to points", "Number of quads degenerated to points (all vertices in the same position)")      # All four vertices in the same position
+        self.geoConditions["zeroAreaQuads"] = ConditionChecker("zeroAreaQuads", "Zero area quads", "Zero area quads")      # More than two vertices in the same position
         
         # Edge checks
-        self.addGeoCondition("borderEdges")        # Border edges (only one face uses this edge)
-        self.addGeoCondition("evilEdges")          # Edges connecting more than 2 faces
+        self.geoConditions["borderEdges"] = ConditionChecker("borderEdges", "Border edges", "Number of border edges in selected elements")        # Border edges (only one face uses this edge)
+        self.geoConditions["evilEdges"] = ConditionChecker("evilEdges", "Evil edges", "Number of edges sharing more than two faces. Non-manifold geometry")          # Edges connecting more than 2 faces
         
         # Vertex checks
-        self.addGeoCondition("poles")
+        self.geoConditions["poles"] = ConditionChecker("poles", "Poles", "Number of poles in selected elements (vertices connecting a number of edges other than 4)")
 
         # UVs
-        self.addUVCondition("uvSets")           # Number of UV sets
-        self.addUVCondition("uvShells")         # Number of UV shells
-        self.addUVCondition("uvMissing")        # Faces with no UVs
-        self.addUVCondition("uvFlipped")        # Faces flipped in UV
-        self.addUVCondition("uvZeroArea")       # Faces with zero area in UV space
-        self.addUVCondition("uvOverlapping")    # Overlapping faces
-        self.addUVCondition("uvCrossingBorders") # Faces crossing tile (UDIM) borders
-        #self.addCondition("uvTileSet = set()       # Set to store used UV tiles (UDIMs)
-        self.addUVCondition("uvCoverage")       # UV coverage (normalized to the space of tiles/UDIMs used)
+        self.uvConditions["uvSets"] = ConditionChecker("uvSets", "UV sets", "Number of UV sets in selected elements", False)           # Number of UV sets
+        self.uvConditions["uvShells"] = ConditionChecker("uvShells", "UV shells", "Number of UV shells in selected elements", False)         # Number of UV shells
+        self.uvConditions["uvMissing"] = ConditionChecker("uvMissing", "UV missing", "Number of face vertices missing UV coordinates")        # Faces with no UVs
+        self.uvConditions["uvFlipped"] = ConditionChecker("uvFlipped", "UV flipped", "Number of faces flipped in UV space")        # Faces flipped in UV
+        self.uvConditions["uvZeroArea"] = ConditionChecker("uvZeroArea", "UV zero area", "Number of faces occupying zero (or near zero) area in UV space")       # Faces with zero area in UV space
+        self.uvConditions["uvOverlapping"] = ConditionChecker("uvOverlapping", "UV overlaps", "Number of faces overlapped in UV space")    # Overlapping faces
+        self.uvConditions["uvCrossingBorders"] = ConditionChecker("uvCrossingBorders", "UV crossing borders", "Number of faces crossing borders of a tile") # Faces crossing tile (UDIM) borders
+        self.uvConditions["uvCoverage"] = ConditionChecker("uvCoverage", "UV coverage", "Normalized UV coverage of selected elements", False)       # UV coverage (normalized to the space of tiles/UDIMs used)
         # Normalized Texeld Density (NTD)
-        self.addUVCondition("avgNTD")         # Average NTD
-        self.addUVCondition("minNTD")         # Minimum NTD
-        self.addUVCondition("maxNTD")         # Maximum NTD
-        self.addUVCondition("varianceNTD")    # Variance of NTD distribution
-        self.addUVCondition("stdDevNTD")      # Standard deviation of NTD distribution
+        self.uvConditions["avgNTD"] = ConditionChecker("avgNTD", "Avg. NTD", "Average normalized texel density", False)         # Average NTD
+        self.uvConditions["minNTD"] = ConditionChecker("minNTD", "Min. NTD", "Minimum normalized texel density", False)         # Minimum NTD
+        self.uvConditions["maxNTD"] = ConditionChecker("maxNTD", "Max. NTD", "Maximum normalized texel density", False)         # Maximum NTD
+        self.uvConditions["varianceNTD"] = ConditionChecker("varianceNTD", "Var. NTD", "Variance normalized texel density", False)    # Variance of NTD distribution
+        self.uvConditions["stdDevNTD"] = ConditionChecker("stdDevNTD", "Stdev. NTD", "Standard deviation normalized texel density", False)      # Standard deviation of NTD distribution
 
         #self.reset()
-
-
-    def addCondition(self, cond_map, name):
-        """Add a checkable condition to a condition map
-
-        Builds a ConditionChecker with the supplied name and configuration
-
-        Args:
-            cond_map (ConditionChecker): Condition checker
-            name (string): Name of condition
-        """
-        cond_map[name] = ConditionChecker(name)
-
-    def addGeoCondition(self, name):
-        """Add a checkable condition to the geometry condition map
-
-        Builds a ConditionChecker with the supplied name and configuration
-
-        Args:
-            name (string): Name of condition
-        """
-        self.addCondition(self.geoConditions, name)
-
-    def addUVCondition(self, name):
-        """Add a checkable condition to the UV condition map
-
-        Builds a ConditionChecker with the supplied name and configuration
-
-        Args:
-            name (string): Name of condition
-        """
-        self.addCondition(self.uvConditions, name)
+        
 
     def reset(self):
         """Initialize object with default values (reset counters)
@@ -241,6 +214,12 @@ class MeshChecker():
 
         # Polygon statistics
         poly_eval = cmds.polyEvaluate(vertex=True, edge=True, face=True, triangle=True, area=True, worldArea=True, shell=True)
+        self.geoConditions["shells"].count = poly_eval["shell"]
+        self.geoConditions["vertices"].count = poly_eval["vertex"]
+        self.geoConditions["edges"].count = poly_eval["edge"]
+        self.geoConditions["faces"].count = poly_eval["face"]
+
+        #print("POLY EVAL: ", poly_eval)
 
         for s in selected_shapes:
             #stats.history += historySize(s)
@@ -274,9 +253,9 @@ class MeshChecker():
 
             self.analyzeFaces(dag, selected_components)
 
-            #analyzeVertices(dag, selected_components)
+            self.analyzeVertices(dag, selected_components)
 
-            #analyzeEdges(dag, selected_components)
+            self.analyzeEdges(dag, selected_components)
 
         # Restore original selection
         om.MGlobal.setActiveSelectionList(self.selection)
@@ -298,10 +277,6 @@ class MeshChecker():
         # First field in the array is the number of UV shells
         self.uvConditions["uvShells"].count += uv_shell_ids[0]
 
-        # Create an empty list for potential bad faces  <-- TO-DO: REMOVE WHEN CODE HAS BEEN PORTED TO NEW SCHEME
-        fn_bad_faces = om.MFnSingleIndexedComponent()
-        bad_faces = fn_bad_faces.create(om.MFn.kMeshPolygonComponent)
-
         # Check UVs
         faces = cmds.polyListComponentConversion(dag.getPath(), toFace=True)
 
@@ -312,9 +287,6 @@ class MeshChecker():
             # Add overlapping faces to the bad_faces list
             for f in overlapping_uvs:
                 self.uvConditions["uvOverlapping"].elms.append(f)
-                # Extract the number between brackets (e.g. pCubeShape3.f[2] --> 2 )
-                idx = f.split('[')[1].split(']')[0]
-                fn_bad_faces.addElement(int(idx))
         else:
             self.uvConditions["uvOverlapping"].count = 0
 
@@ -378,43 +350,45 @@ class MeshChecker():
                 if len(point_set) < 4:
                     if len(point_set) == 1:
                         self.geoConditions["quadsToPoints"].count += 1
-                        self.uvConditions["quadsToPoints"].elms.append(dag.fullPathName()+".f["+str(itFaces.index())+"]")
-                        self.geoConditions["zeroAreaFaces"].count += 1
-                        self.uvConditions["zeroAreaFaces"].elms.append(dag.fullPathName()+".f["+str(itFaces.index())+"]")
+                        self.geoConditions["quadsToPoints"].elms.append(dag.fullPathName()+".f["+str(itFaces.index())+"]")
+                        self.geoConditions["zeroAreaQuads"].count += 1
+                        self.geoConditions["zeroAreaQuads"].elms.append(dag.fullPathName()+".f["+str(itFaces.index())+"]")
                     elif len(point_set) == 2:
                         self.geoConditions["quadsToLines"].count += 1
-                        self.uvConditions["quadsToLines"].elms.append(dag.fullPathName()+".f["+str(itFaces.index())+"]")
-                        self.geoConditions["zeroAreaFaces"].count += 1
-                        self.uvConditions["zeroAreaFaces"].elms.append(dag.fullPathName()+".f["+str(itFaces.index())+"]")
+                        self.geoConditions["quadsToLines"].elms.append(dag.fullPathName()+".f["+str(itFaces.index())+"]")
+                        self.geoConditions["zeroAreaQuads"].count += 1
+                        self.geoConditions["zeroAreaQuads"].elms.append(dag.fullPathName()+".f["+str(itFaces.index())+"]")
                     else:    # 3 different points
                         self.geoConditions["quadsToTris"].count += 1
-                        self.uvConditions["quadsToTris"].elms.append(dag.fullPathName()+".f["+str(itFaces.index())+"]")
+                        self.geoConditions["quadsToTris"].elms.append(dag.fullPathName()+".f["+str(itFaces.index())+"]")
 
             edge_array = itFaces.getEdges() # MIntArray
             edges_in_face = len(edge_array)
 
             if edges_in_face == 3:
-                fn_bad_faces.addElement(int(itFaces.index()))
                 self.geoConditions["tris"].count += 1
                 self.geoConditions["tris"].elms.append(dag.fullPathName()+".f["+str(itFaces.index())+"]")
             elif edges_in_face == 4:
                 self.geoConditions["quads"].count += 1
                 self.geoConditions["quads"].elms.append(dag.fullPathName()+".f["+str(itFaces.index())+"]")
             else:
-                fn_bad_faces.addElement(int(itFaces.index()))
                 self.geoConditions["ngons"].count += 1
                 self.geoConditions["ngons"].elms.append(dag.fullPathName()+".f["+str(itFaces.index())+"]")
 
             itFaces.next()
 
         # Set error levels
+        self.geoConditions["tris"].setErrorLevel(ConditionErrorCriteria.WARN_WHEN_NOT_ZERO)
+        self.geoConditions["ngons"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
+        self.geoConditions["quadsToPoints"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
+        self.geoConditions["quadsToLines"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
+        self.geoConditions["quadsToTris"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
+        self.geoConditions["zeroAreaQuads"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
         self.uvConditions["uvOverlapping"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
         self.uvConditions["uvMissing"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
         self.uvConditions["uvFlipped"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
         self.uvConditions["uvZeroArea"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
         self.uvConditions["uvCrossingBorders"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
-        self.geoConditions["tris"].setErrorLevel(ConditionErrorCriteria.WARN_WHEN_NOT_ZERO)
-        self.geoConditions["ngons"].setErrorLevel(ConditionErrorCriteria.WARN_WHEN_NOT_ZERO)
         if self.uvConditions["uvCoverage"].count < .25:
             self.uvConditions["uvCoverage"].errorLevel = ConditionErrorLevel.ERROR
         elif self.uvConditions["uvCoverage"].count < .25:
@@ -430,11 +404,53 @@ class MeshChecker():
             self.uvConditions["varianceNTD"].count = sum((x-self.uvConditions["avgNTD"].count)**2 for x in ntd_array) / len(ntd_array)
             self.uvConditions["stdDevNTD"].count = self.uvConditions["varianceNTD"].count**0.5
 
-        # Select bad polygons (tris and n-gons)
-#        stats.bad_faces.add((dag, bad_faces))
 
-    #    bad_sel = om.MSelectionList()
-    #    bad_sel.add(dag, bad_faces)
-    #    if bad_sel.length() > 0 :
-    #        om.MGlobal.setActiveSelectionList(bad_sel, om.MGlobal.kAddToList)
-    #        om.MGlobal.setActiveSelectionList(bad_sel, om.MGlobal.kReplaceList)
+    def analyzeVertices(self, dag, selected_components):
+
+        cmds.select(cmds.polyListComponentConversion(toVertex=True))
+
+        if dag.apiType() != om.MFn.kMesh:
+            om.MGlobal.displayError("Selection must be a polygon mesh.")
+            return
+
+        # iterate over the selected verts
+        itVerts = om.MItMeshVertex(dag, selected_components[1])
+
+        while not itVerts.isDone():
+            valence = itVerts.numConnectedEdges()
+
+            if valence != 4:
+                self.geoConditions["poles"].count += 1
+                self.geoConditions["poles"].elms.append(dag.fullPathName()+".vtx["+str(itVerts.index())+"]")
+
+            itVerts.next()
+
+        # Set error levels
+        self.geoConditions["poles"].setErrorLevel(ConditionErrorCriteria.WARN_WHEN_NOT_ZERO)
+
+
+    def analyzeEdges(self, dag, selected_components):
+
+        if dag.apiType() != om.MFn.kMesh:
+            om.MGlobal.displayError("Selection must be a polygon mesh.")
+            return
+
+        # iterate over the selected edges
+        itEdges = om.MItMeshEdge(dag, selected_components[1])
+
+        while not itEdges.isDone():
+            
+            num_faces = itEdges.numConnectedFaces()
+        
+            if ( num_faces == 1 ):
+                self.geoConditions["borderEdges"].count += 1
+                self.geoConditions["borderEdges"].elms.append(dag.fullPathName()+".e["+str(itEdges.index())+"]")
+            elif ( num_faces > 2 ):
+                self.geoConditions["evilEdges"].count += 1
+                self.geoConditions["evilEdges"].elms.append(dag.fullPathName()+".e["+str(itEdges.index())+"]")
+        
+            itEdges.next()
+
+        # Set error levels
+        self.geoConditions["borderEdges"].setErrorLevel(ConditionErrorCriteria.WARN_WHEN_NOT_ZERO)
+        self.geoConditions["evilEdges"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)

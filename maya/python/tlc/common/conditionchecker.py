@@ -86,15 +86,26 @@ class ConditionChecker():
     """List of elements matching the condition
     """
 
-    def __init__(self, name="", displayName="", toolTip=""):
+    selectable = True
+    """The elements matching the condition can be selected
+    """
+
+    def __init__(self, name="", displayName="", toolTip="", selectable=True):
         """Constructor
 
         Args:
-            name (str, optional): Condition name. Defaults to "".
+            name (str, optional): Short name (ID, key) of the condition. Defaults to "".
+            displayName (str, optional): Condition name used to display on UI. Defaults to "".
+            toolTip (str, optional): Long description used as a tooltip. Defaults to "".
+            selectable (bool, optional): Condition elements are selectable. Defaults to True.
         """
         self.name = name
-        self.displayName = displayName
+        if displayName:
+            self.displayName = displayName
+        else:
+            self.displayName = name
         self.toolTip = toolTip
+        self.selectable = selectable
 
     def reset(self):
         """Reset counter and selection list

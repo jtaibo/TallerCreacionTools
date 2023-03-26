@@ -33,8 +33,17 @@ from PySide2 import QtGui
 import maya.cmds as cmds
 
 class MeshCheckerUI(QtWidgets.QDialog):
+    """User interface for MeshChecker
+    
+    This checker is based on the QTableWidget
+
+    https://doc.qt.io/qtforpython-5/PySide2/QtWidgets/QTableWidget.html
+
+    """
 
     def __init__(self, parent=tlc.common.qtutils.getMayaMainWindow()):
+        """Constructor
+        """
         super(MeshCheckerUI, self).__init__(parent)
 
         self.setWindowTitle("Mesh checker")
@@ -45,29 +54,39 @@ class MeshCheckerUI(QtWidgets.QDialog):
         #self.populateUI()
 
     def initUI(self):
+        """Load interface from .ui file
+        """
         f = QtCore.QFile(os.path.dirname(__file__) + "/meshcheck.ui")
         f.open(QtCore.QFile.ReadOnly)
 
         loader = QtUiTools.QUiLoader()
-        # self.ui = loader.load(f, parentWidget=self)
         self.ui = loader.load(f, parentWidget=None)
         f.close()
 
     def createLayout(self):
+        """Build UI layout
+        """
         main_layout = QtWidgets.QVBoxLayout(self)
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.addWidget(self.ui)
 
     def addConditionChecker(self, table_widget, cond):
+        """Add a condition checker
+        This method adds a new row to the table in the UI, fill the cells with
+        the data in a ConditionChecker object, and configures the button to
+        select the elements meeting the condition
+
+        Args:
+            table_widget (QTableWidget): Table widget object in the UI
+            cond (ConditionChecker): Condition checker object
+        """
         row = table_widget.rowCount()
         table_widget.setRowCount(row+1)
         table_widget.setMinimumHeight(1)
 
-        # Colorize by error level
-
         # Title (col 0)
         col = 0
-        title = QtWidgets.QTableWidgetItem(cond.name)
+        title = QtWidgets.QTableWidgetItem(cond.displayName)
         #flags = QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled
         flags = QtCore.Qt.ItemIsEnabled # Not editable, but we mark enabled flag so it is not grayed out
         title.setFlags(flags)
@@ -82,6 +101,7 @@ class MeshCheckerUI(QtWidgets.QDialog):
         #count.setForeground(QtCore.Qt.red)
         bgcolor = QtCore.Qt.black
         fgcolor = QtCore.Qt.white
+        # Colorize by error level
         if cond.errorLevel == tlc.modeling.meshcheck.ConditionErrorLevel.NONE:
             bgcolor = QtCore.Qt.black
             fgcolor = QtCore.Qt.white
@@ -89,7 +109,7 @@ class MeshCheckerUI(QtWidgets.QDialog):
             bgcolor = QtCore.Qt.green
             fgcolor = QtCore.Qt.black
         elif cond.errorLevel == tlc.modeling.meshcheck.ConditionErrorLevel.WARN:
-            bgcolor = QtGui.QColor(255, 127, 0, 255) #QtCore.Qt.yellow
+            bgcolor = QtGui.QColor(255, 127, 0, 255) #Because QtCore.Qt.orange does not exist
             fgcolor = QtCore.Qt.black
         elif cond.errorLevel == tlc.modeling.meshcheck.ConditionErrorLevel.ERROR:
             bgcolor = QtCore.Qt.red
@@ -101,14 +121,23 @@ class MeshCheckerUI(QtWidgets.QDialog):
 
         # Select button (col 2)
         col = 2
-        select_button = QtWidgets.QPushButton("Select")
-        table_widget.setCellWidget(row, col, select_button)
-        table_widget.resizeColumnToContents(col)
-        select_button.clicked.connect( lambda: cond.select() )
-
+        if cond.selectable and cond.count > 0:
+            select_button = QtWidgets.QPushButton("Select")
+            table_widget.setCellWidget(row, col, select_button)
+            table_widget.resizeColumnToContents(col)
+            select_button.clicked.connect( lambda: cond.select() )
+        else:
+            noselectbutton = QtWidgets.QTableWidgetItem()
+            flags = QtCore.Qt.ItemIsEnabled # Not editable, but we mark enabled flag so it is not grayed out
+            noselectbutton.setFlags(flags)
+            table_widget.setItem(row, col, noselectbutton)
 
     def populateUI(self, mesh_checker):
-        # https://doc.qt.io/qtforpython-5/PySide2/QtWidgets/QTableWidget.html
+        """Clear the tables and repopulate them from the supplied MeshChecker
+
+        Args:
+            mesh_checker (MeshChecker): MeshChecker object to populate the table
+        """
 
         # Clear the tables
         self.ui.geoCheckerTableWidget.setRowCount(0)
@@ -123,14 +152,22 @@ class MeshCheckerUI(QtWidgets.QDialog):
         self.meshChecker = mesh_checker
 
     def createConnections(self):
+        """Connect buttons to functions
+        """
         self.ui.closeButton.clicked.connect(self.close)
         self.ui.checkButton.clicked.connect(self.check_button)
 
     def check_button(self):
+        """Check button function/callback
+        """
         self.meshChecker.analyze()
         self.populateUI(self.meshChecker)
 
+
 def run():
+    """Run the checker
+    """
+    global meshcheck_ui     # define as a global variable, so there is only one window for this checker
     try:
         meshcheck_ui.close() # pylint: disable=E0601
         meshcheck_ui.deleteLater()
