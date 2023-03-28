@@ -31,5 +31,7 @@ tlc.common
    tlc.common.about
    tlc.common.conditionchecker
    tlc.common.miscutils
+   tlc.common.naming
+   tlc.common.pipeline
    tlc.common.qtutils
 

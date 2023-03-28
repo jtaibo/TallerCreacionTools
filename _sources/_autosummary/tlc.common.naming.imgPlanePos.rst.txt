@@ -1,0 +1,6 @@
+tlc.common.naming.imgPlanePos
+=============================
+
+.. currentmodule:: tlc.common.naming
+
+.. autodata:: imgPlanePos

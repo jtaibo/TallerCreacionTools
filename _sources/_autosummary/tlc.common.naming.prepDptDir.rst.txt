@@ -1,0 +1,6 @@
+tlc.common.naming.prepDptDir
+============================
+
+.. currentmodule:: tlc.common.naming
+
+.. autodata:: prepDptDir

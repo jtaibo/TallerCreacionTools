@@ -1,0 +1,57 @@
+tlc.common.naming
+=================
+
+.. automodule:: tlc.common.naming
+
+   
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      topDirs
+      DCCProjTopDirs
+      DCCSceneExtension
+      assetTypeAbbr
+      assetTypeDir
+      libraryAssetTypeAbbr
+      libraryAssetTypeDir
+      workingDir
+      libraryDir
+      prepDptDir
+      prepDptTask
+      prepTaskRenamingSuggestions
+      srcImgDirs
+      imgPlanePos
+      prodDptDir
+      prodDptTask
+      filesToIgnore
+      directoriesToIgnore
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      assetTypeFromAbbr
+      libraryAssetTypeFromAbbr
+      prepDptKeyFromDir
+      prepDptTaskFromAbbr
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,6 @@
+tlc.common.naming.libraryDir
+============================
+
+.. currentmodule:: tlc.common.naming
+
+.. autodata:: libraryDir

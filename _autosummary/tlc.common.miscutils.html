@@ -52,6 +52,7 @@
 <li class="toctree-l4"><a class="reference internal" href="tlc.common.miscutils.deleteEmptyGroups.html">tlc.common.miscutils.deleteEmptyGroups</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tlc.common.miscutils.getBrokenReferences.html">tlc.common.miscutils.getBrokenReferences</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tlc.common.miscutils.getCopyPastedNodes.html">tlc.common.miscutils.getCopyPastedNodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.miscutils.getCurrentProject.html">tlc.common.miscutils.getCurrentProject</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tlc.common.miscutils.getEmptyGroups.html">tlc.common.miscutils.getEmptyGroups</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tlc.common.miscutils.getInstances.html">tlc.common.miscutils.getInstances</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tlc.common.miscutils.getNodesWithInvalidCharacters.html">tlc.common.miscutils.getNodesWithInvalidCharacters</a></li>
@@ -66,6 +67,8 @@
 <li class="toctree-l4"><a class="reference internal" href="tlc.common.miscutils.BoundingBox.html">tlc.common.miscutils.BoundingBox</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="tlc.common.naming.html">tlc.common.naming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tlc.common.pipeline.html">tlc.common.pipeline</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tlc.common.qtutils.html">tlc.common.qtutils</a></li>
 </ul>
 </li>
@@ -131,37 +134,40 @@ special cases to avoid breaking backwards compatibility.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="tlc.common.miscutils.getCopyPastedNodes.html#tlc.common.miscutils.getCopyPastedNodes" title="tlc.common.miscutils.getCopyPastedNodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getCopyPastedNodes</span></code></a>()</p></td>
 <td><p>Get copy-pasted nodes in scene</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="tlc.common.miscutils.getEmptyGroups.html#tlc.common.miscutils.getEmptyGroups" title="tlc.common.miscutils.getEmptyGroups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getEmptyGroups</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="tlc.common.miscutils.getCurrentProject.html#tlc.common.miscutils.getCurrentProject" title="tlc.common.miscutils.getCurrentProject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getCurrentProject</span></code></a>()</p></td>
+<td><p>Returns the path of current open Maya project (workspace)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tlc.common.miscutils.getEmptyGroups.html#tlc.common.miscutils.getEmptyGroups" title="tlc.common.miscutils.getEmptyGroups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getEmptyGroups</span></code></a>()</p></td>
 <td><p>Return empty groups in current scene</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="tlc.common.miscutils.getInstances.html#tlc.common.miscutils.getInstances" title="tlc.common.miscutils.getInstances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getInstances</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="tlc.common.miscutils.getInstances.html#tlc.common.miscutils.getInstances" title="tlc.common.miscutils.getInstances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getInstances</span></code></a>()</p></td>
 <td><p>Get instances in the scene</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="tlc.common.miscutils.getNodesWithInvalidCharacters.html#tlc.common.miscutils.getNodesWithInvalidCharacters" title="tlc.common.miscutils.getNodesWithInvalidCharacters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getNodesWithInvalidCharacters</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="tlc.common.miscutils.getNodesWithInvalidCharacters.html#tlc.common.miscutils.getNodesWithInvalidCharacters" title="tlc.common.miscutils.getNodesWithInvalidCharacters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getNodesWithInvalidCharacters</span></code></a>()</p></td>
 <td><p>Get nodes in scene with invalid characters</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="tlc.common.miscutils.getProjectPathForScene.html#tlc.common.miscutils.getProjectPathForScene" title="tlc.common.miscutils.getProjectPathForScene"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getProjectPathForScene</span></code></a>(scene_path)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="tlc.common.miscutils.getProjectPathForScene.html#tlc.common.miscutils.getProjectPathForScene" title="tlc.common.miscutils.getProjectPathForScene"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getProjectPathForScene</span></code></a>(scene_path)</p></td>
 <td><p>Return the path of the project containing a scene</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="tlc.common.miscutils.getReferences.html#tlc.common.miscutils.getReferences" title="tlc.common.miscutils.getReferences"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getReferences</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="tlc.common.miscutils.getReferences.html#tlc.common.miscutils.getReferences" title="tlc.common.miscutils.getReferences"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getReferences</span></code></a>()</p></td>
 <td><p>Return a list of reference nodes in the scene</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="tlc.common.miscutils.getScenesInDirectory.html#tlc.common.miscutils.getScenesInDirectory" title="tlc.common.miscutils.getScenesInDirectory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getScenesInDirectory</span></code></a>(path[, extensions])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="tlc.common.miscutils.getScenesInDirectory.html#tlc.common.miscutils.getScenesInDirectory" title="tlc.common.miscutils.getScenesInDirectory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getScenesInDirectory</span></code></a>(path[, extensions])</p></td>
 <td><p>Return a list of scenes inside a directory structure, complying with the extensions supplied</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="tlc.common.miscutils.importFile.html#tlc.common.miscutils.importFile" title="tlc.common.miscutils.importFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">importFile</span></code></a>(file_path, group_name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="tlc.common.miscutils.importFile.html#tlc.common.miscutils.importFile" title="tlc.common.miscutils.importFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">importFile</span></code></a>(file_path, group_name)</p></td>
 <td><p>Import a file to current scene</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="tlc.common.miscutils.isNameUnique.html#tlc.common.miscutils.isNameUnique" title="tlc.common.miscutils.isNameUnique"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isNameUnique</span></code></a>(n)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="tlc.common.miscutils.isNameUnique.html#tlc.common.miscutils.isNameUnique" title="tlc.common.miscutils.isNameUnique"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isNameUnique</span></code></a>(n)</p></td>
 <td><p>Check whether a node name is unique in the scene</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="tlc.common.miscutils.referenceFile.html#tlc.common.miscutils.referenceFile" title="tlc.common.miscutils.referenceFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">referenceFile</span></code></a>(file_path, group_name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="tlc.common.miscutils.referenceFile.html#tlc.common.miscutils.referenceFile" title="tlc.common.miscutils.referenceFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">referenceFile</span></code></a>(file_path, group_name)</p></td>
 <td><p>Reference a file from current scene</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="tlc.common.miscutils.renameNonUniqueNodes.html#tlc.common.miscutils.renameNonUniqueNodes" title="tlc.common.miscutils.renameNonUniqueNodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">renameNonUniqueNodes</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="tlc.common.miscutils.renameNonUniqueNodes.html#tlc.common.miscutils.renameNonUniqueNodes" title="tlc.common.miscutils.renameNonUniqueNodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">renameNonUniqueNodes</span></code></a>()</p></td>
 <td><p>Rename non-unique name nodes (adding a number as a postfix)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="tlc.common.miscutils.uninstance.html#tlc.common.miscutils.uninstance" title="tlc.common.miscutils.uninstance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uninstance</span></code></a>(instances)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="tlc.common.miscutils.uninstance.html#tlc.common.miscutils.uninstance" title="tlc.common.miscutils.uninstance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uninstance</span></code></a>(instances)</p></td>
 <td><p>Uninstance (copy) nodes</p></td>
 </tr>
 </tbody>

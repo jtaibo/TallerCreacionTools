@@ -1,0 +1,43 @@
+tlc.common.pipeline
+===================
+
+.. automodule:: tlc.common.pipeline
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      createDirectoryTemplate
+      getProjectForScene
+      isThisPathAProject
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      Asset
+      AssetFile
+      DCCProject
+      Shot
+   
+   
+
+   
+   
+   
+
+
+

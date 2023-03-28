@@ -1,0 +1,6 @@
+tlc.common.naming.DCCSceneExtension
+===================================
+
+.. currentmodule:: tlc.common.naming
+
+.. autodata:: DCCSceneExtension

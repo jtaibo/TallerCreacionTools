@@ -1,0 +1,6 @@
+tlc.common.naming.prepTaskRenamingSuggestions
+=============================================
+
+.. currentmodule:: tlc.common.naming
+
+.. autodata:: prepTaskRenamingSuggestions

@@ -1,0 +1,41 @@
+tlc.common.pipeline.AssetFile
+=============================
+
+.. currentmodule:: tlc.common.pipeline
+
+.. autoclass:: AssetFile
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~AssetFile.__init__
+      ~AssetFile.buildFullPath
+      ~AssetFile.createFromFields
+      ~AssetFile.createFromPath
+      ~AssetFile.parsePath
+      ~AssetFile.verifyPath
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~AssetFile.asset
+      ~AssetFile.dptID
+      ~AssetFile.fullPath
+      ~AssetFile.taskID
+      ~AssetFile.version
+      ~AssetFile.workingVersion
+   
+   
