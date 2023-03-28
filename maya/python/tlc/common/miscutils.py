@@ -453,3 +453,11 @@ def getProjectPathForScene(scene_path):
     else:
         print("ERROR. Invalid path: %s"%scene_path)
         return nil
+
+def getCurrentProject():
+    """Returns the path of current open Maya project (workspace)
+
+    Returns:
+        str: Maya project path
+    """
+    return cmd.workspace(q=True, active=True)
