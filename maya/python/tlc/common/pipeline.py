@@ -27,6 +27,7 @@ import os
 import pathlib
 import glob
 import tlc.common.naming as naming
+import maya.cmds as cmds
 
 
 ###############################################################################
@@ -65,6 +66,14 @@ class DCCProject():
             str: Path to assets directory in this project
         """
         return pathlib.Path(self.path + "/" + self.projID + "/" + naming.topDirs["PRE+PROD"] + "/" + naming.DCCProjTopDirs["ASSETS"]).absolute().as_posix()
+
+    def getSourceImagesPath(self):
+        """Return sourceimages absolute path "normalized" (using UNIX slashes, not Windows backslashes)
+
+        Returns:
+            str: Path to sourceimages directory in this project
+        """
+        return pathlib.Path(self.path + "/" + self.projID + "/" + naming.topDirs["PRE+PROD"] + "/" + naming.DCCProjTopDirs["SOURCEIMAGES"]).absolute().as_posix()
 
     def _addAssetsToList(self, assets_list, assets_dirs, asset_type):
         for a in assets_dirs:
@@ -280,6 +289,12 @@ class AssetFile():
         # I hate python! Why does it not allow constructor overloading?
         # F*ck! Shame on you Python! Did I say that I hate you so much?
         pass
+
+    def createForOpenScene(self):
+        """Constructor for currently open scene file
+        """
+        path = cmds.file(q=True, sn=True)
+        self.parsePath(path)
 
     def createFromPath(self, path):
         """Constructor from an (hopefully) existing path
