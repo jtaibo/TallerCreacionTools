@@ -19,6 +19,7 @@ tlc.common.pipeline.DCCProject
       ~DCCProject.__init__
       ~DCCProject.getAssets
       ~DCCProject.getAssetsPath
+      ~DCCProject.getSourceImagesPath
    
    
 

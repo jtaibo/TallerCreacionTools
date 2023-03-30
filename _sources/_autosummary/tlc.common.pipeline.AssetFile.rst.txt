@@ -18,6 +18,7 @@ tlc.common.pipeline.AssetFile
    
       ~AssetFile.__init__
       ~AssetFile.buildFullPath
+      ~AssetFile.createForOpenScene
       ~AssetFile.createFromFields
       ~AssetFile.createFromPath
       ~AssetFile.parsePath

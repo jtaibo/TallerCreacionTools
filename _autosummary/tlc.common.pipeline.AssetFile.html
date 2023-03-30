@@ -115,16 +115,19 @@ project in any of the departments and tasks defined in the pipeline</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.buildFullPath" title="tlc.common.pipeline.AssetFile.buildFullPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">buildFullPath</span></code></a>()</p></td>
 <td><p>Build the full path for the asset file from AssetFile object attributes</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.createFromFields" title="tlc.common.pipeline.AssetFile.createFromFields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">createFromFields</span></code></a>(asset, dptID, taskID, version)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.createForOpenScene" title="tlc.common.pipeline.AssetFile.createForOpenScene"><code class="xref py py-obj docutils literal notranslate"><span class="pre">createForOpenScene</span></code></a>()</p></td>
+<td><p>Constructor for currently open scene file</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.createFromFields" title="tlc.common.pipeline.AssetFile.createFromFields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">createFromFields</span></code></a>(asset, dptID, taskID, version)</p></td>
 <td><p>Constructor from the asset fields</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.createFromPath" title="tlc.common.pipeline.AssetFile.createFromPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">createFromPath</span></code></a>(path)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.createFromPath" title="tlc.common.pipeline.AssetFile.createFromPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">createFromPath</span></code></a>(path)</p></td>
 <td><p>Constructor from an (hopefully) existing path</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.parsePath" title="tlc.common.pipeline.AssetFile.parsePath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parsePath</span></code></a>(path)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.parsePath" title="tlc.common.pipeline.AssetFile.parsePath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parsePath</span></code></a>(path)</p></td>
 <td><p>Parse asset file path to initialize AssetFile object</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.verifyPath" title="tlc.common.pipeline.AssetFile.verifyPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyPath</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.verifyPath" title="tlc.common.pipeline.AssetFile.verifyPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyPath</span></code></a>()</p></td>
 <td><p>Check whether the asset path matches the pipeline constraints</p></td>
 </tr>
 </tbody>
@@ -170,6 +173,12 @@ project in any of the departments and tasks defined in the pipeline</p>
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.common.pipeline.AssetFile.createForOpenScene">
+<span class="sig-name descname"><span class="pre">createForOpenScene</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.common.pipeline.AssetFile.createForOpenScene" title="Permalink to this definition"></a></dt>
+<dd><p>Constructor for currently open scene file</p>
 </dd></dl>
 
 <dl class="py method">
