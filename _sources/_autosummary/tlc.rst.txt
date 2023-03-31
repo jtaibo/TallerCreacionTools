@@ -31,4 +31,5 @@
    tlc.common
    tlc.modeling
    tlc.rigging
+   tlc.shading
 

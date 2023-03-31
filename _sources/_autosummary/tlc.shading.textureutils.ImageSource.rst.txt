@@ -1,0 +1,29 @@
+tlc.shading.textureutils.ImageSource
+====================================
+
+.. currentmodule:: tlc.shading.textureutils
+
+.. autoclass:: ImageSource
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ImageSource.IMG_SRC_UNKNOWN
+      ~ImageSource.IMG_SRC_OWN
+      ~ImageSource.IMG_SRC_MEGASCANS
+      ~ImageSource.IMG_SRC_TEXTUREHAVEN
+      ~ImageSource.IMG_SRC_HDRIHAVEN
+   
+   

@@ -1,0 +1,36 @@
+tlc.common.qtutils.CheckerWindow
+================================
+
+.. currentmodule:: tlc.common.qtutils
+
+.. autoclass:: CheckerWindow
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~CheckerWindow.__init__
+      ~CheckerWindow.createConnections
+      ~CheckerWindow.createLayout
+      ~CheckerWindow.initUI
+      ~CheckerWindow.populateUI
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~CheckerWindow.mainLayout
+      ~CheckerWindow.uiFile
+   
+   

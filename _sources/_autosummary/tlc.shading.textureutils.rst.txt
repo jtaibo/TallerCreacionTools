@@ -1,0 +1,50 @@
+tlc.shading.textureutils
+========================
+
+.. automodule:: tlc.shading.textureutils
+
+   
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      inputConnectionsToMapType
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      checkDuplicatedFileTextureNodes
+      getAllFileTextureNodesInScene
+      getUnusedTextureNodes
+      getUsedTextureNodes
+      test
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      FileTexture
+      ImageSource
+   
+   
+
+   
+   
+   
+
+
+

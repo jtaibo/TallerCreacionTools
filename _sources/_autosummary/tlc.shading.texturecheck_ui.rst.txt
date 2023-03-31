@@ -1,0 +1,38 @@
+tlc.shading.texturecheck\_ui
+============================
+
+.. automodule:: tlc.shading.texturecheck_ui
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      run
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      TextureCheckerUI
+   
+   
+
+   
+   
+   
+
+
+

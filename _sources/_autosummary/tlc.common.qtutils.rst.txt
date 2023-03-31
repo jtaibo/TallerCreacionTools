@@ -20,6 +20,14 @@ tlc.common.qtutils
 
    
    
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      CheckerWindow
+   
    
 
    

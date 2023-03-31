@@ -1,0 +1,33 @@
+tlc.shading
+===========
+
+.. automodule:: tlc.shading
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   tlc.shading.texturecheck_ui
+   tlc.shading.textureutils
+
