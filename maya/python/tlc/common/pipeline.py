@@ -181,7 +181,7 @@ class Asset():
             str: Asset directory name
         """
         if self.inLibrary:
-            return self.project.projID + "_" + naming.librarAssetTypeAbbr[self.assetType] + "_" + self.assetID
+            return self.project.projID + "_" + naming.libraryAssetTypeAbbr[self.assetType] + "_" + self.assetID
         else:
             return self.project.projID + "_" + naming.assetTypeAbbr[self.assetType] + "_" + self.assetID
 
