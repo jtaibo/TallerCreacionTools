@@ -185,11 +185,13 @@ class TextureCheckerUI(qtutils.CheckerWindow):
 
         # Meshes
         col = col+1
-        cell = self.addTextCell(table_widget, row, col, str(len(file_tex.getMeshes())) + " nodes\n")
-        tooltip_msg = "Texture applied to:"
-        for n in file_tex.getMeshes():
-            tooltip_msg += "\n" + n
-        table_widget.item(row, col).setToolTip(tooltip_msg)
+        cell = self.addTextCell(table_widget, row, col, "")
+        if file_tex.getMeshes():
+            cell.setText(str(len(file_tex.getMeshes())) + " nodes\n")
+            tooltip_msg = "Texture applied to:"
+            for n in file_tex.getMeshes():
+                tooltip_msg += "\n" + n
+            table_widget.item(row, col).setToolTip(tooltip_msg)
 
 
     def populateUI(self, textures):
