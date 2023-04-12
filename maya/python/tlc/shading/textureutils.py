@@ -109,6 +109,9 @@ class FileTexture():
     errorMessage = ""
     """Error message (set when valid==False)
     """
+    errors = []
+    """Errors detected (colorSpace, fileFormat)
+    """
     pathInProject = ""
     """File texture path in project (excluding file name)
     """
@@ -135,6 +138,9 @@ class FileTexture():
 
     Returns:
         str: Node name
+    """
+    shadingGroup = ""
+    """Shading group at the end of the shading network of the texture
     """
     fileFormat = ""
     pixelFormat = ""
@@ -184,12 +190,16 @@ class FileTexture():
         print("Target: ", self.target)
         print("Channel: ", self.channel)
 
+        self.shadingGroup = self.checkShadingGroup()
+        print("SG: ", self.shadingGroup)
+
         self.assetFile = pipeline.AssetFile()
         self.assetFile.createForOpenScene()
 
         self.imgSrc = self.getImageSource()
         if self.imgSrc == ImageSource.IMG_SRC_UNKNOWN:
             self.errorMessage += "Image source unknown\n"
+            self.errors.append("imgSrc")
             self.valid = False
         print("Source: ", imgSrcName[self.imgSrc])
 
@@ -318,6 +328,34 @@ class FileTexture():
         else:
             self.errorMessage += "Unrecognized material: " + conn + "\n"
             return "unknown"
+
+
+    def checkShadingGroup(self):
+        """Find the shading group/engine for material where the texture is used
+
+        Returns:
+            str: ShadingGroup/shadingEngine node name
+        """
+        if self.mapType == "hdri":
+            return None
+        node = self.target
+        while cmds.nodeType(node) != "shadingEngine":
+            conn = FileTexture.getFirstConnectionThroughAttrs(node, ["outColor"])
+            if not conn:
+                self.errorMessage += "Material not connected to a shading group"
+                return None
+            node = conn.split(".")[0]
+        return node
+
+
+    def getMeshes(self):
+        """Get meshes connected to the shading engine
+
+        Returns:
+            str[]: List of mesh nodes using the texture
+        """
+        meshes = cmds.listConnections(self.shadingGroup, type="mesh")
+        return meshes
 
 
     def checkFileTexture(self):
@@ -452,6 +490,7 @@ class FileTexture():
             return False
         map_type = megaScansMapType[fields[2]]
         if map_type != self.mapType:
+            self.errors.append("mapType")
             self.errorMessage += "MegaScans texture type mismatch: " + map_type + " vs. " + self.mapType + "\n"
             return False
         return True
@@ -495,14 +534,16 @@ class FileTexture():
     def validateColorSpace(self):
         if self.mapType == "hdri":
             if self.fileFormat != "hdr" and self.fileFormat != "exr":
+                self.errors.append("fileFormat")
                 self.errorMessage += "HDRI format should be in HDR format\n"
                 self.valid = False
-            print(self.colorSpace)
             if self.colorSpace != "scene-linear Rec.709-sRGB":
+                self.errors.append("colorSpace")
                 self.errorMessage += "HDRI color space not in scene-linear sRGB\n"
                 self.valid = False
         else:
             if self.mapType in nonColorMapTypes and self.colorSpace != "Raw":
+                self.errors.append("colorSpace")
                 self.errorMessage += "Map type " + self.mapType + " should be in Raw color space\n"
                 self.valid = False
             else:   # Color textures

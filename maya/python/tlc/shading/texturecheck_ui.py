@@ -24,6 +24,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 import tlc
 import os
+from functools import partial
 
 from PySide2 import QtWidgets
 from PySide2 import QtCore
@@ -110,6 +111,10 @@ class TextureCheckerUI(qtutils.CheckerWindow):
         col = col+1
         self.addTextCell(table_widget, row, col, file_tex.target + "." + file_tex.channel)
 
+        # Shading group
+        col = col+1
+        self.addTextCell(table_widget, row, col, file_tex.shadingGroup)
+
         # File name
         col = col+1
         cell = self.addTextCell(table_widget, row, col, file_tex.fileName)
@@ -142,10 +147,20 @@ class TextureCheckerUI(qtutils.CheckerWindow):
         # Color space
         col = col+1
         cell = self.addTextCell(table_widget, row, col, file_tex.colorSpace)
+        if not file_tex.valid and "colorSpace" in file_tex.errors:
+            bgcolor = QtCore.Qt.red
+            fgcolor = QtCore.Qt.black
+            cell.setBackground(bgcolor)
+            cell.setForeground(fgcolor)
 
         # File format
         col = col+1
         cell = self.addTextCell(table_widget, row, col, file_tex.fileFormat)
+        if not file_tex.valid and "fileFormat" in file_tex.errors:
+            bgcolor = QtCore.Qt.red
+            fgcolor = QtCore.Qt.black
+            cell.setBackground(bgcolor)
+            cell.setForeground(fgcolor)
 
         # Version
         col = col+1
@@ -154,6 +169,11 @@ class TextureCheckerUI(qtutils.CheckerWindow):
         # Source
         col = col+1
         cell = self.addTextCell(table_widget, row, col, tlc.shading.textureutils.imgSrcName[file_tex.imgSrc])
+        if file_tex.imgSrc == tlc.shading.textureutils.ImageSource.IMG_SRC_UNKNOWN:
+            bgcolor = QtCore.Qt.red
+            fgcolor = QtCore.Qt.black
+            cell.setBackground(bgcolor)
+            cell.setForeground(fgcolor)
 
         # Element ID
         col = col+1
@@ -162,6 +182,14 @@ class TextureCheckerUI(qtutils.CheckerWindow):
         # Texel density
         col = col+1
         cell = self.addTextCell(table_widget, row, col, "unknown")
+
+        # Meshes
+        col = col+1
+        cell = self.addTextCell(table_widget, row, col, str(len(file_tex.getMeshes())) + " nodes\n")
+        tooltip_msg = "Texture applied to:"
+        for n in file_tex.getMeshes():
+            tooltip_msg += "\n" + n
+        table_widget.item(row, col).setToolTip(tooltip_msg)
 
 
     def populateUI(self, textures):
@@ -173,7 +201,7 @@ class TextureCheckerUI(qtutils.CheckerWindow):
         self.fileTextureObjects.clear()
 
         # Set columns
-        col_labels = ["Node", "Status", "Dup", "Target", "File name", "Pjtd", "Map type", "Res", "Color space", "Format", "Ver", "Source", "ElementID", "Texel density"]
+        col_labels = ["Node", "Status", "Dup", "Target", "Shading Group", "File name", "Pjtd", "Map type", "Res", "Color space", "Format", "Ver", "Source", "ElementID", "Texel density", "Meshes"]
         self.ui.texCheckerTableWidget.setColumnCount(len(col_labels))
         self.ui.texCheckerTableWidget.setHorizontalHeaderLabels(col_labels)
 
@@ -198,10 +226,11 @@ class TextureCheckerUI(qtutils.CheckerWindow):
         index = self.ui.texCheckerTableWidget.indexAt(pos)
         if index.column() == 0:
             self.contextMenuFileTextureNode(index, pos)
+        elif index.column() == 15:
+            self.contextMenuFileTextureGeometry(index, pos)
 
     def contextMenuFileTextureNode(self, index, pos):
         cell = self.ui.texCheckerTableWidget.itemFromIndex(index)
-        nodeName = cell.text()
         menu = QtWidgets.QMenu()
         action1 = QtWidgets.QAction("Select")
         action1.triggered.connect(lambda: self.selectTexture(index.row()))
@@ -213,11 +242,34 @@ class TextureCheckerUI(qtutils.CheckerWindow):
         #menu.popup(self.ui.texCheckerTableWidget.viewport().mapToGlobal(pos))
         menu.exec_(self.ui.texCheckerTableWidget.viewport().mapToGlobal(pos))
 
+    def contextMenuFileTextureGeometry(self, index, pos):
+        cell = self.ui.texCheckerTableWidget.itemFromIndex(index)
+        meshes = self.fileTextureObjects[index.row()].getMeshes()
+        menu = QtWidgets.QMenu()
+        actions = []
+        mesh_names = []
+        for m in meshes:
+            mesh_names.append(m)
+            action = QtWidgets.QAction(m)
+            action.triggered.connect(partial(self.selectGeometry, m))
+            menu.addAction(action)
+            actions.append(action)  # We need to store the actions, otherwise only one will be present in the QMenu
+        menu.exec_(self.ui.texCheckerTableWidget.viewport().mapToGlobal(pos))
+
     def cellDoubleClicked(self, row, col):
         if col == 0:
             # Texure node
-            cell = self.ui.texCheckerTableWidget.item(row, col)
+            #cell = self.ui.texCheckerTableWidget.item(row, col)
             self.selectTexture(row)
+        elif col == 3:
+            # Target (material or light source)
+            self.selectTarget(row)
+        elif col == 4:
+            # Shading group (shading engine)
+            self.selectShadingGroup(row)
+        elif col == 15:
+            # Meshes
+            self.selectAllGeometry(row)
 
     def checkButton(self):
         """Check button function/callback
@@ -231,9 +283,19 @@ class TextureCheckerUI(qtutils.CheckerWindow):
 
     def previewTexture(self, row):
         os.startfile(self.fileTextureObjects[row].fullPath)
-        pass
 
+    def selectTarget(self, row):
+        cmds.select(self.fileTextureObjects[row].target)
 
+    def selectShadingGroup(self, row):
+        cmds.select(self.fileTextureObjects[row].shadingGroup, noExpand=True)
+
+    def selectAllGeometry(self, row):
+        cmds.select(self.fileTextureObjects[row].getMeshes())
+
+    def selectGeometry(self, geo):
+        print("Selecting mesh", geo)
+        cmds.select(geo)
 
 def run():
     """Run the checker
