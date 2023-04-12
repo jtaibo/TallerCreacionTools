@@ -136,14 +136,20 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.checkFileTexture" title="tlc.shading.textureutils.FileTexture.checkFileTexture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkFileTexture</span></code></a>()</p></td>
 <td><p>Check file texture (fullPath).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.getConnectionsThroughAttrs" title="tlc.shading.textureutils.FileTexture.getConnectionsThroughAttrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getConnectionsThroughAttrs</span></code></a>(outAttrs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.checkShadingGroup" title="tlc.shading.textureutils.FileTexture.checkShadingGroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkShadingGroup</span></code></a>()</p></td>
+<td><p>Find the shading group/engine for material where the texture is used</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.getConnectionsThroughAttrs" title="tlc.shading.textureutils.FileTexture.getConnectionsThroughAttrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getConnectionsThroughAttrs</span></code></a>(outAttrs)</p></td>
 <td><p>Get the list of connections for the first attribute in the list that has a connection</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.getFirstConnectionThroughAttrs" title="tlc.shading.textureutils.FileTexture.getFirstConnectionThroughAttrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getFirstConnectionThroughAttrs</span></code></a>(outAttrs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.getFirstConnectionThroughAttrs" title="tlc.shading.textureutils.FileTexture.getFirstConnectionThroughAttrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getFirstConnectionThroughAttrs</span></code></a>(outAttrs)</p></td>
 <td><p>Get the first connection for any of the output attributes</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getImageSource</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getImageSource</span></code>()</p></td>
 <td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.getMeshes" title="tlc.shading.textureutils.FileTexture.getMeshes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getMeshes</span></code></a>()</p></td>
+<td><p>Get meshes connected to the shading engine</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parseTextureName</span></code>()</p></td>
 <td><p></p></td>
@@ -192,35 +198,41 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.errorMessage" title="tlc.shading.textureutils.FileTexture.errorMessage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">errorMessage</span></code></a></p></td>
 <td><p>Error message (set when valid==False)</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fileFormat</span></code></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.errors" title="tlc.shading.textureutils.FileTexture.errors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">errors</span></code></a></p></td>
+<td><p>Errors detected (colorSpace, fileFormat)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fileFormat</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.fileName" title="tlc.shading.textureutils.FileTexture.fileName"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fileName</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.fileName" title="tlc.shading.textureutils.FileTexture.fileName"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fileName</span></code></a></p></td>
 <td><p>Texture file name (including extension)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.fullPath" title="tlc.shading.textureutils.FileTexture.fullPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fullPath</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.fullPath" title="tlc.shading.textureutils.FileTexture.fullPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fullPath</span></code></a></p></td>
 <td><p>Full path of the file texture (including file name)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.imgSrc" title="tlc.shading.textureutils.FileTexture.imgSrc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">imgSrc</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.imgSrc" title="tlc.shading.textureutils.FileTexture.imgSrc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">imgSrc</span></code></a></p></td>
 <td><p>Megascans, HDRIHaven, ...)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.mapType" title="tlc.shading.textureutils.FileTexture.mapType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapType</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.mapType" title="tlc.shading.textureutils.FileTexture.mapType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapType</span></code></a></p></td>
 <td><p>Map type (following pipeline definition)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.nodeName" title="tlc.shading.textureutils.FileTexture.nodeName"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nodeName</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.nodeName" title="tlc.shading.textureutils.FileTexture.nodeName"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nodeName</span></code></a></p></td>
 <td><p>Texture node name</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.pathInProject" title="tlc.shading.textureutils.FileTexture.pathInProject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pathInProject</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.pathInProject" title="tlc.shading.textureutils.FileTexture.pathInProject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pathInProject</span></code></a></p></td>
 <td><p>File texture path in project (excluding file name)</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pixelFormat</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pixelFormat</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.resX" title="tlc.shading.textureutils.FileTexture.resX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resX</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.resX" title="tlc.shading.textureutils.FileTexture.resX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resX</span></code></a></p></td>
 <td><p>Width in pixels</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.resY" title="tlc.shading.textureutils.FileTexture.resY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resY</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.resY" title="tlc.shading.textureutils.FileTexture.resY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resY</span></code></a></p></td>
 <td><p>Height in pixels</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.shadingGroup" title="tlc.shading.textureutils.FileTexture.shadingGroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shadingGroup</span></code></a></p></td>
+<td><p>Shading group at the end of the shading network of the texture</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureutils.FileTexture.target" title="tlc.shading.textureutils.FileTexture.target"><code class="xref py py-obj docutils literal notranslate"><span class="pre">target</span></code></a></p></td>
 <td><p>Node the texture is connected to (excluding projections and other modifiers)</p></td>
@@ -284,6 +296,20 @@ The file is inside sourceimages folder in current project
 This method sets fields pathInProject, fileName, fileFormat</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.shading.textureutils.FileTexture.checkShadingGroup">
+<span class="sig-name descname"><span class="pre">checkShadingGroup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.shading.textureutils.FileTexture.checkShadingGroup" title="Permalink to this definition"></a></dt>
+<dd><p>Find the shading group/engine for material where the texture is used</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ShadingGroup/shadingEngine node name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tlc.shading.textureutils.FileTexture.colorSpace">
 <span class="sig-name descname"><span class="pre">colorSpace</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#tlc.shading.textureutils.FileTexture.colorSpace" title="Permalink to this definition"></a></dt>
@@ -294,6 +320,12 @@ This method sets fields pathInProject, fileName, fileFormat</p>
 <dt class="sig sig-object py" id="tlc.shading.textureutils.FileTexture.errorMessage">
 <span class="sig-name descname"><span class="pre">errorMessage</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#tlc.shading.textureutils.FileTexture.errorMessage" title="Permalink to this definition"></a></dt>
 <dd><p>Error message (set when valid==False)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tlc.shading.textureutils.FileTexture.errors">
+<span class="sig-name descname"><span class="pre">errors</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#tlc.shading.textureutils.FileTexture.errors" title="Permalink to this definition"></a></dt>
+<dd><p>Errors detected (colorSpace, fileFormat)</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -348,6 +380,20 @@ This method sets fields pathInProject, fileName, fileFormat</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.shading.textureutils.FileTexture.getMeshes">
+<span class="sig-name descname"><span class="pre">getMeshes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.shading.textureutils.FileTexture.getMeshes" title="Permalink to this definition"></a></dt>
+<dd><p>Get meshes connected to the shading engine</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of mesh nodes using the texture</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str[]</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tlc.shading.textureutils.FileTexture.imgSrc">
 <span class="sig-name descname"><span class="pre">imgSrc</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(0,)</span></em><a class="headerlink" href="#tlc.shading.textureutils.FileTexture.imgSrc" title="Permalink to this definition"></a></dt>
@@ -387,6 +433,12 @@ This method sets fields pathInProject, fileName, fileFormat</p>
 <dt class="sig sig-object py" id="tlc.shading.textureutils.FileTexture.resY">
 <span class="sig-name descname"><span class="pre">resY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#tlc.shading.textureutils.FileTexture.resY" title="Permalink to this definition"></a></dt>
 <dd><p>Height in pixels</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tlc.shading.textureutils.FileTexture.shadingGroup">
+<span class="sig-name descname"><span class="pre">shadingGroup</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#tlc.shading.textureutils.FileTexture.shadingGroup" title="Permalink to this definition"></a></dt>
+<dd><p>Shading group at the end of the shading network of the texture</p>
 </dd></dl>
 
 <dl class="py attribute">

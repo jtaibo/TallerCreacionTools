@@ -24,9 +24,11 @@ tlc.shading.textureutils.FileTexture
       ~FileTexture.checkFileNameMegascans
       ~FileTexture.checkFileNameTextureHaven
       ~FileTexture.checkFileTexture
+      ~FileTexture.checkShadingGroup
       ~FileTexture.getConnectionsThroughAttrs
       ~FileTexture.getFirstConnectionThroughAttrs
       ~FileTexture.getImageSource
+      ~FileTexture.getMeshes
       ~FileTexture.parseTextureName
       ~FileTexture.validMaterial
       ~FileTexture.validateColorSpace
@@ -50,6 +52,7 @@ tlc.shading.textureutils.FileTexture
       ~FileTexture.duplicate
       ~FileTexture.elementID
       ~FileTexture.errorMessage
+      ~FileTexture.errors
       ~FileTexture.fileFormat
       ~FileTexture.fileName
       ~FileTexture.fullPath
@@ -60,6 +63,7 @@ tlc.shading.textureutils.FileTexture
       ~FileTexture.pixelFormat
       ~FileTexture.resX
       ~FileTexture.resY
+      ~FileTexture.shadingGroup
       ~FileTexture.target
       ~FileTexture.throughDisplacement
       ~FileTexture.throughNormal

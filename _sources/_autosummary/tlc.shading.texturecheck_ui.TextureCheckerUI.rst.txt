@@ -21,6 +21,7 @@ tlc.shading.texturecheck\_ui.TextureCheckerUI
       ~TextureCheckerUI.addTextCell
       ~TextureCheckerUI.cellDoubleClicked
       ~TextureCheckerUI.checkButton
+      ~TextureCheckerUI.contextMenuFileTextureGeometry
       ~TextureCheckerUI.contextMenuFileTextureNode
       ~TextureCheckerUI.createConnections
       ~TextureCheckerUI.createLayout
@@ -28,6 +29,10 @@ tlc.shading.texturecheck\_ui.TextureCheckerUI
       ~TextureCheckerUI.openMenuAstonishing
       ~TextureCheckerUI.populateUI
       ~TextureCheckerUI.previewTexture
+      ~TextureCheckerUI.selectAllGeometry
+      ~TextureCheckerUI.selectGeometry
+      ~TextureCheckerUI.selectShadingGroup
+      ~TextureCheckerUI.selectTarget
       ~TextureCheckerUI.selectTexture
    
    
