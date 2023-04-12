@@ -46,7 +46,13 @@ imgSrcName = {
     ImageSource.IMG_SRC_HDRIHAVEN : "HDRI Haven"
 }
 
-inputConnectionsToMapType = {        
+inputConnectionsToMapType = {
+    "lambert":{
+        "color":"albedo"
+    },
+    "aiFlat":{
+        "color":"albedo"
+    },
     "aiStandardSurface":{
         "baseColor":"albedo",
         "metalness":"metalness",
@@ -91,6 +97,10 @@ nonColorMapTypes = [
     "displacement",
     "opacity"
 ]
+
+nodesToBypass = {
+    "aiSwitch": [ "outColor" ]
+}
 
 
 class FileTexture():
@@ -240,11 +250,17 @@ class FileTexture():
         """
         conns = FileTexture.getConnectionsThroughAttrs(node, outAttrs)
         if conns:
+            node_name = conns[0].split(".")[0]
+            node_type = cmds.nodeType(node_name)
+            # Nodes to bypass
+            if node_type in nodesToBypass:
+                return FileTexture.getFirstConnectionThroughAttrs(node_name, nodesToBypass[node_type])
             return conns[0]
         else:
             return None        
 
     def validMaterial(conn):
+        print(">>>>>>>>>>>>>>>>>> Checking valid material in ", conn)
         return cmds.nodeType(conn) in inputConnectionsToMapType
 
     def checkDestination(self, node):
@@ -451,10 +467,10 @@ class FileTexture():
 
 
     def buildResolutionString(self):
-        width_str = self.resX
+        width_str = str(self.resX)
         if self.resX > 1000 and math.log(self.resX, 2).is_integer():
             width_str = str(int(self.resX / 1024)) + "k"
-        height_str = self.resY
+        height_str = str(self.resY)
         if self.resY > 1000 and math.log(self.resY, 2).is_integer():
             height_str = str(int(self.resY / 1024)) + "k"
         if self.resX == self.resY:
