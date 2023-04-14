@@ -58,6 +58,7 @@ tlc.shading.textureutils.FileTexture
       ~FileTexture.fullPath
       ~FileTexture.imgSrc
       ~FileTexture.mapType
+      ~FileTexture.missingFile
       ~FileTexture.nodeName
       ~FileTexture.pathInProject
       ~FileTexture.pixelFormat
