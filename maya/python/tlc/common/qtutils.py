@@ -58,6 +58,10 @@ class CheckerWindow(QtWidgets.QDialog):
         """
         super(CheckerWindow, self).__init__(parent)
 
+        # Set window decorations (e.g. maximize/minimize buttons)
+        flags = QtCore.Qt.Window
+        self.setWindowFlags( flags )
+
         if title:
             self.setWindowTitle(title)
         self.uiFile = ui_file
