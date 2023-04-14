@@ -361,7 +361,7 @@ class FileTexture():
         while cmds.nodeType(node) != "shadingEngine":
             conn = FileTexture.getFirstConnectionThroughAttrs(node, ["outColor"])
             if not conn:
-                self.errorMessage += "Material not connected to a shading group"
+                self.errorMessage += "Material not connected to a shading group\n"
                 return None
             node = conn.split(".")[0]
         return node
