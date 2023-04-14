@@ -69,7 +69,90 @@ global proc shelf_TLC_devel () {
         -style "iconOnly" 
         -marginWidth 0
         -marginHeight 1
-        -command "import sys\nfrom importlib import reload\nmodules = [\n\t\"tlc\",\n\t\"tlc.common\",\n\t\"tlc.common.about\",\n\t\"tlc.modeling\"\n\t]\nfor m in modules:\n\tif m in sys.modules:\n\t\treload(m)\n" 
+        -command "import sys\nfrom importlib import reload\n\nmodules = [\n\t\"tlc\",\n\t\"tlc.common\",\n\t\"tlc.common.about\",\n\t\"tlc.common.naming\",\n\t\"tlc.common.pipeline\",\n\t\"tlc.modeling\",\n\t\"tlc.shading\",\n\t\"tlc.shading.textureutils\",\n\t\"tlc.shading.texturecheck\",\n\t\"tlc.shading.texturecheck_ui\"\n\t]\nfor m in modules:\n\tif m in sys.modules:\n\t\tmod = sys.modules[m]\n\t\treload(mod)" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 12
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Texture analyzer" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Texture analyzer" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "TxAnlzr" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "pythonFamily.png" 
+        -image1 "pythonFamily.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "import tlc.shading\ntlc.shading.texturecheck_ui.run()\n" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Mesh checker" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Mesh checker" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "MshCk" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "pythonFamily.png" 
+        -image1 "pythonFamily.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "import tlc.modeling\ntlc.modeling.meshcheck_ui.run()\n" 
         -sourceType "python" 
         -commandRepeatable 1
         -flat 1
