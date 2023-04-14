@@ -72,7 +72,8 @@ inputConnectionsToMapType = {
         "mix7":"opacity"
     },
     "aiSkyDomeLight":{
-        "color":"hdri"
+        "color":"hdri",
+        "groundAlbedo":"hdri"
     }
 }
 """Map of input connections recognized per materials/lightsources and translation to map type name
@@ -121,6 +122,9 @@ class FileTexture():
     """
     errors = []
     """Errors detected (colorSpace, fileFormat)
+    """
+    missingFile = False
+    """File not found (or readable) in disk
     """
     pathInProject = ""
     """File texture path in project (excluding file name)
@@ -187,7 +191,7 @@ class FileTexture():
         print("File name: ", self.fileName)
         print("Path in project: ", self.pathInProject)
         print("Format: ", self.fileFormat)
-        
+
         self.colorSpace = cmds.getAttr( node + ".colorSpace")
         print("Color space: ", self.colorSpace)
 
@@ -260,7 +264,6 @@ class FileTexture():
             return None        
 
     def validMaterial(conn):
-        print(">>>>>>>>>>>>>>>>>> Checking valid material in ", conn)
         return cmds.nodeType(conn) in inputConnectionsToMapType
 
     def checkDestination(self, node):
@@ -352,7 +355,7 @@ class FileTexture():
         Returns:
             str: ShadingGroup/shadingEngine node name
         """
-        if self.mapType == "hdri":
+        if self.mapType == "hdri" or not self.target:
             return None
         node = self.target
         while cmds.nodeType(node) != "shadingEngine":
@@ -370,6 +373,8 @@ class FileTexture():
         Returns:
             str[]: List of mesh nodes using the texture
         """
+        if not self.shadingGroup:
+            return None
         meshes = cmds.listConnections(self.shadingGroup, type="mesh")
         return meshes
 
@@ -384,7 +389,9 @@ class FileTexture():
         # Check whether the file is accessible
         if not os.path.isfile(self.fullPath) or not os.access(self.fullPath, os.R_OK):
             self.valid = False
+            self.missingFile = True
             self.errorMessage += "Texture file not found\n"
+            return
 
         # Check whether the texture is inside the sourceimages directory of the current project
         sourceimages_dir = miscutils.getCurrentProject()+"/"+naming.DCCProjTopDirs["SOURCEIMAGES"]

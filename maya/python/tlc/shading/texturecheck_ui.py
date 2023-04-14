@@ -54,7 +54,7 @@ class TextureCheckerUI(qtutils.CheckerWindow):
         # .ui file saved from Qt Designer is supposed to be named this way:
         #   "texturecheck_ui.py" --> "texturecheck.ui"
         ui_file = os.path.basename(__file__).split(".")[0].replace("_", ".")
-        title = "Texture checker"
+        title = "Texture analyzer"
         super(TextureCheckerUI, self).__init__(os.path.dirname(__file__) + "/" + ui_file, title, parent)
 
 
@@ -109,7 +109,12 @@ class TextureCheckerUI(qtutils.CheckerWindow):
 
         # Target name
         col = col+1
-        self.addTextCell(table_widget, row, col, file_tex.target + "." + file_tex.channel)
+        text = file_tex.target + "." + file_tex.channel
+        cell = self.addTextCell(table_widget, row, col, text)
+        if text == ".":
+            cell.setBackgroundColor(QtCore.Qt.red)
+            cell.setTextColor(QtCore.Qt.black)
+            cell.setText("NO CONNECTION")
 
         # Shading group
         col = col+1
@@ -117,7 +122,10 @@ class TextureCheckerUI(qtutils.CheckerWindow):
 
         # File name
         col = col+1
-        cell = self.addTextCell(table_widget, row, col, file_tex.fileName)
+        filename = file_tex.fileName
+        if not filename:
+            filename = "FILE NOT FOUND"
+        cell = self.addTextCell(table_widget, row, col, filename)
         # TO-DO: set color to naming error condition
         if file_tex.verifyTextureName():
             pass
@@ -126,6 +134,7 @@ class TextureCheckerUI(qtutils.CheckerWindow):
             fgcolor = QtCore.Qt.black
             cell.setBackground(bgcolor)
             cell.setForeground(fgcolor)
+        table_widget.item(row, col).setToolTip(file_tex.fullPath)
 
         # Projection
         col = col+1
