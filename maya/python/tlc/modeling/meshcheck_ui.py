@@ -30,9 +30,11 @@ from PySide2 import QtCore
 from PySide2 import QtUiTools
 from PySide2 import QtGui
 
+import tlc.common.qtutils as qtutils
 import maya.cmds as cmds
 
-class MeshCheckerUI(QtWidgets.QDialog):
+
+class MeshCheckerUI(qtutils.CheckerWindow):
     """User interface for MeshChecker
     
     This checker is based on the QTableWidget
@@ -44,31 +46,12 @@ class MeshCheckerUI(QtWidgets.QDialog):
     def __init__(self, parent=tlc.common.qtutils.getMayaMainWindow()):
         """Constructor
         """
-        super(MeshCheckerUI, self).__init__(parent)
+        # .ui file saved from Qt Designer is supposed to be named this way:
+        #   "texturecheck_ui.py" --> "texturecheck.ui"
+        ui_file = os.path.basename(__file__).split(".")[0].replace("_", ".")
+        title = "Mesh analyzer"
+        super(MeshCheckerUI, self).__init__(os.path.dirname(__file__) + "/" + ui_file, title, parent)
 
-        self.setWindowTitle("Mesh checker")
-
-        self.initUI()
-        self.createLayout()
-        self.createConnections()
-        #self.populateUI()
-
-    def initUI(self):
-        """Load interface from .ui file
-        """
-        f = QtCore.QFile(os.path.dirname(__file__) + "/meshcheck.ui")
-        f.open(QtCore.QFile.ReadOnly)
-
-        loader = QtUiTools.QUiLoader()
-        self.ui = loader.load(f, parentWidget=None)
-        f.close()
-
-    def createLayout(self):
-        """Build UI layout
-        """
-        main_layout = QtWidgets.QVBoxLayout(self)
-        main_layout.setContentsMargins(0, 0, 0, 0)
-        main_layout.addWidget(self.ui)
 
     def addConditionChecker(self, table_widget, cond):
         """Add a condition checker
