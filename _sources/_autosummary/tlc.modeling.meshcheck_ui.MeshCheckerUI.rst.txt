@@ -28,4 +28,11 @@ tlc.modeling.meshcheck\_ui.MeshCheckerUI
 
    
    
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MeshCheckerUI.mainLayout
+      ~MeshCheckerUI.uiFile
+   
    
