@@ -11,46 +11,19 @@ import maya.cmds as cmds
 import maya.OpenMayaUI as omui
 from tlc.common.conditionchecker import ConditionChecker
 from tlc.common.conditionchecker import ConditionErrorLevel
-import tlc.common.qtutils
+import tlc.common.qtutils as qtutils
 
-def maya_main_window(): #Return the Maya main window widget as a Python object
-    
-    main_window_ptr = omui.MQtUtil.mainWindow()
-    if sys.version_info.major >= 3:
-        return wrapInstance(int(main_window_ptr), QtWidgets.QWidget)
-    else:
-        return wrapInstance(long(main_window_ptr), QtWidgets.QWidget)
-
-def run():
-    designer_ui = DesignerUI()
-    designer_ui.init_ui()
-    designer_ui.show()
-
-class DesignerUI(QtWidgets.QDialog): 
+class MasterOfCheckersUI(qtutils.CheckerWindow): 
 
     pipelineArray = []
     namingArray = []
+    
+    def __init__(self, parent=tlc.common.qtutils.getMayaMainWindow()): 
 
-    def __init__(self, parent=maya_main_window()): 
-        super().__init__(parent) #Assign the maya object as a parent of DesignerUI 
-
-        self.setWindowTitle("Checker")
-
-    def init_ui(self): #Open the file and assign it to self.ui
-        f1 = QtCore.QFile(os.path.dirname(__file__) + "/masterOfCheckers.ui")
-        f1.open(QtCore.QFile.ReadOnly)
-        loader = QtUiTools.QUiLoader()
-        self.ui = loader.load(f1, parentWidget=None)
-        f1.close()
-        self.create_layout()
-        self.createConnections()
-
-    def create_layout(self): #Create a basic layout and assign the UI widget
-        main_layout = QtWidgets.QVBoxLayout(self)
-        main_layout.setContentsMargins(0, 0, 0, 0)
-        main_layout.addWidget(self.ui)
-        self.populateUI()
-        self.checkAll()
+        ui_file = os.path.basename(__file__).split(".")[0].replace("_", ".")
+        title = "Checker"
+        
+        super(MasterOfCheckersUI, self).__init__(os.path.dirname(__file__) + "/" + ui_file, title, parent)
 
     def populateUI(self):
 
@@ -62,37 +35,55 @@ class DesignerUI(QtWidgets.QDialog):
         self.ui.naming_table.setHorizontalHeaderLabels(col_labels)  
 
         self.pipelineArray.append(ConditionChecker(displayName="Folders structure",toolTip="<projID>\00_transDep, 01_dev, 02_prod, 03_post, maya project in 02_prod, scene structure."))
-        self.pipelineArray.append(ConditionChecker(displayName="Name space",toolTip="IDK."))
+        self.pipelineArray.append(ConditionChecker(displayName="Maya project",toolTip="The project must be inside 02_production."))
+        self.pipelineArray.append(ConditionChecker(displayName="Namespace",toolTip="There can not be namespace."))
         self.pipelineArray.append(ConditionChecker(displayName="User",toolTip="1º field three capital letters, ex.: ABC_"))
         self.pipelineArray.append(ConditionChecker(displayName="Multiple shapes",toolTip="No transform node can contain multiple shape nodes."))
         self.pipelineArray.append(ConditionChecker(displayName="Zero local values",toolTip="No transform node can have non-zero values in local space."))
         self.pipelineArray.append(ConditionChecker(displayName="References",toolTip="Missing references."))
         self.pipelineArray.append(ConditionChecker(displayName="Instanced nodes",toolTip="IDK."))
+        self.pipelineArray.append(ConditionChecker(displayName="Inside groups",toolTip="All elements of the scene must be within groups."))
+        self.pipelineArray.append(ConditionChecker(displayName="Blocked groups",toolTip="All groups must be blocked."))
+        self.pipelineArray.append(ConditionChecker(displayName="Blendshapes",toolTip="There cannot be blendshapes"))
+        self.pipelineArray.append(ConditionChecker(displayName="Escales",toolTip="Scales = 1"))
+        self.pipelineArray.append(ConditionChecker(displayName="Animation keys",toolTip="No animatable objets with keys"))
+        self.pipelineArray.append(ConditionChecker(displayName="Unknown nodes",toolTip="There cannot be unknown nodes, uncheck Outline/Display/DAG objects only to see them."))
         
         self.ui.pipeline_table.setRowCount(len(self.pipelineArray)) # Set Name rows
         
         for i in range(len(self.pipelineArray)):
             self.ui.pipeline_table.setItem(i,0,QtWidgets.QTableWidgetItem(self.pipelineArray[i].displayName))
-            self.ui.pipeline_table.item(i,0).setTextAlignment(QtCore.Qt.AlignCenter) # Set center alignment
             self.ui.pipeline_table.item(i,0).setToolTip(self.pipelineArray[i].toolTip) # Add the toolTip
+        self.ui.pipeline_table.resizeRowsToContents()
+        self.ui.pipeline_table.resizeColumnsToContents()
             
         self.namingArray.append(ConditionChecker(displayName="Scene",toolTip="Correct naming of the scene, <projID>_<typeID>_<deptmD>_<assetID>_<version>_<workingVersion>"))
-        self.namingArray.append(ConditionChecker(displayName="Node fields",toolTip="Every node name in the scene with three fields but lights, 1º field nodeID."))
-        self.namingArray.append(ConditionChecker(displayName="Groups",toolTip="Groups 1º field -> grp."))
-        self.namingArray.append(ConditionChecker(displayName="Position field",toolTip="2ª field must identify the node correct position in the scene."))
+        self.namingArray.append(ConditionChecker(displayName="Node fields",toolTip="Every node name in the scene with three fields but lights."))
+        self.namingArray.append(ConditionChecker(displayName="Node ID",toolTip="1º field must correctly identify the type of node."))
+        self.namingArray.append(ConditionChecker(displayName="Groups ID",toolTip="Groups 1º field -> grp"))
+        self.namingArray.append(ConditionChecker(displayName="Locators ID",toolTip="Locators 1º field -> lct"))
+        self.namingArray.append(ConditionChecker(displayName="Splines ID",toolTip="Splines 1º field -> spl"))
+        self.namingArray.append(ConditionChecker(displayName="Cameras ID",toolTip="Cameras 1º field -> cam"))
+        self.namingArray.append(ConditionChecker(displayName="Position field",toolTip="2ª field must identify the node correct position in the scene _x_/_l_/_r_/_c_."))
+        self.namingArray.append(ConditionChecker(displayName="Node name",toolTip="3º field must correctly identify the name of the node."))
         self.namingArray.append(ConditionChecker(displayName="Input onnections",toolTip="Imput connections name with three fields."))
         self.namingArray.append(ConditionChecker(displayName="Transform-shapes",toolTip="Shape name = Transform name + shape."))
-        self.namingArray.append(ConditionChecker(displayName="Invalid characters",toolTip="Non invalid characters."))
-        self.namingArray.append(ConditionChecker(displayName="Nodes",toolTip="Every node name is different."))
-       
+        self.namingArray.append(ConditionChecker(displayName="Invalid characters",toolTip="Non invalid characters or spaces."))
+        self.namingArray.append(ConditionChecker(displayName="Different node name",toolTip="Every node name is different."))
+        self.namingArray.append(ConditionChecker(displayName="Lights naming",toolTip="Every light in the scene with four fields."))
+        self.namingArray.append(ConditionChecker(displayName="Layers naming",toolTip="Display and animation layers naming divided in two fields-> ly_<layerID>"))
+        self.namingArray.append(ConditionChecker(displayName="Groups layersID",toolTip="Group layersID: grp_x_geo -> geo/grp_x_rig -> rig/...light/...anim/...puppet"))
+  
         self.ui.naming_table.setRowCount(len(self.namingArray))
 
         for i in range(len(self.namingArray)):
             self.ui.naming_table.setItem(i,0,QtWidgets.QTableWidgetItem(self.namingArray[i].displayName))
-            self.ui.naming_table.item(i,0).setTextAlignment(QtCore.Qt.AlignCenter)
             self.ui.naming_table.item(i,0).setToolTip(self.namingArray[i].toolTip)
-            
+        self.ui.naming_table.resizeRowsToContents()
+        self.ui.naming_table.resizeColumnsToContents()
 
+        self.resize(self.geometry().width(), 30*len(self.pipelineArray)+70)
+        
     def createConnections(self):
         self.ui.checker_toolBox.currentChanged.connect(self.changed_TB)
         self.ui.check_button.pressed.connect(self.checkAll)
@@ -103,7 +94,6 @@ class DesignerUI(QtWidgets.QDialog):
         
         self.ui.naming_table.customContextMenuRequested.connect(self.contextMenu)
         self.ui.pipeline_table.customContextMenuRequested.connect(self.contextMenu)
-
 
     def contextMenu(self,pos):
         
@@ -119,47 +109,45 @@ class DesignerUI(QtWidgets.QDialog):
         yes = True
         if yes:
             action1 = QtWidgets.QAction("Fix")
-            # action1.setTextAlignment(QtCore.Qt.AlignCenter)
             action1.triggered.connect(lambda: self.fixAction(item))
             menu.addAction(action1)
 
         if yes:
             action2 = QtWidgets.QAction("Review")
-            action2.triggered.connect(lambda: self.reviewAction())
+            action2.triggered.connect(lambda: self.reviewAction(item))
             menu.addAction(action2)
         
         if yes:
             action3 = QtWidgets.QAction("Select")
-            action3.triggered.connect(lambda: self.selectAction())
+            action3.triggered.connect(lambda: self.selectAction(item))
             menu.addAction(action3)
 
         if yes:
             action4 = QtWidgets.QAction("Ignore")
-            action4.triggered.connect(lambda: self.ignoreAction())
+            action4.triggered.connect(lambda: self.ignoreAction(item))
             menu.addAction(action4)
 
         if yes:
             action5 = QtWidgets.QAction("Recheck")
-            action5.triggered.connect(lambda: self.recheckAction())
+            action5.triggered.connect(lambda: self.recheckAction(item))
             menu.addAction(action5)
 
         menu.exec_(page.viewport().mapToGlobal(pos))
         
-        
     def fixAction (self,item):
-        print (item.displayName)
+        print ("Fixed " + item.displayName)
 
-    def reviewAction (self):
-        print ("Reviewed")
+    def reviewAction (self,item):
+        print ("Reviewed "+ item.displayName)
 
-    def selectAction (self):
-        print ("Selected")
+    def selectAction (self,item):
+        print ("Selected "+ item.displayName)
 
-    def ignoreAction (self):
-        print ("Ignored")
+    def ignoreAction (self,item):
+        print ("Ignored "+ item.displayName)
 
-    def recheckAction (self):
-        print ("Rechecked")
+    def recheckAction (self,item):
+        print ("Rechecked "+ item.displayName)
 
     def checkAll(self):
         self.namingCheck()
@@ -216,14 +204,26 @@ class DesignerUI(QtWidgets.QDialog):
             self.ui.naming_table.item(i,1).setForeground(fgcolor)
             self.ui.naming_table.item(i,1).setTextAlignment(QtCore.Qt.AlignCenter)
             self.ui.naming_table.item(i,1).setToolTip(self.namingArray[i].toolTip)
-           
 
     def publish(self):
         print("Published")
 
     def changed_TB(self):
-        self.adjustSize()
-    
-#Ajustar tamaño ventana segun tabla y modificar tamaño tabla al aumentar la ventana
-#Filtrar acciones
-#Reducir codigo
+        width = self.geometry().width()
+        if self.ui.checker_toolBox.currentIndex() == 0:
+            self.resize(width, 30*len(self.pipelineArray)+70) #Resize to table content + checkButton
+        else:
+            self.resize(width, 30*len(self.namingArray)+50)
+        
+def run():
+
+    global masterofcheckers_ui# define as a global variable, so there is only one window for this checker
+    try:
+        masterofcheckers_ui.close() # pylint: disable=E0601
+        masterofcheckers_ui.deleteLater()
+    except:
+        pass
+    masterofcheckers_ui = MasterOfCheckersUI()
+    masterofcheckers_ui.populateUI()
+    masterofcheckers_ui.checkAll()
+    masterofcheckers_ui.show()
