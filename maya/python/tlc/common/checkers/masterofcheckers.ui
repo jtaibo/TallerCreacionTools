@@ -44,9 +44,12 @@
          <bold>true</bold>
         </font>
        </property>
+<<<<<<< HEAD
        <property name="acceptDrops">
         <bool>false</bool>
        </property>
+=======
+>>>>>>> 069605b (Checker with PopulateUI, ContextMenu and check colors)
        <property name="inputMethodHints">
         <set>Qt::ImhNone</set>
        </property>
@@ -97,9 +100,12 @@
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
           <widget class="QTableWidget" name="pipeline_table">
+<<<<<<< HEAD
            <property name="enabled">
             <bool>true</bool>
            </property>
+=======
+>>>>>>> 069605b (Checker with PopulateUI, ContextMenu and check colors)
            <property name="font">
             <font>
              <bold>true</bold>
@@ -114,6 +120,7 @@
            <property name="acceptDrops">
             <bool>false</bool>
            </property>
+<<<<<<< HEAD
            <property name="autoFillBackground">
             <bool>false</bool>
            </property>
@@ -132,6 +139,11 @@
            <property name="autoScrollMargin">
             <number>16</number>
            </property>
+=======
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAsNeeded</enum>
+           </property>
+>>>>>>> 069605b (Checker with PopulateUI, ContextMenu and check colors)
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
            </property>
@@ -147,6 +159,7 @@
            <property name="verticalScrollMode">
             <enum>QAbstractItemView::ScrollPerPixel</enum>
            </property>
+<<<<<<< HEAD
            <property name="horizontalScrollMode">
             <enum>QAbstractItemView::ScrollPerPixel</enum>
            </property>
@@ -161,10 +174,18 @@
            </attribute>
            <attribute name="horizontalHeaderDefaultSectionSize">
             <number>120</number>
+=======
+           <property name="showGrid">
+            <bool>true</bool>
+           </property>
+           <attribute name="horizontalHeaderDefaultSectionSize">
+            <number>135</number>
+>>>>>>> 069605b (Checker with PopulateUI, ContextMenu and check colors)
            </attribute>
            <attribute name="horizontalHeaderHighlightSections">
             <bool>false</bool>
            </attribute>
+<<<<<<< HEAD
            <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
             <bool>false</bool>
            </attribute>
@@ -180,6 +201,8 @@
            <attribute name="verticalHeaderStretchLastSection">
             <bool>false</bool>
            </attribute>
+=======
+>>>>>>> 069605b (Checker with PopulateUI, ContextMenu and check colors)
           </widget>
          </item>
          <item>
@@ -289,18 +312,24 @@
            <property name="contextMenuPolicy">
             <enum>Qt::CustomContextMenu</enum>
            </property>
+<<<<<<< HEAD
            <property name="acceptDrops">
             <bool>false</bool>
            </property>
+=======
+>>>>>>> 069605b (Checker with PopulateUI, ContextMenu and check colors)
            <property name="toolTip">
             <string/>
            </property>
            <property name="horizontalScrollBarPolicy">
             <enum>Qt::ScrollBarAsNeeded</enum>
            </property>
+<<<<<<< HEAD
            <property name="sizeAdjustPolicy">
             <enum>QAbstractScrollArea::AdjustToContents</enum>
            </property>
+=======
+>>>>>>> 069605b (Checker with PopulateUI, ContextMenu and check colors)
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
            </property>
@@ -316,6 +345,7 @@
            <property name="verticalScrollMode">
             <enum>QAbstractItemView::ScrollPerPixel</enum>
            </property>
+<<<<<<< HEAD
            <property name="horizontalScrollMode">
             <enum>QAbstractItemView::ScrollPerPixel</enum>
            </property>
@@ -339,6 +369,10 @@
            </attribute>
            <attribute name="verticalHeaderHighlightSections">
             <bool>false</bool>
+=======
+           <attribute name="horizontalHeaderDefaultSectionSize">
+            <number>135</number>
+>>>>>>> 069605b (Checker with PopulateUI, ContextMenu and check colors)
            </attribute>
           </widget>
          </item>
