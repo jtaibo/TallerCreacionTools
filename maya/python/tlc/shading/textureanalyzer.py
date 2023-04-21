@@ -25,6 +25,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 import tlc.common.miscutils as miscutils
 import tlc.common.naming as naming
 import tlc.common.pipeline as pipeline
+import maya.api.OpenMaya as om  # Maya Python API 2.0
 import maya.cmds as cmds
 import math
 import os
@@ -103,6 +104,14 @@ nodesToBypass = {
     "aiSwitch": [ "outColor" ]
 }
 
+eightBitFormats = [
+    "jpg",
+    "JPG",
+    "jpeg",
+    "JPEG",
+    "png",
+    "PNG"
+]
 
 class FileTexture():
     """File texture class
@@ -120,7 +129,7 @@ class FileTexture():
     errorMessage = ""
     """Error message (set when valid==False)
     """
-    errors = []
+    errors = set()
     """Errors detected (colorSpace, fileFormat)
     """
     missingFile = False
@@ -165,6 +174,7 @@ class FileTexture():
     imgSrc = ImageSource.IMG_SRC_UNKNOWN
     """Image source/origin (own or third party catalog: Megascans, HDRIHaven, ...)
     """
+    throughAlpha = False
     throughProjection = False
     throughNormal = False
     throughDisplacement = False
@@ -182,9 +192,33 @@ class FileTexture():
         Args:
             node (str): Texture file node name
         """
+        self.errorMessage = ""
+        self.missingFile = False
+        self.pathInProject = ""
+        self.fileName = ""
+        self.resX = 0
+        self.resY = 0
+        self.colorSpace = ""
+        self.channel = ""
+        self.mapType = ""
+        self.target = ""
+        self.shadingGroup = ""
+        self.fileFormat = ""
+        self.pixelFormat = ""
+        self.worldSize = ""
+        self.elementID = ""
+        self.version = 0
+        self.imgSrc = ImageSource.IMG_SRC_UNKNOWN
+        self.throughAlpha = False
+        self.throughProjection = False
+        self.throughNormal = False
+        self.throughDisplacement = False
+        self.duplicate = False
+
         self.nodeName = node
         self.fullPath = cmds.getAttr( node + ".fileTextureName")
         self.valid = True
+        self.errors = set()
         self.checkFileTexture()
         print("Full path: ", self.fullPath)
         print("Node: ", self.nodeName)
@@ -204,16 +238,22 @@ class FileTexture():
         print("Target: ", self.target)
         print("Channel: ", self.channel)
 
+        self.checkAlpha()
+
         self.shadingGroup = self.checkShadingGroup()
         print("SG: ", self.shadingGroup)
 
         self.assetFile = pipeline.AssetFile()
-        self.assetFile.createForOpenScene()
+        try:
+            self.assetFile.createForOpenScene()
+        except:
+            self.errorMessage += "Scene not compliant with the pipeline\n"
+            self.assetFile = None
 
         self.imgSrc = self.getImageSource()
         if self.imgSrc == ImageSource.IMG_SRC_UNKNOWN:
             self.errorMessage += "Image source unknown\n"
-            self.errors.append("imgSrc")
+            self.errors.add("imgSrc")
             self.valid = False
         print("Source: ", imgSrcName[self.imgSrc])
 
@@ -278,11 +318,15 @@ class FileTexture():
         """
 
         # Out connection may be outColor OR outAlpha
-        outAttrs = [ "outColor", "outAlpha", "outColorR", "outColorG", "outColorB" ]
+        outAttrs = [ "outColor", "outColorR", "outColorG", "outColorB" ]
         conn = FileTexture.getFirstConnectionThroughAttrs(node, outAttrs)
         if not conn:
-            self.errorMessage += "Texture is not connected\n"
-            return "unknown"
+            conn = FileTexture.getFirstConnectionThroughAttrs(node, ["outAlpha"])
+            if not conn:
+                self.errorMessage += "Texture is not connected\n"
+                return "unknown"
+            else:
+                self.throughAlpha = True
 
         # Connected through a projection node
         if cmds.nodeType(conn) == "projection":
@@ -347,6 +391,18 @@ class FileTexture():
         else:
             self.errorMessage += "Unrecognized material: " + conn + "\n"
             return "unknown"
+
+
+    def checkAlpha(self):
+        if not self.throughAlpha:
+            return
+        hasAlpha = int(cmds.getAttr( self.nodeName + ".fileHasAlpha"))
+        if self.throughAlpha and not hasAlpha:
+            alphaIsLuminance = int(cmds.getAttr(self.nodeName + ".alphaIsLuminance"))
+            if not alphaIsLuminance:
+                self.errorMessage += "No alpha in image connected through alpha\n"
+                self.errors.add("alpha")
+                self.valid = False
 
 
     def checkShadingGroup(self):
@@ -423,7 +479,7 @@ class FileTexture():
         elif self.imgSrc == ImageSource.IMG_SRC_HDRIHAVEN:
             return self.verifyFileNameHDRIHaven()
 
-    def verifyFileTextureNameOwn(self):
+    def verifyFileTextureNameOwn(self, set_errors=True):
         """Verify texture name matches texture configuration and format defined in the pipeline
 
         Returns:
@@ -434,23 +490,27 @@ class FileTexture():
         print("Fields: ", fields)
 
         if len(fields) < 7:
-            self.errorMessage += "Texture file name bad formatted\n"
+            if set_errors:
+                self.errorMessage += "Texture file name bad formatted\n"
             naming_ok = False
             return naming_ok
         
         proj_id = fields[0]
-        if proj_id != self.assetFile.asset.project.projID:
-            self.errorMessage += "Texture file name error. Project ID mismatch\n"
+        if self.assetFile and proj_id != self.assetFile.asset.project.projID:
+            if set_errors:
+                self.errorMessage += "Texture file name error. Project ID mismatch\n"
             naming_ok = False
         
         asset_type = fields[1]
-        if asset_type != self.assetFile.asset.assetType:
-            self.errorMessage += "Texture file name error. Asset type mismatch\n"
+        if self.assetFile and naming.assetTypeFromAbbr(asset_type) != self.assetFile.asset.assetType:
+            if set_errors:
+                self.errorMessage += "Texture file name error. Asset type mismatch\n"
             naming_ok = False
 
         asset_id = fields[2]
-        if asset_id != self.assetFile.asset.assetID:
-            self.errorMessage += "Texture file name error. Asset ID mismatch\n"
+        if self.assetFile and asset_id != self.assetFile.asset.assetID:
+            if set_errors:
+                self.errorMessage += "Texture file name error. Asset ID mismatch\n"
             naming_ok = False
 
         element_id = fields[3]
@@ -460,13 +520,15 @@ class FileTexture():
 
         resolution = fields[5]
         if resolution != self.buildResolutionString():
-            self.errorMessage += "Texture file name error. Resolution mismatch\n"
+            if set_errors:
+                self.errorMessage += "Texture file name error. Resolution mismatch\n"
             naming_ok = False
         
         # WARNING: Optional fields (ignored, right now)
         str_ver = fields[6]
         if str_ver[0] != "v" or not str_ver[1:].isnumeric():
-            self.errorMessage += "Texture file name error. Version bad formatted\n"
+            if set_errors:
+                self.errorMessage += "Texture file name error. Version bad formatted\n"
             naming_ok = False
         self.version = int(str_ver[1:])
 
@@ -484,41 +546,38 @@ class FileTexture():
             return width_str
         else:
             return width_str + "x" + height_str
-        
 
-    def checkFileNameMegascans(self):
+
+    def verifyFileNameMegaScans(self, set_errors=True):
         fields = self.fileName.split("_")
         if len(fields) != 3:
-            return False;
-        ms_id = fields[0]
-        res = fields[1]
-        if not res[0].isnumeric() or res[1] != "K":
-            return False
-        map_type = fields[2]
-        if map_type not in megaScansMapType:
-            return False
-        return True
-
-    def verifyFileNameMegaScans(self):
-        fields = self.fileName.split("_")
-        if len(fields) != 3:
-            self.errorMessage += "MegaScans texture name mismatch: " + len(fields) + " fields (should be 3) " + "\n"
+            if set_errors:
+                self.errorMessage += "MegaScans texture name mismatch: " + len(fields) + " fields (should be 3) " + "\n"
             return False
         ms_id = fields[0]
         if not ms_id.islower():
-            self.errorMessage += "Not a Megascans texture ID: " + ms_id + "\n"
+            if set_errors:
+                self.errorMessage += "Not a Megascans texture ID: " + ms_id + "\n"
         res = fields[1].replace("K", "k")
         if not res in self.buildResolutionString():
-            self.errorMessage += "MegaScans texture resolution mismatch: " + res + " vs. " + self.buildResolutionString() + "\n"
+            if set_errors:
+                self.errorMessage += "MegaScans texture resolution mismatch: " + res + " vs. " + self.buildResolutionString() + "\n"
+            return False
+        if fields[2] not in megaScansMapType:
+            if set_errors:
+                self.errors.add("mapType")
+                self.errorMessage += "MegaScans texture type unknown: " + fields[2] + "\n"
             return False
         map_type = megaScansMapType[fields[2]]
         if map_type != self.mapType:
-            self.errors.append("mapType")
-            self.errorMessage += "MegaScans texture type mismatch: " + map_type + " vs. " + self.mapType + "\n"
+            if set_errors:
+                self.errors.add("mapType")
+                self.errorMessage += "MegaScans texture type mismatch: " + map_type + " vs. " + self.mapType + "\n"
             return False
         return True
 
-    def checkFileNameHDRIHaven(self):
+
+    def verifyFileNameHDRIHaven(self, set_errors=True):
         if self.fileFormat != "exr" and self.fileFormat != "hdr":
             return False
         res = self.fileName.split("_")[-1]
@@ -526,52 +585,143 @@ class FileTexture():
             return False
         if not res[:-1].isnumeric():
             return False
-        return True
-
-    def verifyFileNameHDRIHaven(self):
-        res = self.fileName.split("_")[-1]
         if not res in self.buildResolutionString():
-            self.errorMessage += "Texture resolution mismatch\n"
+            if set_errors:
+                self.errorMessage += "Texture resolution mismatch\n"
             return False
         return True
 
-    def checkFileNameTextureHaven(self):
-        return False
-
-    def verifyFileNameTextureHaven(self):
+    def verifyFileNameTextureHaven(self, set_errors=True):
         return False
 
     def getImageSource(self):
         if self.mapType == "hdri":
-            if self.checkFileNameHDRIHaven():
+            if self.verifyFileNameHDRIHaven(False):
                 return ImageSource.IMG_SRC_HDRIHAVEN
         else:
-            if self.verifyTextureName():
+            if self.verifyFileTextureNameOwn(False):
                 return ImageSource.IMG_SRC_OWN
-            elif self.checkFileNameMegascans():
+            elif self.verifyFileNameMegaScans(False):
                 return ImageSource.IMG_SRC_MEGASCANS
-            elif self.checkFileNameTextureHaven():
+            elif self.verifyFileNameTextureHaven(False):
                 return ImageSource.IMG_SRC_TEXTUREHAVEN
         return ImageSource.IMG_SRC_UNKNOWN
     
     def validateColorSpace(self):
         if self.mapType == "hdri":
             if self.fileFormat != "hdr" and self.fileFormat != "exr":
-                self.errors.append("fileFormat")
+                self.errors.add("fileFormat")
                 self.errorMessage += "HDRI format should be in HDR format\n"
                 self.valid = False
             if self.colorSpace != "scene-linear Rec.709-sRGB":
-                self.errors.append("colorSpace")
+                self.errors.add("colorSpace")
                 self.errorMessage += "HDRI color space not in scene-linear sRGB\n"
                 self.valid = False
         else:
             if self.mapType in nonColorMapTypes and self.colorSpace != "Raw":
-                self.errors.append("colorSpace")
+                self.errors.add("colorSpace")
                 self.errorMessage += "Map type " + self.mapType + " should be in Raw color space\n"
                 self.valid = False
             else:   # Color textures
-                pass    # TO-DO: check texture color spaces
+                if self.fileFormat in eightBitFormats:
+                    pass
+                else:
+                    pass    # TO-DO: check texture color spaces
     
+    def fixColorSpace(self):
+        if self.mapType == "hdri":
+            # Set colorspace to scene-linear Rec.709-sRGB
+            self.setColorSpace("scene-linear Rec.709-sRGB")
+        else:
+            if self.mapType in nonColorMapTypes:
+                # Set colorspace to Raw
+                self.setColorSpace("Raw")
+            else:
+                if self.fileFormat in eightBitFormats:
+                    # Set colorspace to sRGB
+                    self.setColorSpace("sRGB")
+                else:
+                    # Set colorspace to scene-linear Rec.709-sRGB
+                    self.setColorSpace("scene-linear Rec.709-sRGB")
+
+    def setColorSpace(self, cs):
+        self.colorSpace = cs
+        self.errors.remove("colorSpace")
+        cmds.setAttr(self.nodeName + ".colorSpace", cs, type="string")
+
+    def getNormalizedTexelDensity(self):
+        # --> checking UV density
+        # Save original selection
+        #selection = om.MGlobal.getActiveSelectionList()  # MSelectionList
+
+        meshes = self.getMeshes()
+
+        ntds = []
+        if meshes:
+            for m in meshes:
+
+                sel = om.MSelectionList()
+                sel.add(m)
+
+                ntd_avg = []
+
+                for i in range(0, sel.length()):
+                    # OpenMaya API 2.0
+                    dag = sel.getDagPath(i)
+                    selected_components = sel.getComponent(i)
+                    dag.extendToShape()
+                    if dag.apiType() == om.MFn.kMesh:
+                        itFaces = om.MItMeshPolygon(dag, selected_components[1])
+                        ntd_array = []
+                        while not itFaces.isDone():
+                            if itFaces.hasUVs():
+                                if itFaces.zeroArea():
+                                    pass
+                                    # TO-DO: Set error -> wrong UV mapping
+                                    # Avoid division by zero in the code below (else) because ws_area is zero in this case
+                                else:
+                                    ws_area = itFaces.getArea(om.MSpace.kWorld)
+                                    ts_area = itFaces.getUVArea()
+                                    if ws_area != 0:
+                                        ntd = ts_area / ws_area # Normalized texel density (texture size in world space)
+                                    else:
+                                        ntd = 0.
+                                    ntd_array.append( ntd )
+                            itFaces.next()
+
+                        # Compute texel density statistics
+                        if ( len(ntd_array) ):
+                            avgNTD = sum(ntd_array) / len(ntd_array)
+                            minNTD = min(ntd_array)
+                            maxNTD = max(ntd_array)
+                            varianceNTD = sum((x-avgNTD)**2 for x in ntd_array) / len(ntd_array)
+                            stdDevNTD = varianceNTD**0.5
+                            #print("AVgNTD: ", avgNTD)
+                            ntds.append(avgNTD)
+
+            # Restore original selection
+            #om.MGlobal.setActiveSelectionList(selection)  # MSelectionList
+
+
+            # mchecker = tlc.modeling.meshcheck.MeshChecker()
+            # td_text = "unknown"
+            # texel_density = []
+            # if meshes:
+            #     for m in meshes:
+            #         td = mchecker.xxxxxxx
+            #         texel_density.append(td)
+            #     td_text = str(texel_density[0])
+            # cell = self.addTextCell(table_widget, row, col, td_text)
+            # if texel_density:
+            #     cell.setToolTip(texel_density)
+
+        #cell = self.addTextCell(table_widget, row, col, "unknown")
+        ntd_text = "unknown"
+        if ntds:
+            ntd_text = f"{ntds[0]:.2E}"
+
+        return ntd_text
+
 
 def getAllFileTextureNodesInScene():
     """Get a list of FileTexture objects for all file texture nodes in the scene

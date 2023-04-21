@@ -32,12 +32,13 @@ from PySide2 import QtUiTools
 from PySide2 import QtGui
 
 import tlc.common.qtutils as qtutils
-import tlc.shading.textureutils
+import tlc.shading.textureanalyzer
+import tlc.modeling.meshcheck
 import maya.cmds as cmds
 
 
-class TextureCheckerUI(qtutils.CheckerWindow):
-    """User interface for TextureChecker
+class TextureAnalyzerUI(qtutils.CheckerWindow):
+    """User interface for TextureAnalyzer
     
     This checker is based on the QTableWidget
 
@@ -52,10 +53,11 @@ class TextureCheckerUI(qtutils.CheckerWindow):
         """Constructor
         """
         # .ui file saved from Qt Designer is supposed to be named this way:
-        #   "texturecheck_ui.py" --> "texturecheck.ui"
+        #   "textureanalyzer_ui.py" --> "textureanalyzer.ui"
         ui_file = os.path.basename(__file__).split(".")[0].replace("_", ".")
         title = "Texture analyzer"
-        super(TextureCheckerUI, self).__init__(os.path.dirname(__file__) + "/" + ui_file, title, parent)
+        super(TextureAnalyzerUI, self).__init__(os.path.dirname(__file__) + "/" + ui_file, title, parent)
+        self.setGeometry(100, 100, 1500, 800)
 
 
     def addTextCell(self, table_widget, row, col, text):
@@ -155,12 +157,31 @@ class TextureCheckerUI(qtutils.CheckerWindow):
 
         # Color space
         col = col+1
-        cell = self.addTextCell(table_widget, row, col, file_tex.colorSpace)
-        if not file_tex.valid and "colorSpace" in file_tex.errors:
-            bgcolor = QtCore.Qt.red
-            fgcolor = QtCore.Qt.black
-            cell.setBackground(bgcolor)
-            cell.setForeground(fgcolor)
+        if False:
+            combo_box = QtWidgets.QComboBox()
+            combo_box.addItem(file_tex.colorSpace)
+            combo_box.addItem("other")
+            combo_box.addItem("another")
+            #flags = QtCore.Qt.ItemIsEnabled # Not editable, but we mark enabled flag so it is not grayed out
+            #cell.setFlags(flags)
+            table_widget.setCellWidget(row, col, combo_box)
+            table_widget.resizeColumnToContents(col)
+            if not file_tex.valid and "colorSpace" in file_tex.errors:
+                pal = combo_box.palette()
+                pal.setColor(QtGui.QPalette.Button, QtGui.QColor(255,0,0))
+                #pal.setColor(QtGui.QPalette.Text, QtGui.QColor(127,127,127))
+                combo_box.setPalette(pal)
+                #bgcolor = QtCore.Qt.red
+                #fgcolor = QtCore.Qt.black
+                #combo_box.setBackground(bgcolor)
+                #combo_box.setForeground(fgcolor)
+        else:
+            cell = self.addTextCell(table_widget, row, col, file_tex.colorSpace)
+            if not file_tex.valid and "colorSpace" in file_tex.errors:
+                bgcolor = QtCore.Qt.red
+                fgcolor = QtCore.Qt.black
+                cell.setBackground(bgcolor)
+                cell.setForeground(fgcolor)
 
         # File format
         col = col+1
@@ -177,8 +198,8 @@ class TextureCheckerUI(qtutils.CheckerWindow):
 
         # Source
         col = col+1
-        cell = self.addTextCell(table_widget, row, col, tlc.shading.textureutils.imgSrcName[file_tex.imgSrc])
-        if file_tex.imgSrc == tlc.shading.textureutils.ImageSource.IMG_SRC_UNKNOWN:
+        cell = self.addTextCell(table_widget, row, col, tlc.shading.textureanalyzer.imgSrcName[file_tex.imgSrc])
+        if file_tex.imgSrc == tlc.shading.textureanalyzer.ImageSource.IMG_SRC_UNKNOWN:
             bgcolor = QtCore.Qt.red
             fgcolor = QtCore.Qt.black
             cell.setBackground(bgcolor)
@@ -190,15 +211,18 @@ class TextureCheckerUI(qtutils.CheckerWindow):
 
         # Texel density
         col = col+1
-        cell = self.addTextCell(table_widget, row, col, "unknown")
+
+        ntd_text = file_tex.getNormalizedTexelDensity()
+        cell = self.addTextCell(table_widget, row, col, file_tex.getNormalizedTexelDensity())
 
         # Meshes
         col = col+1
         cell = self.addTextCell(table_widget, row, col, "")
-        if file_tex.getMeshes():
-            cell.setText(str(len(file_tex.getMeshes())) + " nodes\n")
+        meshes = file_tex.getMeshes()
+        if meshes:
+            cell.setText(str(len(meshes)) + " nodes\n")
             tooltip_msg = "Texture applied to:"
-            for n in file_tex.getMeshes():
+            for n in meshes:
                 tooltip_msg += "\n" + n
             table_widget.item(row, col).setToolTip(tooltip_msg)
 
@@ -206,7 +230,6 @@ class TextureCheckerUI(qtutils.CheckerWindow):
     def populateUI(self, textures):
         """Clear the tables and repopulate them from textures in current scene
         """
-
         # Clear the tables
         self.ui.texCheckerTableWidget.setRowCount(0)
         self.fileTextureObjects.clear()
@@ -237,6 +260,8 @@ class TextureCheckerUI(qtutils.CheckerWindow):
         index = self.ui.texCheckerTableWidget.indexAt(pos)
         if index.column() == 0:
             self.contextMenuFileTextureNode(index, pos)
+        elif index.column() == 9:
+            self.contextMenuColorSpace(index, pos)
         elif index.column() == 15:
             self.contextMenuFileTextureGeometry(index, pos)
 
@@ -249,9 +274,23 @@ class TextureCheckerUI(qtutils.CheckerWindow):
         action2 = QtWidgets.QAction("Preview")
         action2.triggered.connect(lambda: self.previewTexture(index.row()))
         menu.addAction(action2)
+        action3 = QtWidgets.QAction("Open folder")
+        action3.triggered.connect(lambda: self.openFolder(index.row()))
+        menu.addAction(action3)
         #menu.setTearOffEnabled(True)
         #menu.popup(self.ui.texCheckerTableWidget.viewport().mapToGlobal(pos))
         menu.exec_(self.ui.texCheckerTableWidget.viewport().mapToGlobal(pos))
+
+    def contextMenuColorSpace(self, index, pos):
+        if "colorSpace" in self.fileTextureObjects[index.row()].errors:
+            cell = self.ui.texCheckerTableWidget.itemFromIndex(index)
+            menu = QtWidgets.QMenu()
+            action1 = QtWidgets.QAction("Fix ColorSpace")
+            action1.triggered.connect(lambda: self.fixColorSpace(index.row()))
+            menu.addAction(action1)
+            #menu.setTearOffEnabled(True)
+            #menu.popup(self.ui.texCheckerTableWidget.viewport().mapToGlobal(pos))
+            menu.exec_(self.ui.texCheckerTableWidget.viewport().mapToGlobal(pos))
 
     def contextMenuFileTextureGeometry(self, index, pos):
         cell = self.ui.texCheckerTableWidget.itemFromIndex(index)
@@ -285,15 +324,18 @@ class TextureCheckerUI(qtutils.CheckerWindow):
     def checkButton(self):
         """Check button function/callback
         """
-        textures = tlc.shading.textureutils.getAllFileTextureNodesInScene()
-        tlc.shading.textureutils.checkDuplicatedFileTextureNodes(textures)
-        texturecheck_ui.populateUI(textures)
+        textures = tlc.shading.textureanalyzer.getAllFileTextureNodesInScene()
+        tlc.shading.textureanalyzer.checkDuplicatedFileTextureNodes(textures)
+        textureanalyzer_ui.populateUI(textures)
 
     def selectTexture(self, row):
         cmds.select(self.fileTextureObjects[row].nodeName)
 
     def previewTexture(self, row):
         os.startfile(self.fileTextureObjects[row].fullPath)
+
+    def openFolder(self, row):
+        os.startfile(os.path.dirname(self.fileTextureObjects[row].fullPath))
 
     def selectTarget(self, row):
         cmds.select(self.fileTextureObjects[row].target)
@@ -305,19 +347,21 @@ class TextureCheckerUI(qtutils.CheckerWindow):
         cmds.select(self.fileTextureObjects[row].getMeshes())
 
     def selectGeometry(self, geo):
-        print("Selecting mesh", geo)
         cmds.select(geo)
+
+    def fixColorSpace(self, row):
+        self.fileTextureObjects[row].fixColorSpace()
 
 def run():
     """Run the checker
     """
-    global texturecheck_ui     # define as a global variable, so there is only one window for this checker
+    global textureanalyzer_ui     # define as a global variable, so there is only one window for this checker
     try:
-        texturecheck_ui.close() # pylint: disable=E0601
-        texturecheck_ui.deleteLater()
+        textureanalyzer_ui.close() # pylint: disable=E0601
+        textureanalyzer_ui.deleteLater()
     except:
         pass
 
-    texturecheck_ui = TextureCheckerUI()
-    texturecheck_ui.checkButton()
-    texturecheck_ui.show()
+    textureanalyzer_ui = TextureAnalyzerUI()
+    textureanalyzer_ui.checkButton()
+    textureanalyzer_ui.show()

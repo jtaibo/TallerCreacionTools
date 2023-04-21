@@ -30,7 +30,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Texture checker</string>
+        <string>Texture analyzer</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
