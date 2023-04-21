@@ -1,6 +1,0 @@
-tlc.shading.textureutils.getAllFileTextureNodesInScene
-======================================================
-
-.. currentmodule:: tlc.shading.textureutils
-
-.. autofunction:: getAllFileTextureNodesInScene

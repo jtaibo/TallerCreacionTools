@@ -1,6 +1,0 @@
-tlc.shading.texturecheck\_ui.run
-================================
-
-.. currentmodule:: tlc.shading.texturecheck_ui
-
-.. autofunction:: run

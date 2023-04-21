@@ -1,6 +1,0 @@
-tlc.shading.textureutils.test
-=============================
-
-.. currentmodule:: tlc.shading.textureutils
-
-.. autofunction:: test

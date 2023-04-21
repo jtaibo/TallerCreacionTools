@@ -1,0 +1,6 @@
+tlc.shading.textureanalyzer.checkDuplicatedFileTextureNodes
+===========================================================
+
+.. currentmodule:: tlc.shading.textureanalyzer
+
+.. autofunction:: checkDuplicatedFileTextureNodes

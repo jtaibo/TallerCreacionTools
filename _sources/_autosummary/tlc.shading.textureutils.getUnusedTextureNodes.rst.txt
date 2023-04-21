@@ -1,6 +1,0 @@
-tlc.shading.textureutils.getUnusedTextureNodes
-==============================================
-
-.. currentmodule:: tlc.shading.textureutils
-
-.. autofunction:: getUnusedTextureNodes

@@ -1,0 +1,6 @@
+tlc.shading.textureanalyzer\_ui.run
+===================================
+
+.. currentmodule:: tlc.shading.textureanalyzer_ui
+
+.. autofunction:: run

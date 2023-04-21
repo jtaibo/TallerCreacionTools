@@ -1,6 +1,0 @@
-tlc.shading.textureutils.inputConnectionsToMapType
-==================================================
-
-.. currentmodule:: tlc.shading.textureutils
-
-.. autodata:: inputConnectionsToMapType
