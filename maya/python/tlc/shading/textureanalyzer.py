@@ -618,15 +618,22 @@ class FileTexture():
                 self.errorMessage += "HDRI color space not in scene-linear sRGB\n"
                 self.valid = False
         else:
-            if self.mapType in nonColorMapTypes and self.colorSpace != "Raw":
-                self.errors.add("colorSpace")
-                self.errorMessage += "Map type " + self.mapType + " should be in Raw color space\n"
-                self.valid = False
+            if self.mapType in nonColorMapTypes:
+                if self.colorSpace != "Raw":
+                    self.errors.add("colorSpace")
+                    self.errorMessage += "Map type " + self.mapType + " should be in Raw color space\n"
+                    self.valid = False
             else:   # Color textures
                 if self.fileFormat in eightBitFormats:
-                    pass
+                    if self.colorSpace != "sRGB":
+                        self.errorMessage += "8-bit color image not in sRGB space"
+                        self.errors.add("colorSpace")
+                        self.valid = False
                 else:
-                    pass    # TO-DO: check texture color spaces
+                    if self.colorSpace != "scene-linear Rec.709-sRGB":
+                        self.errorMessage += "HDR color image not in scene-linear sRGB"
+                        self.errors.add("colorSpace")
+                        self.valid = False
     
     def fixColorSpace(self):
         if self.mapType == "hdri":
