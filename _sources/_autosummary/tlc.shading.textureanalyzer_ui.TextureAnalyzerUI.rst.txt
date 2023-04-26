@@ -26,6 +26,7 @@ tlc.shading.textureanalyzer\_ui.TextureAnalyzerUI
       ~TextureAnalyzerUI.contextMenuFileTextureNode
       ~TextureAnalyzerUI.createConnections
       ~TextureAnalyzerUI.createLayout
+      ~TextureAnalyzerUI.fixAlphaFromLuminance
       ~TextureAnalyzerUI.fixColorSpace
       ~TextureAnalyzerUI.initUI
       ~TextureAnalyzerUI.openFolder
