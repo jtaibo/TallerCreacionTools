@@ -44,18 +44,9 @@
          <bold>true</bold>
         </font>
        </property>
-<<<<<<< HEAD:maya/python/tlc/common/checkers/masterofcheckers.ui
-<<<<<<< HEAD
        <property name="acceptDrops">
         <bool>false</bool>
        </property>
-=======
->>>>>>> 069605b (Checker with PopulateUI, ContextMenu and check colors)
-=======
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
->>>>>>> fa11732 (Imported qutils):maya/python/tlc/common/checkers/masterOfCheckers.ui
        <property name="inputMethodHints">
         <set>Qt::ImhNone</set>
        </property>
@@ -74,13 +65,13 @@
        <property name="tabSpacing">
         <number>0</number>
        </property>
-       <widget class="QWidget" name="delete_page">
+       <widget class="QWidget" name="pipeline_page">
         <property name="geometry">
          <rect>
           <x>0</x>
           <y>0</y>
           <width>328</width>
-          <height>266</height>
+          <height>242</height>
          </rect>
         </property>
         <property name="sizePolicy">
@@ -101,24 +92,14 @@
          </font>
         </property>
         <attribute name="label">
-         <string/>
+         <string>Pipeline</string>
         </attribute>
-<<<<<<< HEAD:maya/python/tlc/common/checkers/masterofcheckers.ui
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
           <widget class="QTableWidget" name="pipeline_table">
-<<<<<<< HEAD:maya/python/tlc/common/checkers/masterofcheckers.ui
-<<<<<<< HEAD
            <property name="enabled">
             <bool>true</bool>
            </property>
-=======
->>>>>>> 069605b (Checker with PopulateUI, ContextMenu and check colors)
-=======
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
->>>>>>> fa11732 (Imported qutils):maya/python/tlc/common/checkers/masterOfCheckers.ui
            <property name="font">
             <font>
              <bold>true</bold>
@@ -133,10 +114,6 @@
            <property name="acceptDrops">
             <bool>false</bool>
            </property>
-<<<<<<< HEAD:maya/python/tlc/common/checkers/masterofcheckers.ui
-<<<<<<< HEAD
-=======
->>>>>>> fa11732 (Imported qutils):maya/python/tlc/common/checkers/masterOfCheckers.ui
            <property name="autoFillBackground">
             <bool>false</bool>
            </property>
@@ -155,14 +132,6 @@
            <property name="autoScrollMargin">
             <number>16</number>
            </property>
-<<<<<<< HEAD:maya/python/tlc/common/checkers/masterofcheckers.ui
-=======
-           <property name="horizontalScrollBarPolicy">
-            <enum>Qt::ScrollBarAsNeeded</enum>
-           </property>
->>>>>>> 069605b (Checker with PopulateUI, ContextMenu and check colors)
-=======
->>>>>>> fa11732 (Imported qutils):maya/python/tlc/common/checkers/masterOfCheckers.ui
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
            </property>
@@ -178,8 +147,6 @@
            <property name="verticalScrollMode">
             <enum>QAbstractItemView::ScrollPerPixel</enum>
            </property>
-<<<<<<< HEAD:maya/python/tlc/common/checkers/masterofcheckers.ui
-<<<<<<< HEAD
            <property name="horizontalScrollMode">
             <enum>QAbstractItemView::ScrollPerPixel</enum>
            </property>
@@ -194,36 +161,10 @@
            </attribute>
            <attribute name="horizontalHeaderDefaultSectionSize">
             <number>120</number>
-=======
-=======
-           <property name="horizontalScrollMode">
-            <enum>QAbstractItemView::ScrollPerPixel</enum>
-           </property>
->>>>>>> fa11732 (Imported qutils):maya/python/tlc/common/checkers/masterOfCheckers.ui
-           <property name="showGrid">
-            <bool>true</bool>
-           </property>
-           <attribute name="horizontalHeaderCascadingSectionResizes">
-            <bool>false</bool>
-           </attribute>
-           <attribute name="horizontalHeaderMinimumSectionSize">
-            <number>120</number>
-           </attribute>
-           <attribute name="horizontalHeaderDefaultSectionSize">
-<<<<<<< HEAD:maya/python/tlc/common/checkers/masterofcheckers.ui
-            <number>135</number>
->>>>>>> 069605b (Checker with PopulateUI, ContextMenu and check colors)
-=======
-            <number>120</number>
->>>>>>> fa11732 (Imported qutils):maya/python/tlc/common/checkers/masterOfCheckers.ui
            </attribute>
            <attribute name="horizontalHeaderHighlightSections">
             <bool>false</bool>
            </attribute>
-<<<<<<< HEAD:maya/python/tlc/common/checkers/masterofcheckers.ui
-<<<<<<< HEAD
-=======
->>>>>>> fa11732 (Imported qutils):maya/python/tlc/common/checkers/masterOfCheckers.ui
            <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
             <bool>false</bool>
            </attribute>
@@ -239,11 +180,6 @@
            <attribute name="verticalHeaderStretchLastSection">
             <bool>false</bool>
            </attribute>
-<<<<<<< HEAD:maya/python/tlc/common/checkers/masterofcheckers.ui
-=======
->>>>>>> 069605b (Checker with PopulateUI, ContextMenu and check colors)
-=======
->>>>>>> fa11732 (Imported qutils):maya/python/tlc/common/checkers/masterOfCheckers.ui
           </widget>
          </item>
          <item>
@@ -353,36 +289,18 @@
            <property name="contextMenuPolicy">
             <enum>Qt::CustomContextMenu</enum>
            </property>
-<<<<<<< HEAD:maya/python/tlc/common/checkers/masterofcheckers.ui
-<<<<<<< HEAD
            <property name="acceptDrops">
             <bool>false</bool>
            </property>
-=======
->>>>>>> 069605b (Checker with PopulateUI, ContextMenu and check colors)
-=======
-           <property name="acceptDrops">
-            <bool>false</bool>
-           </property>
->>>>>>> fa11732 (Imported qutils):maya/python/tlc/common/checkers/masterOfCheckers.ui
            <property name="toolTip">
             <string/>
            </property>
            <property name="horizontalScrollBarPolicy">
             <enum>Qt::ScrollBarAsNeeded</enum>
            </property>
-<<<<<<< HEAD:maya/python/tlc/common/checkers/masterofcheckers.ui
-<<<<<<< HEAD
            <property name="sizeAdjustPolicy">
             <enum>QAbstractScrollArea::AdjustToContents</enum>
            </property>
-=======
->>>>>>> 069605b (Checker with PopulateUI, ContextMenu and check colors)
-=======
-           <property name="sizeAdjustPolicy">
-            <enum>QAbstractScrollArea::AdjustToContents</enum>
-           </property>
->>>>>>> fa11732 (Imported qutils):maya/python/tlc/common/checkers/masterOfCheckers.ui
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
            </property>
@@ -398,17 +316,12 @@
            <property name="verticalScrollMode">
             <enum>QAbstractItemView::ScrollPerPixel</enum>
            </property>
-<<<<<<< HEAD:maya/python/tlc/common/checkers/masterofcheckers.ui
-<<<<<<< HEAD
-=======
->>>>>>> fa11732 (Imported qutils):maya/python/tlc/common/checkers/masterOfCheckers.ui
            <property name="horizontalScrollMode">
             <enum>QAbstractItemView::ScrollPerPixel</enum>
            </property>
            <attribute name="horizontalHeaderMinimumSectionSize">
             <number>120</number>
            </attribute>
-<<<<<<< HEAD:maya/python/tlc/common/checkers/masterofcheckers.ui
            <attribute name="horizontalHeaderDefaultSectionSize">
             <number>120</number>
            </attribute>
@@ -426,29 +339,6 @@
            </attribute>
            <attribute name="verticalHeaderHighlightSections">
             <bool>false</bool>
-=======
-           <attribute name="horizontalHeaderDefaultSectionSize">
-            <number>135</number>
->>>>>>> 069605b (Checker with PopulateUI, ContextMenu and check colors)
-=======
-           <attribute name="horizontalHeaderDefaultSectionSize">
-            <number>120</number>
-           </attribute>
-           <attribute name="horizontalHeaderHighlightSections">
-            <bool>false</bool>
-           </attribute>
-           <attribute name="horizontalHeaderStretchLastSection">
-            <bool>true</bool>
-           </attribute>
-           <attribute name="verticalHeaderMinimumSectionSize">
-            <number>20</number>
-           </attribute>
-           <attribute name="verticalHeaderDefaultSectionSize">
-            <number>20</number>
-           </attribute>
-           <attribute name="verticalHeaderHighlightSections">
-            <bool>false</bool>
->>>>>>> fa11732 (Imported qutils):maya/python/tlc/common/checkers/masterOfCheckers.ui
            </attribute>
           </widget>
          </item>
@@ -525,9 +415,6 @@
           </layout>
          </item>
         </layout>
-=======
-        <layout class="QVBoxLayout" name="verticalLayout_3"/>
->>>>>>> 9915305 (Master of checkers splitted):maya/python/tlc/common/checkers/masterOfCheckers.ui
        </widget>
       </widget>
      </item>
