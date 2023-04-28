@@ -1,5 +1,4 @@
 import os
-import sys
 import tlc.common.qtutils as qtutils
 from importlib import reload
 
@@ -10,7 +9,12 @@ from PySide2 import QtGui
 
 class MasterOfCheckersUI(qtutils.CheckerWindow): 
 
-    imports= ["tlc.common.checkers.pipelinecheck_ui","import "," as "]
+    #Dictionary instead of of array?
+    imports= [
+    "tlc.common.checkers.pipelinecheck_ui",
+    "tlc.common.checkers.namingcheck_ui",
+    "tlc.common.checkers.shadingcheck_ui"
+    ]
     
     def __init__(self, parent=qtutils.getMayaMainWindow()): 
 
@@ -25,61 +29,30 @@ class MasterOfCheckersUI(qtutils.CheckerWindow):
         pages=[]
         
         for c in range(len(checking)): 
-            for i in range(len(self.imports)-2):
-                name = self.imports[i].split(".")[3].split("check_ui")[0]
-                if checking[c] == name.capitalize():
+            for i in range(len(self.imports)):
+                check_name = self.imports[i].split(".")[3].split("check_ui")[0] 
                 
-                    execution = [self.imports[len(self.imports)-2],self.imports[i],self.imports[len(self.imports)-1],name]
-                    exec("".join(execution),globals())
-                    print ("Imported: " + self.imports[i]) 
+                if checking[c] == check_name:
+                    exec( "import " + self.imports[i] + " as " + check_name, globals())
+                    # Import scripts with the data, example: exec( import tlc.common.checkers.pipelinecheck_ui as pipeline )
                     
                     pages.append(ToolboxPage())
-                    self.ui.checker_toolBox.insertItem(c,pages[c],checking[i])
-                    pages[c].table.setRowCount(len(checking))
-                    
-                    
-                    # lista= ["data"," = ",name,".",self.imports[i].split(".")[3].capitalize().replace("check_ui","Check"),"()"]
-                    # exec ("".join(lista))
-                    # lista= [name,".",datos,".",self.imports[i].split(".")[3].replace("check_ui","_array")]
-                    # for d in range(len(data.pipeline_array)):
-                        # print (data.pipeline_array[d].displayName)
+                    print("Added new object #", c, " id:", id(pages[c]))
+                     #Insert ToolboxPage at the [c] index with a related name
+                    self.ui.checker_toolBox.insertItem(c,pages[c],checking[i].capitalize())
 
-                    data = pipeline.PipelineCheck()
-                    print (len(data.pipeline_array))
-                    
-                    
-                    # for a in range(len())
-                    # pages[c].table.setItem(row, column, item)
+                    exec ("data_object = " + check_name + "." + self.imports[i].split(".")[3].capitalize().replace("check_ui","Check()"), globals())
+                    # Initialize object of the import as data_object, example: exec( data_object = pipeline.PipelineCheck() ) 
+
+                    for d in range(len(data_object.data)):
+                        pages[c].table.setRowCount(len(data_object.data))
+                        pages[c].table.setItem(d,0,QtWidgets.QTableWidgetItem(data_object.data[d].displayName)) # Set name
+                        pages[c].table.item(d,0).setToolTip(data_object.data[d].toolTip) # Set tooltip
+                
+                
 
 
-        # for i in range(len(checking)):
 
-        #     if i > 0:
-
-        #         self.ui.checker_toolBox.setCurrentIndex(i)
-               
-        #         self.ui.checker_toolBox.insertItem(i,page_01,checking[i])
-        #         page_01.table.setColumnCount(len(col_labels))
-        #         page_01.table.setHorizontalHeaderLabels(col_labels)
-        #         page_01.table.setRowCount(len(checking))
-           
-        #     self.ui.masterOfCheckers_table.setColumnCount(len(col_labels))
-        #     self.ui.masterOfCheckers_table.setHorizontalHeaderLabels(col_labels)
-
-        
-        #     self.ui.masterOfCheckers_table.setRowCount(len(checking)) # Set number of rows
-            
-        #     for u in range(len(self.pipeline_array)): # Set the data to the cells
-        #         self.ui.masterOfCheckers_table.setItem(i,0,QtWidgets.QTableWidgetItem(self.pipeline_array[i].displayName))# Add the displayName
-        #         self.ui.masterOfCheckers_table.item(i,0).setToolTip(self.pipeline_array[i].toolTip) # Add the toolTip
-        #     self.ui.masterOfCheckers_table.resizeRowsToContents()
-        #     self.ui.masterOfCheckers_table.resizeColumnsToContents()# Adjust the size of the table to the content
-
-        # self.resize(self.geometry().width(), 30*len(self.pipeline_array)+70)# Adjust maya window to the table info. + check button
-
-        # self.checkAll()
-
-        
     def createConnections(self):
         self.ui.check_button.pressed.connect(self.checkAll)
         self.ui.publish_button.pressed.connect(self.publish)
@@ -98,7 +71,7 @@ class ToolboxPage(QtWidgets.QWidget):
     palette = QtGui.QGuiApplication.palette()
     font = QtGui.QGuiApplication.font()
     col_labels = ["Name", "Status"] # Columns
-
+    
     def __init__(self):
         super().__init__()
 
@@ -143,6 +116,3 @@ def run(checking):
     masterofcheckers_ui = MasterOfCheckersUI()
     masterofcheckers_ui.populateUI(checking)
     masterofcheckers_ui.show()
-
-
-#Forma más barata de ejecutar PopulateUI
