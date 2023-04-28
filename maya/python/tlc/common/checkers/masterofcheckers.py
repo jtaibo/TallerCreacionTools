@@ -5,7 +5,7 @@ from importlib import reload
 def start(): #Función "start" a la que cambie el nombre
     file_name = cmds.file( query=True, sn=True, shn=True)
     file_name = file_name.split("_")
-    check = ["pipeline","naming","shading"]
+    check = ["pipeline","shading","naming"]
 
     try:
         taskID = file_name[2]

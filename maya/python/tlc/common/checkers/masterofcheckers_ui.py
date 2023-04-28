@@ -7,14 +7,13 @@ from PySide2 import QtUiTools
 from PySide2 import QtWidgets
 from PySide2 import QtGui
 
+import tlc.common.checkers.pipelinecheck_ui as pipeline
+import tlc.common.checkers.namingcheck_ui as naming
+import tlc.common.checkers.shadingcheck_ui as shading
+
 class MasterOfCheckersUI(qtutils.CheckerWindow): 
 
-    #Dictionary instead of of array?
-    imports= [
-    "tlc.common.checkers.pipelinecheck_ui",
-    "tlc.common.checkers.namingcheck_ui",
-    "tlc.common.checkers.shadingcheck_ui"
-    ]
+    imported= ["pipeline","naming","shading"]
     
     def __init__(self, parent=qtutils.getMayaMainWindow()): 
 
@@ -27,36 +26,26 @@ class MasterOfCheckersUI(qtutils.CheckerWindow):
     def populateUI(self, checking):
 
         pages=[]
+        data_table=[]
         
         for c in range(len(checking)): 
-            for i in range(len(self.imports)):
-                check_name = self.imports[i].split(".")[3].split("check_ui")[0] 
-                
-                if checking[c] == check_name:
-                    exec( "import " + self.imports[i] + " as " + check_name, globals())
-                    # Import scripts with the data, example: exec( import tlc.common.checkers.pipelinecheck_ui as pipeline )
+            for i in range(len(self.imported)):
+                if checking[c] == self.imported[i]:
                     
                     pages.append(ToolboxPage())
-                    print("Added new object #", c, " id:", id(pages[c]))
-                     #Insert ToolboxPage at the [c] index with a related name
-                    self.ui.checker_toolBox.insertItem(c,pages[c],checking[i].capitalize())
+                    self.ui.checker_toolBox.insertItem(c,ToolboxPage(),checking[c].capitalize())#Insert ToolboxPage at the [c] index with a related name
+                    exec ("data_table.append(" + self.imported[i] + "." + self.imported[i].capitalize() + "Check())")
 
-                    exec ("data_object = " + check_name + "." + self.imports[i].split(".")[3].capitalize().replace("check_ui","Check()"), globals())
-                    # Initialize object of the import as data_object, example: exec( data_object = pipeline.PipelineCheck() ) 
-
-                    for d in range(len(data_object.data)):
-                        pages[c].table.setRowCount(len(data_object.data))
-                        pages[c].table.setItem(d,0,QtWidgets.QTableWidgetItem(data_object.data[d].displayName)) # Set name
-                        pages[c].table.item(d,0).setToolTip(data_object.data[d].toolTip) # Set tooltip
-                
-                
-
-
+                    for d in range(len(data_table[c].data)):
+                        pages[c].table.setRowCount(len(data_table[c].data))
+                        pages[c].table.setItem(d,0,QtWidgets.QTableWidgetItem(data_table[c].data[d].displayName)) # Set name
+                        pages[c].table.item(d,0).setToolTip(data_table[c].data[d].toolTip) # Set tooltip
+            
 
     def createConnections(self):
         self.ui.check_button.pressed.connect(self.checkAll)
         self.ui.publish_button.pressed.connect(self.publish)
-   
+
     def checkAll(self):
         print("CheckedAll")
 
