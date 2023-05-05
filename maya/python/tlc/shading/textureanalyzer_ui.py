@@ -24,6 +24,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 import tlc
 import os
+import time
 from functools import partial
 
 from PySide2 import QtWidgets
@@ -58,6 +59,10 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         title = "Texture analyzer"
         super(TextureAnalyzerUI, self).__init__(os.path.dirname(__file__) + "/" + ui_file, title, parent)
         self.setGeometry(100, 100, 1500, 800)
+        # Status line. Experimental code. May be moved to a superclass or an external class in the future
+        self.ui.statusLine.setText("Texture analyzer ready!")
+        self.ui.statusLine.setReadOnly(True)
+        #self.ui.statusLine.setBackgroundColor(QtCore.Qt.green)
 
 
     def addTextCell(self, table_widget, row, col, text):
@@ -277,6 +282,10 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         action3 = QtWidgets.QAction("Open folder")
         action3.triggered.connect(lambda: self.openFolder(index.row()))
         menu.addAction(action3)
+        if "alpha" in self.fileTextureObjects[index.row()].errors:
+            action4 = QtWidgets.QAction("Fix alpha channel")
+            action4.triggered.connect(lambda: self.fixAlphaFromLuminance(index.row()))
+            menu.addAction(action4)
         #menu.setTearOffEnabled(True)
         #menu.popup(self.ui.texCheckerTableWidget.viewport().mapToGlobal(pos))
         menu.exec_(self.ui.texCheckerTableWidget.viewport().mapToGlobal(pos))
@@ -324,9 +333,16 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
     def checkButton(self):
         """Check button function/callback
         """
+        start_time = time.time()
+        self.ui.statusLine.setText("Analyzing textures in scene...")
         textures = tlc.shading.textureanalyzer.getAllFileTextureNodesInScene()
         tlc.shading.textureanalyzer.checkDuplicatedFileTextureNodes(textures)
+        self.ui.statusLine.setText("Presenting analysis results...")
         textureanalyzer_ui.populateUI(textures)
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        msg = "Analysis complete! (" + f"{elapsed_time:.2}" + " s)"
+        self.ui.statusLine.setText(msg)
 
     def selectTexture(self, row):
         cmds.select(self.fileTextureObjects[row].nodeName)
@@ -336,6 +352,10 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
 
     def openFolder(self, row):
         os.startfile(os.path.dirname(self.fileTextureObjects[row].fullPath))
+
+    def fixAlphaFromLuminance(self, row):
+        file_tex = self.fileTextureObjects[row]
+        cmds.setAttr(file_tex.nodeName + ".alphaIsLuminance", 1)
 
     def selectTarget(self, row):
         cmds.select(self.fileTextureObjects[row].target)
