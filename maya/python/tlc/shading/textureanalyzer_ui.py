@@ -220,7 +220,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         cell = self.addTextCell(table_widget, row, col, "")
         meshes = file_tex.getMeshes()
         if meshes:
-            cell.setText(str(len(meshes)) + " nodes\n")
+            cell.setText(str(len(meshes)) + " nodes")
             tooltip_msg = "Texture applied to:"
             for n in meshes:
                 tooltip_msg += "\n" + n
