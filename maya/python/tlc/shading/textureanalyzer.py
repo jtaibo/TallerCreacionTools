@@ -59,6 +59,11 @@ inputConnectionsToMapType = {
         "metalness":"metalness",
         "specularRoughness":"roughness"
     },
+    "standardSurface":{
+        "baseColor":"albedo",
+        "metalness":"metalness",
+        "specularRoughness":"roughness"
+    },
     "aiToon":{
         "baseColor":"albedo",
         "specularRoughness":"roughness"
@@ -350,6 +355,7 @@ class FileTexture():
         elif cmds.nodeType(conn) == "displacementShader":
             node = conn.split(".")[0]
             self.throughDisplacement = True
+            self.channel = "displacement"
             conn = FileTexture.getFirstConnectionThroughAttrs(node, ["displacement"])
             if not conn:
                 self.errorMessage += "Displacement shader not connected\n"
@@ -676,7 +682,7 @@ class FileTexture():
                     # OpenMaya API 2.0
                     dag = sel.getDagPath(i)
                     selected_components = sel.getComponent(i)
-                    dag.extendToShape()
+                    #dag.extendToShape()
                     if dag.apiType() == om.MFn.kMesh:
                         itFaces = om.MItMeshPolygon(dag, selected_components[1])
                         ntd_array = []
