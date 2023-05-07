@@ -1,18 +1,10 @@
 @echo off
 
 setlocal enabledelayedexpansion
+goto:main
 
-echo Maya TLC installer (developer version)
-echo ======================================
-echo(
-
-REM This installer is meant to be used by developers
-REM Scripts are reached in the local git repository
-REM
-REM A different installer will be created for end users
-REM This installer will place scripts in Maya scripts directory
-
-set MAYA_VERSION=2023
+:install_tlc
+set MAYA_VERSION=%~1
 set MAYA_DOCS=%HOMEDRIVE%\%HOMEPATH%\Documents\maya\%MAYA_VERSION%\
 
 set SHELVES_DIR=%MAYA_DOCS%\prefs\shelves
@@ -44,6 +36,31 @@ if exist %MAYA_ENV% (
     echo Creating Maya.env file
     echo PYTHONPATH=%cd%\python > %MAYA_ENV%
 )
+
+exit /B 0
+
+
+:main
+
+echo Maya TLC installer (developer version)
+echo ======================================
+echo(
+
+REM This installer is meant to be used by developers
+REM Scripts are reached in the local git repository
+REM
+REM A different installer will be created for end users
+REM This installer will place scripts in Maya scripts directory
+
+set MAYA_VERSIONS=2023 2024
+
+(for %%v in (%MAYA_VERSIONS%) do (
+	set MAYA_DOCS=%HOMEDRIVE%\%HOMEPATH%\Documents\maya\%%v\
+	if exist !MAYA_DOCS!\ (
+		echo Installing tools for Maya %%v
+		call:install_tlc %%v
+	)
+))
 
 echo(
 echo Installation finished!
