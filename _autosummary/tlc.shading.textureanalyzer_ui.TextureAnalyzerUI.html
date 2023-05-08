@@ -105,10 +105,10 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer_ui.TextureAnalyzerUI.__init__" title="tlc.shading.textureanalyzer_ui.TextureAnalyzerUI.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([parent])</p></td>
 <td><p>Constructor</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer_ui.TextureAnalyzerUI.addFileTexture" title="tlc.shading.textureanalyzer_ui.TextureAnalyzerUI.addFileTexture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">addFileTexture</span></code></a>(table_widget, file_tex)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer_ui.TextureAnalyzerUI.addFileTexture" title="tlc.shading.textureanalyzer_ui.TextureAnalyzerUI.addFileTexture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">addFileTexture</span></code></a>(file_tex)</p></td>
 <td><p>Add a file texture to the table This method adds a new row to the table in the UI, fill the cells with the data in a FileTexture object, and configures the operations over the textures</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">addTextCell</span></code>(table_widget, row, col, text)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">addTextCell</span></code>(row, col, text)</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cellDoubleClicked</span></code>(row, col)</p></td>
@@ -147,10 +147,16 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">openMenuAstonishing</span></code>(pos)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer_ui.TextureAnalyzerUI.populateUI" title="tlc.shading.textureanalyzer_ui.TextureAnalyzerUI.populateUI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">populateUI</span></code></a>(textures)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">populateRow</span></code>(row)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer_ui.TextureAnalyzerUI.populateUI" title="tlc.shading.textureanalyzer_ui.TextureAnalyzerUI.populateUI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">populateUI</span></code></a>(textures)</p></td>
 <td><p>Clear the tables and repopulate them from textures in current scene</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">previewTexture</span></code>(row)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">previewTexture</span></code>(row)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">resizeTable</span></code>()</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">selectAllGeometry</span></code>(row)</p></td>
@@ -166,6 +172,9 @@
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">selectTexture</span></code>(row)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">updateRow</span></code>(row)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -186,7 +195,7 @@
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="tlc.shading.textureanalyzer_ui.TextureAnalyzerUI.addFileTexture">
-<span class="sig-name descname"><span class="pre">addFileTexture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_tex</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.shading.textureanalyzer_ui.TextureAnalyzerUI.addFileTexture" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">addFileTexture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_tex</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.shading.textureanalyzer_ui.TextureAnalyzerUI.addFileTexture" title="Permalink to this definition"></a></dt>
 <dd><p>Add a file texture to the table
 This method adds a new row to the table in the UI, fill the cells with
 the data in a FileTexture object, and configures the operations

@@ -31,13 +31,16 @@ tlc.shading.textureanalyzer\_ui.TextureAnalyzerUI
       ~TextureAnalyzerUI.initUI
       ~TextureAnalyzerUI.openFolder
       ~TextureAnalyzerUI.openMenuAstonishing
+      ~TextureAnalyzerUI.populateRow
       ~TextureAnalyzerUI.populateUI
       ~TextureAnalyzerUI.previewTexture
+      ~TextureAnalyzerUI.resizeTable
       ~TextureAnalyzerUI.selectAllGeometry
       ~TextureAnalyzerUI.selectGeometry
       ~TextureAnalyzerUI.selectShadingGroup
       ~TextureAnalyzerUI.selectTarget
       ~TextureAnalyzerUI.selectTexture
+      ~TextureAnalyzerUI.updateRow
    
    
 

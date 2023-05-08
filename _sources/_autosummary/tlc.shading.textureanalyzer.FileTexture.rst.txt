@@ -30,6 +30,7 @@ tlc.shading.textureanalyzer.FileTexture
       ~FileTexture.getMeshes
       ~FileTexture.getNormalizedTexelDensity
       ~FileTexture.parseTextureName
+      ~FileTexture.reCheck
       ~FileTexture.setColorSpace
       ~FileTexture.validMaterial
       ~FileTexture.validateColorSpace
