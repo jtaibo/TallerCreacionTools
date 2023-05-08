@@ -63,18 +63,27 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         self.ui.statusLine.setText("Texture analyzer ready!")
         self.ui.statusLine.setReadOnly(True)
         #self.ui.statusLine.setBackgroundColor(QtCore.Qt.green)
+        self.table_widget = self.ui.texCheckerTableWidget
+        self.resized = False
 
 
-    def addTextCell(self, table_widget, row, col, text):
+    def addTextCell(self, row, col, text):
         cell = QtWidgets.QTableWidgetItem(text)
         flags = QtCore.Qt.ItemIsEnabled # Not editable, but we mark enabled flag so it is not grayed out
         cell.setFlags(flags)
-        table_widget.setItem(row, col, cell)
-        table_widget.resizeColumnToContents(col)
+        self.table_widget.setItem(row, col, cell)
+        #table_widget.resizeColumnToContents(col)
         return cell
+    
+
+    def resizeTable(self):
+        self.table_widget.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+        self.table_widget.resizeColumnsToContents()
+        #for c in range(self.table_widget.columnCount()):
+        #    self.table_widget.resizeColumnToContents(c)
 
 
-    def addFileTexture(self, table_widget, file_tex):
+    def addFileTexture(self, file_tex):
         """Add a file texture to the table
         This method adds a new row to the table in the UI, fill the cells with
         the data in a FileTexture object, and configures the operations
@@ -84,15 +93,27 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
             table_widget (QTableWidget): Table widget object in the UI
             tex (FileTexture): FileTexture object
         """
-        row = table_widget.rowCount()
-        table_widget.setRowCount(row+1)
+        row = self.table_widget.rowCount()
+        self.table_widget.setRowCount(row+1)
         #table_widget.setMinimumHeight(1)
 
         self.fileTextureObjects.append(file_tex)
+        self.populateRow(row)
+
+
+    def updateRow(self, row):
+        file_tex = self.fileTextureObjects[row]
+        file_tex.reCheck()
+        self.populateRow(row)
+
+
+    def populateRow(self, row):
+
+        file_tex = self.fileTextureObjects[row]
 
         # Node name
         col = 0
-        self.addTextCell(table_widget, row, col, file_tex.nodeName)
+        self.addTextCell(row, col, file_tex.nodeName)
 
         # Status
         col = col+1
@@ -102,22 +123,25 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         if not file_tex.valid:
             status = "ERROR"
             bgcolor = QtCore.Qt.red
-        cell = self.addTextCell(table_widget, row, col, status)
+        elif "imgSrc" in file_tex.errors:
+            status = "WARN"
+            bgcolor = QtGui.QColor(255,127,0)
+        cell = self.addTextCell(row, col, status)
         cell.setBackgroundColor(bgcolor)
         cell.setTextColor(fgcolor)
-        table_widget.item(row, col).setToolTip(file_tex.errorMessage)
+        self.table_widget.item(row, col).setToolTip(file_tex.errorMessage)
 
         # Duplicate
         col = col+1
         status = ""
         if file_tex.duplicate:
             status = "X"
-        cell = self.addTextCell(table_widget, row, col, status)
+        cell = self.addTextCell(row, col, status)
 
         # Target name
         col = col+1
         text = file_tex.target + "." + file_tex.channel
-        cell = self.addTextCell(table_widget, row, col, text)
+        cell = self.addTextCell(row, col, text)
         if text == ".":
             cell.setBackgroundColor(QtCore.Qt.red)
             cell.setTextColor(QtCore.Qt.black)
@@ -125,14 +149,14 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
 
         # Shading group
         col = col+1
-        self.addTextCell(table_widget, row, col, file_tex.shadingGroup)
+        self.addTextCell(row, col, file_tex.shadingGroup)
 
         # File name
         col = col+1
         filename = file_tex.fileName
         if not filename:
             filename = "FILE NOT FOUND"
-        cell = self.addTextCell(table_widget, row, col, filename)
+        cell = self.addTextCell(row, col, filename)
         # TO-DO: set color to naming error condition
         if file_tex.verifyTextureName():
             pass
@@ -141,24 +165,24 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
             fgcolor = QtCore.Qt.black
             cell.setBackground(bgcolor)
             cell.setForeground(fgcolor)
-        table_widget.item(row, col).setToolTip(file_tex.fullPath)
+        self.table_widget.item(row, col).setToolTip(file_tex.fullPath)
 
         # Projection
         col = col+1
         txt = ""
         if file_tex.throughProjection:
             txt = "X"
-        cell = self.addTextCell(table_widget, row, col, txt)
+        cell = self.addTextCell(row, col, txt)
 
         # Map type
         col = col+1
-        cell = self.addTextCell(table_widget, row, col, file_tex.mapType)
+        cell = self.addTextCell(row, col, file_tex.mapType)
 
         # Resolution
         col = col+1
-        cell = self.addTextCell(table_widget, row, col, file_tex.buildResolutionString())
+        cell = self.addTextCell(row, col, file_tex.buildResolutionString())
         tooltip = str(file_tex.resX) + "x" + str(file_tex.resY)
-        table_widget.item(row, col).setToolTip(tooltip)
+        self.table_widget.item(row, col).setToolTip(tooltip)
 
         # Color space
         col = col+1
@@ -181,7 +205,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
                 #combo_box.setBackground(bgcolor)
                 #combo_box.setForeground(fgcolor)
         else:
-            cell = self.addTextCell(table_widget, row, col, file_tex.colorSpace)
+            cell = self.addTextCell(row, col, file_tex.colorSpace)
             if not file_tex.valid and "colorSpace" in file_tex.errors:
                 bgcolor = QtCore.Qt.red
                 fgcolor = QtCore.Qt.black
@@ -190,7 +214,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
 
         # File format
         col = col+1
-        cell = self.addTextCell(table_widget, row, col, file_tex.fileFormat)
+        cell = self.addTextCell(row, col, file_tex.fileFormat)
         if not file_tex.valid and "fileFormat" in file_tex.errors:
             bgcolor = QtCore.Qt.red
             fgcolor = QtCore.Qt.black
@@ -199,11 +223,11 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
 
         # Version
         col = col+1
-        cell = self.addTextCell(table_widget, row, col, str(file_tex.version))
+        cell = self.addTextCell(row, col, str(file_tex.version))
 
         # Source
         col = col+1
-        cell = self.addTextCell(table_widget, row, col, tlc.shading.textureanalyzer.imgSrcName[file_tex.imgSrc])
+        cell = self.addTextCell(row, col, tlc.shading.textureanalyzer.imgSrcName[file_tex.imgSrc])
         if file_tex.imgSrc == tlc.shading.textureanalyzer.ImageSource.IMG_SRC_UNKNOWN:
             bgcolor = QtCore.Qt.red
             fgcolor = QtCore.Qt.black
@@ -212,24 +236,24 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
 
         # Element ID
         col = col+1
-        cell = self.addTextCell(table_widget, row, col, file_tex.elementID)
+        cell = self.addTextCell(row, col, file_tex.elementID)
 
         # Texel density
         col = col+1
 
         ntd_text = file_tex.getNormalizedTexelDensity()
-        cell = self.addTextCell(table_widget, row, col, file_tex.getNormalizedTexelDensity())
+        cell = self.addTextCell(row, col, file_tex.getNormalizedTexelDensity())
 
         # Meshes
         col = col+1
-        cell = self.addTextCell(table_widget, row, col, "")
+        cell = self.addTextCell(row, col, "")
         meshes = file_tex.getMeshes()
         if meshes:
             cell.setText(str(len(meshes)) + " nodes")
             tooltip_msg = "Texture applied to:"
             for n in meshes:
                 tooltip_msg += "\n" + n
-            table_widget.item(row, col).setToolTip(tooltip_msg)
+            self.table_widget.item(row, col).setToolTip(tooltip_msg)
 
 
     def populateUI(self, textures):
@@ -245,9 +269,12 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         self.ui.texCheckerTableWidget.setHorizontalHeaderLabels(col_labels)
 
         for tex in textures:
-            self.addFileTexture(self.ui.texCheckerTableWidget, tex)
+            self.addFileTexture(tex)
 
-        self.ui.texCheckerTableWidget.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+        if not self.resized:
+            #self.ui.texCheckerTableWidget.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+            self.resizeTable()
+            self.resized = True
 
 
     def createConnections(self):
@@ -356,6 +383,8 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
     def fixAlphaFromLuminance(self, row):
         file_tex = self.fileTextureObjects[row]
         cmds.setAttr(file_tex.nodeName + ".alphaIsLuminance", 1)
+        file_tex.reCheck()
+        self.updateRow(row)
 
     def selectTarget(self, row):
         cmds.select(self.fileTextureObjects[row].target)
@@ -371,6 +400,9 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
 
     def fixColorSpace(self, row):
         self.fileTextureObjects[row].fixColorSpace()
+        file_tex = self.fileTextureObjects[row]
+        file_tex.reCheck()
+        self.updateRow(row)
 
 def run():
     """Run the checker
