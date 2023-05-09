@@ -71,7 +71,7 @@
           <x>0</x>
           <y>0</y>
           <width>328</width>
-          <height>266</height>
+          <height>264</height>
          </rect>
         </property>
         <property name="sizePolicy">
@@ -99,6 +99,12 @@
     <layout class="QHBoxLayout" name="horizontalLayout_00">
      <item>
       <widget class="QPushButton" name="publish_button">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>Publish</string>
        </property>
@@ -106,6 +112,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="check_button">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>Check all</string>
        </property>

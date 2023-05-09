@@ -1,25 +1,30 @@
 import maya.cmds as cmds
-import tlc.common.checkers.masterofcheckers_ui as master_ui
-from importlib import reload
+import tlc.common.checkers.masterofcheckers_ui as main_ui
+import tlc.common.pipeline as asset_file
 
-def start(): #Función "start" a la que cambie el nombre
-    file_name = cmds.file( query=True, sn=True, shn=True)
-    file_name = file_name.split("_")
-    check = ["pipeline","shading","naming"]
+check_basic = ["pipeline","naming"]
+check_dptID = { #TO-DO
+    "MODELING" : ["modeling"],
+    "RIGGING" : ["modeling","rigging"],
+    "CLOTH" : [], 
+    "HAIR" : [],
+    "SHADING" : ["modeling","shading"],
+    "LIGHTING" : [],
+    "FX" : []
+}
 
+def start():
+    check = []
+    asset = asset_file.AssetFile()
     try:
-        taskID = file_name[2]
-        if taskID == "mlp" or taskID == "mhp" or taskID == "msc" or taskID == "bls":
-            check.append("modeling")
-        if taskID == "anim" or taskID == "layout":
-            check.append("rigging")
+        asset.createForOpenScene()
+        check = check_basic + check_dptID[asset.dptID]
     except:
-        # print("Invalid scene name")
-        pass
+        print ("\n### Error: Invalid name or project path ###\n")
 
-    reload (master_ui)
-    master_ui.run(check)
+    main_ui.run(check)
 
-def sceneReader():
-    nodes= []
-    pass
+def sceneNodesReader():
+    objects_list= []
+    objects_list = cmds.ls(tr=True, v=True) 
+    return objects_list
