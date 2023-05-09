@@ -125,7 +125,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
             bgcolor = QtCore.Qt.red
         elif "imgSrc" in file_tex.errors:
             status = "WARN"
-            bgcolor = QtGui.QColor(255,127,0)
+            bgcolor = QtGui.QColor(255,127,0)   # Orange
         cell = self.addTextCell(row, col, status)
         cell.setBackgroundColor(bgcolor)
         cell.setTextColor(fgcolor)
@@ -154,17 +154,20 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         # File name
         col = col+1
         filename = file_tex.fileName
-        if not filename:
-            filename = "FILE NOT FOUND"
         cell = self.addTextCell(row, col, filename)
-        # TO-DO: set color to naming error condition
-        if file_tex.verifyTextureName():
-            pass
-        else:
+        if file_tex.missingFile:
+            filename = "FILE NOT FOUND"
             bgcolor = QtCore.Qt.red
             fgcolor = QtCore.Qt.black
             cell.setBackground(bgcolor)
             cell.setForeground(fgcolor)
+        # TO-DO: set color to naming error condition
+        if not file_tex.missingFile:
+            if not file_tex.verifyTextureName():
+                bgcolor = QtGui.QColor(255,127,0)   # Orange
+                fgcolor = QtCore.Qt.black
+                cell.setBackground(bgcolor)
+                cell.setForeground(fgcolor)
         self.table_widget.item(row, col).setToolTip(file_tex.fullPath)
 
         # Projection
@@ -177,6 +180,11 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         # Map type
         col = col+1
         cell = self.addTextCell(row, col, file_tex.mapType)
+        if file_tex.mapType == "unknown":
+            bgcolor = QtCore.Qt.red
+            fgcolor = QtCore.Qt.black
+            cell.setBackground(bgcolor)
+            cell.setForeground(fgcolor)
 
         # Resolution
         col = col+1
