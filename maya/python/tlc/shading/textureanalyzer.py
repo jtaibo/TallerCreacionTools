@@ -57,12 +57,16 @@ inputConnectionsToMapType = {
     "aiStandardSurface":{
         "baseColor":"albedo",
         "metalness":"metalness",
-        "specularRoughness":"roughness"
+        "specularRoughness":"roughness",
+        "opacity":"opacity",
+        "emissionColor":"emission"
     },
     "standardSurface":{
         "baseColor":"albedo",
         "metalness":"metalness",
-        "specularRoughness":"roughness"
+        "specularRoughness":"roughness",
+        "opacity":"opacity",
+        "emissionColor":"emission"
     },
     "aiToon":{
         "baseColor":"albedo",
@@ -509,8 +513,20 @@ class FileTexture():
         This method sets fields pathInProject, fileName, fileFormat
         """
 
-        self.fileName = os.path.basename(self.fullPath).split(".")[0]
-        self.fileFormat = os.path.basename(self.fullPath).split(".")[1]
+        if not self.fullPath:
+            self.fileName = "EMPTY"
+            self.fileFormat = ""
+            self.valid = False
+            self.errorMessage += "Texture path empty"
+        elif not "." in os.path.basename(self.fullPath):
+            self.fileName = os.path.basename(self.fullPath).split(".")[0]
+            self.fileFormat = "unknown"
+            self.valid = False
+            self.errorMessage += "Texture has no extension (unknown format)"
+            self.errors.add("fileFormat")
+        else:
+            self.fileName = os.path.basename(self.fullPath).split(".")[0]
+            self.fileFormat = os.path.basename(self.fullPath).split(".")[1]
 
         # Check whether the file is accessible
         if not os.path.isfile(self.fullPath) or not os.access(self.fullPath, os.R_OK):
