@@ -49,9 +49,6 @@ class CheckerWindow(QtWidgets.QDialog):
     """Generic Window (meant originally for checkers, but maybe extendable to other uses)
     """
 
-    uiFile = ""
-
-    mainLayout = None
 
     def __init__(self, ui_file, title="", parent=getMayaMainWindow()):
         """Constructor
@@ -65,6 +62,7 @@ class CheckerWindow(QtWidgets.QDialog):
         if title:
             self.setWindowTitle(title)
         self.uiFile = ui_file
+        self.mainLayout = None
 
         self.initUI()
         self.createLayout()

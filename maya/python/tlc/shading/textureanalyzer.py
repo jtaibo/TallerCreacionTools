@@ -126,98 +126,54 @@ class FileTexture():
     """File texture class
     """
 
-    nodeName = ""
-    """Texture node name
-    """
-    fullPath = ""
-    """Full path of the file texture (including file name)
-    """
-    valid = False
-    """Texture is valid (has passed basic checks)
-    """
-    errorMessage = ""
-    """Error message (set when valid==False)
-    """
-    errors = set()
-    """Errors detected (colorSpace, fileFormat)
-    """
-    missingFile = False
-    """File not found (or readable) in disk
-    """
-    pathInProject = ""
-    """File texture path in project (excluding file name)
-    """
-    fileName = ""
-    """Texture file name (including extension)
-    """
-    resX = 0
-    """Width in pixels
-    """
-    resY = 0
-    """Height in pixels
-    """
-    colorSpace = ""
-    """Color space
-    """
-    channel = ""
-    """Channel the texture is connected to
-    """
-    mapType = ""
-    """Map type (following pipeline definition)
-    """
-    target = ""
-    """Node the texture is connected to (excluding projections and other modifiers)
-
-    Returns:
-        str: Node name
-    """
-    shadingGroup = ""
-    """Shading group at the end of the shading network of the texture
-    """
-    fileFormat = ""
-    pixelFormat = ""
-    worldSize = ""
-    elementID = ""
-    version = 0
-
-    imgSrc = ImageSource.IMG_SRC_UNKNOWN
-    """Image source/origin (own or third party catalog: Megascans, HDRIHaven, ...)
-    """
-    throughAlpha = False
-    throughProjection = False
-    throughNormal = False
-    throughDisplacement = False
-    duplicate = False
-
-    # UDIM
-
-    assetFile = None
-    """AssetFile object. Asset file where texture is located
-    """
-
     def __init__(self, node):
         """Constructor
 
         Args:
             node (str): Texture file node name
         """
+
         self.errorMessage = ""
+        """Error message (set when valid==False)
+        """
         self.missingFile = False
+        """File not found (or readable) in disk
+        """
         self.pathInProject = ""
+        """File texture path in project (excluding file name)
+        """
         self.fileName = ""
+        """Texture file name (including extension)
+        """
         self.resX = 0
+        """Width in pixels
+        """
         self.resY = 0
+        """Height in pixels
+        """
         self.colorSpace = ""
+        """Color space
+        """
         self.channel = ""
+        """Channel the texture is connected to
+        """
         self.mapType = ""
+        """Map type (following pipeline definition)
+        """
         self.target = ""
+        """Node the texture is connected to (excluding projections and other modifiers)
+        """
         self.shadingGroup = ""
+        """Shading group at the end of the shading network of the texture
+        """
         self.fileFormat = ""
         self.pixelFormat = ""
         self.worldSize = ""
         self.elementID = ""
         self.version = 0
         self.imgSrc = ImageSource.IMG_SRC_UNKNOWN
+        """Image source/origin (own or third party catalog: Megascans, HDRIHaven, ...)
+        """
         self.throughAlpha = False
         self.throughProjection = False
         self.throughNormal = False
@@ -225,9 +181,22 @@ class FileTexture():
         self.duplicate = False
 
         self.nodeName = node
+        """Texture node name
+        """
         self.fullPath = cmds.getAttr( node + ".fileTextureName")
+        """Full path of the file texture (including file name)
+        """
         self.valid = True
+        """Texture is valid (has passed basic checks)
+        """
         self.errors = set()
+        """Errors detected (colorSpace, fileFormat, ...)
+        """
+        assetFile = None
+        """AssetFile object. Asset file where texture is located
+        """
+
+        # UDIM (TO-DO)
 
         self.checkFileTexture()
         print("Full path: ", self.fullPath)
