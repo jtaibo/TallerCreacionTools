@@ -21,9 +21,6 @@ tlc.modeling.meshcheck.MeshChecker
    
       ~MeshChecker.__init__
       ~MeshChecker.analyze
-      ~MeshChecker.analyzeEdges
-      ~MeshChecker.analyzeFaces
-      ~MeshChecker.analyzeVertices
       ~MeshChecker.reset
       ~MeshChecker.writeDataCSV
       ~MeshChecker.writeHeaderCSV
@@ -36,9 +33,9 @@ tlc.modeling.meshcheck.MeshChecker
 
    .. autosummary::
    
+      ~MeshChecker.selection
       ~MeshChecker.bbox
       ~MeshChecker.geoConditions
-      ~MeshChecker.selection
       ~MeshChecker.uvConditions
    
    

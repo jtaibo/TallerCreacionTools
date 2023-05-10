@@ -88,7 +88,7 @@
              
   <section id="tlc-modeling-meshcheck-meshchecker">
 <h1>tlc.modeling.meshcheck.MeshChecker<a class="headerlink" href="#tlc-modeling-meshcheck-meshchecker" title="Permalink to this heading"></a></h1>
-<a class="reference internal image-reference" href="../_images/classes_tlc.modeling.meshcheck.png"><img alt="../_images/classes_tlc.modeling.meshcheck.png" src="../_images/classes_tlc.modeling.meshcheck.png" style="width: 445.0px; height: 324.0px;" /></a>
+<a class="reference internal image-reference" href="../_images/classes_tlc.modeling.meshcheck.png"><img alt="../_images/classes_tlc.modeling.meshcheck.png" src="../_images/classes_tlc.modeling.meshcheck.png" style="width: 236.0px; height: 224.0px;" /></a>
 <dl class="py class">
 <dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tlc.modeling.meshcheck.</span></span><span class="sig-name descname"><span class="pre">MeshChecker</span></span><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker" title="Permalink to this definition"></a></dt>
@@ -110,22 +110,13 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.analyze" title="tlc.modeling.meshcheck.MeshChecker.analyze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze</span></code></a>()</p></td>
 <td><p>Analyze the selected objects</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyzeEdges</span></code>(dag, selected_components)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyzeFaces</span></code>(dag, selected_components)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyzeVertices</span></code>(dag, selected_components)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.reset" title="tlc.modeling.meshcheck.MeshChecker.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.reset" title="tlc.modeling.meshcheck.MeshChecker.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>()</p></td>
 <td><p>Initialize object with default values (reset counters)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.writeDataCSV" title="tlc.modeling.meshcheck.MeshChecker.writeDataCSV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">writeDataCSV</span></code></a>(file)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.writeDataCSV" title="tlc.modeling.meshcheck.MeshChecker.writeDataCSV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">writeDataCSV</span></code></a>(file)</p></td>
 <td><p>Write the CSV data for meshcheck data</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.writeHeaderCSV" title="tlc.modeling.meshcheck.MeshChecker.writeHeaderCSV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">writeHeaderCSV</span></code></a>(file)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.writeHeaderCSV" title="tlc.modeling.meshcheck.MeshChecker.writeHeaderCSV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">writeHeaderCSV</span></code></a>(file)</p></td>
 <td><p>Write the CSV header for meshcheck data</p></td>
 </tr>
 </tbody>
@@ -133,14 +124,14 @@
 <p class="rubric">Attributes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.bbox" title="tlc.modeling.meshcheck.MeshChecker.bbox"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bbox</span></code></a></p></td>
-<td><p>Global world-space bounding box for the selection [xmin, ymin, zmin, xmax, ymax, zmax]</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.geoConditions" title="tlc.modeling.meshcheck.MeshChecker.geoConditions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geoConditions</span></code></a></p></td>
-<td><p>Dictionary/map of geometry condition checkers (using name as key)</p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.selection" title="tlc.modeling.meshcheck.MeshChecker.selection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">selection</span></code></a></p></td>
 <td><p>Original selection to be analized</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.bbox" title="tlc.modeling.meshcheck.MeshChecker.bbox"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bbox</span></code></a></p></td>
+<td><p>Global world-space bounding box for the selection [xmin, ymin, zmin, xmax, ymax, zmax]</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.geoConditions" title="tlc.modeling.meshcheck.MeshChecker.geoConditions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geoConditions</span></code></a></p></td>
+<td><p>Dictionary/map of geometry condition checkers (using name as key)</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tlc.modeling.meshcheck.MeshChecker.uvConditions" title="tlc.modeling.meshcheck.MeshChecker.uvConditions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uvConditions</span></code></a></p></td>
 <td><p>Dictionary/map of UV condition checkers (using name as key)</p></td>
@@ -155,13 +146,13 @@
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.bbox">
-<span class="sig-name descname"><span class="pre">bbox</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[1.7976931348623157e+308,</span> <span class="pre">1.7976931348623157e+308,</span> <span class="pre">1.7976931348623157e+308,</span> <span class="pre">-1.7976931348623157e+308,</span> <span class="pre">-1.7976931348623157e+308,</span> <span class="pre">-1.7976931348623157e+308]</span></em><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.bbox" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">bbox</span></span><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.bbox" title="Permalink to this definition"></a></dt>
 <dd><p>Global world-space bounding box for the selection [xmin, ymin, zmin, xmax, ymax, zmax]</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.geoConditions">
-<span class="sig-name descname"><span class="pre">geoConditions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.geoConditions" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">geoConditions</span></span><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.geoConditions" title="Permalink to this definition"></a></dt>
 <dd><p>Dictionary/map of geometry condition checkers (using name as key)</p>
 </dd></dl>
 
@@ -173,13 +164,13 @@
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.selection">
-<span class="sig-name descname"><span class="pre">selection</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.selection" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">selection</span></span><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.selection" title="Permalink to this definition"></a></dt>
 <dd><p>Original selection to be analized</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tlc.modeling.meshcheck.MeshChecker.uvConditions">
-<span class="sig-name descname"><span class="pre">uvConditions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.uvConditions" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">uvConditions</span></span><a class="headerlink" href="#tlc.modeling.meshcheck.MeshChecker.uvConditions" title="Permalink to this definition"></a></dt>
 <dd><p>Dictionary/map of UV condition checkers (using name as key)</p>
 </dd></dl>
 
