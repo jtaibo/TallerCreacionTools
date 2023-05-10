@@ -3,6 +3,9 @@ tlc.modeling.meshcheck\_ui.MeshCheckerUI
 
 .. currentmodule:: tlc.modeling.meshcheck_ui
 
+.. uml:: tlc.modeling.meshcheck_ui
+    :classes:
+
 .. autoclass:: MeshCheckerUI
    :members:
    :show-inheritance:
@@ -27,12 +30,5 @@ tlc.modeling.meshcheck\_ui.MeshCheckerUI
    
 
    
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-   
-      ~MeshCheckerUI.mainLayout
-      ~MeshCheckerUI.uiFile
    
    

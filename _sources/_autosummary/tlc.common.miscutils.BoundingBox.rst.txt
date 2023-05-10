@@ -3,6 +3,9 @@ tlc.common.miscutils.BoundingBox
 
 .. currentmodule:: tlc.common.miscutils
 
+.. uml:: tlc.common.miscutils
+    :classes:
+
 .. autoclass:: BoundingBox
    :members:
    :show-inheritance:

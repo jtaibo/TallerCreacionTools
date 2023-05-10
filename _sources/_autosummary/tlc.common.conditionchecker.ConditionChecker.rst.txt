@@ -3,6 +3,9 @@ tlc.common.conditionchecker.ConditionChecker
 
 .. currentmodule:: tlc.common.conditionchecker
 
+.. uml:: tlc.common.conditionchecker
+    :classes:
+
 .. autoclass:: ConditionChecker
    :members:
    :show-inheritance:
@@ -29,12 +32,12 @@ tlc.common.conditionchecker.ConditionChecker
 
    .. autosummary::
    
-      ~ConditionChecker.count
-      ~ConditionChecker.displayName
-      ~ConditionChecker.elms
-      ~ConditionChecker.errorLevel
       ~ConditionChecker.name
-      ~ConditionChecker.selectable
+      ~ConditionChecker.displayName
       ~ConditionChecker.toolTip
+      ~ConditionChecker.selectable
+      ~ConditionChecker.count
+      ~ConditionChecker.errorLevel
+      ~ConditionChecker.elms
    
    

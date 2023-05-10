@@ -3,6 +3,9 @@ tlc.common.qtutils.CheckerWindow
 
 .. currentmodule:: tlc.common.qtutils
 
+.. uml:: tlc.common.qtutils
+    :classes:
+
 .. autoclass:: CheckerWindow
    :members:
    :show-inheritance:
@@ -25,12 +28,5 @@ tlc.common.qtutils.CheckerWindow
    
 
    
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-   
-      ~CheckerWindow.mainLayout
-      ~CheckerWindow.uiFile
    
    

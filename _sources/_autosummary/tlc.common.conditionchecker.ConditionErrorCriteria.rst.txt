@@ -3,6 +3,9 @@ tlc.common.conditionchecker.ConditionErrorCriteria
 
 .. currentmodule:: tlc.common.conditionchecker
 
+.. uml:: tlc.common.conditionchecker
+    :classes:
+
 .. autoclass:: ConditionErrorCriteria
    :members:
    :show-inheritance:

@@ -3,6 +3,9 @@ tlc.common.pipeline.AssetFile
 
 .. currentmodule:: tlc.common.pipeline
 
+.. uml:: tlc.common.pipeline
+    :classes:
+
 .. autoclass:: AssetFile
    :members:
    :show-inheritance:
@@ -34,9 +37,9 @@ tlc.common.pipeline.AssetFile
    
       ~AssetFile.asset
       ~AssetFile.dptID
-      ~AssetFile.fullPath
       ~AssetFile.taskID
       ~AssetFile.version
       ~AssetFile.workingVersion
+      ~AssetFile.fullPath
    
    

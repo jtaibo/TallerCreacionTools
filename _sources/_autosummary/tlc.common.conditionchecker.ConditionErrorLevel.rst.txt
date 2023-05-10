@@ -3,6 +3,9 @@ tlc.common.conditionchecker.ConditionErrorLevel
 
 .. currentmodule:: tlc.common.conditionchecker
 
+.. uml:: tlc.common.conditionchecker
+    :classes:
+
 .. autoclass:: ConditionErrorLevel
    :members:
    :show-inheritance:

@@ -3,6 +3,9 @@ tlc.modeling
 
 .. automodule:: tlc.modeling
 
+   .. uml:: tlc
+      :packages:
+
    
    
    

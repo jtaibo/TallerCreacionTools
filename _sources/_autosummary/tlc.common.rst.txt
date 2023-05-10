@@ -3,6 +3,9 @@ tlc.common
 
 .. automodule:: tlc.common
 
+   .. uml:: tlc
+      :packages:
+
    
    
    

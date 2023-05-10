@@ -3,6 +3,9 @@ tlc.shading.textureanalyzer\_ui
 
 .. automodule:: tlc.shading.textureanalyzer_ui
 
+   .. uml:: tlc.shading
+      :packages:
+
    
    
    

@@ -3,6 +3,9 @@ tlc.modeling.meshcheck.MeshChecker
 
 .. currentmodule:: tlc.modeling.meshcheck
 
+.. uml:: tlc.modeling.meshcheck
+    :classes:
+
 .. autoclass:: MeshChecker
    :members:
    :show-inheritance:

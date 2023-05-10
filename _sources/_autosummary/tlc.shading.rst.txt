@@ -3,6 +3,9 @@ tlc.shading
 
 .. automodule:: tlc.shading
 
+   .. uml:: tlc
+      :packages:
+
    
    
    

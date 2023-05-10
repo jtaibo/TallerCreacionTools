@@ -3,6 +3,9 @@ tlc.shading.textureanalyzer.FileTexture
 
 .. currentmodule:: tlc.shading.textureanalyzer
 
+.. uml:: tlc.shading.textureanalyzer
+    :classes:
+
 .. autoclass:: FileTexture
    :members:
    :show-inheritance:
@@ -48,32 +51,21 @@ tlc.shading.textureanalyzer.FileTexture
 
    .. autosummary::
    
-      ~FileTexture.assetFile
-      ~FileTexture.channel
-      ~FileTexture.colorSpace
-      ~FileTexture.duplicate
-      ~FileTexture.elementID
       ~FileTexture.errorMessage
-      ~FileTexture.errors
-      ~FileTexture.fileFormat
-      ~FileTexture.fileName
-      ~FileTexture.fullPath
-      ~FileTexture.imgSrc
-      ~FileTexture.mapType
       ~FileTexture.missingFile
-      ~FileTexture.nodeName
       ~FileTexture.pathInProject
-      ~FileTexture.pixelFormat
+      ~FileTexture.fileName
       ~FileTexture.resX
       ~FileTexture.resY
-      ~FileTexture.shadingGroup
+      ~FileTexture.colorSpace
+      ~FileTexture.channel
+      ~FileTexture.mapType
       ~FileTexture.target
-      ~FileTexture.throughAlpha
-      ~FileTexture.throughDisplacement
-      ~FileTexture.throughNormal
-      ~FileTexture.throughProjection
+      ~FileTexture.shadingGroup
+      ~FileTexture.imgSrc
+      ~FileTexture.nodeName
+      ~FileTexture.fullPath
       ~FileTexture.valid
-      ~FileTexture.version
-      ~FileTexture.worldSize
+      ~FileTexture.errors
    
    

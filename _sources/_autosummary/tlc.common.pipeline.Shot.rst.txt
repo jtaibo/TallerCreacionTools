@@ -3,6 +3,9 @@ tlc.common.pipeline.Shot
 
 .. currentmodule:: tlc.common.pipeline
 
+.. uml:: tlc.common.pipeline
+    :classes:
+
 .. autoclass:: Shot
    :members:
    :show-inheritance:

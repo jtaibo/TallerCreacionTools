@@ -3,6 +3,9 @@ tlc.common.qtutils
 
 .. automodule:: tlc.common.qtutils
 
+   .. uml:: tlc.common
+      :packages:
+
    
    
    

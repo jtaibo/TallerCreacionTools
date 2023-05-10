@@ -3,6 +3,9 @@ tlc.common.pipeline.Asset
 
 .. currentmodule:: tlc.common.pipeline
 
+.. uml:: tlc.common.pipeline
+    :classes:
+
 .. autoclass:: Asset
    :members:
    :show-inheritance:
@@ -32,9 +35,9 @@ tlc.common.pipeline.Asset
 
    .. autosummary::
    
-      ~Asset.assetID
-      ~Asset.assetType
-      ~Asset.inLibrary
       ~Asset.project
+      ~Asset.assetType
+      ~Asset.assetID
+      ~Asset.inLibrary
    
    

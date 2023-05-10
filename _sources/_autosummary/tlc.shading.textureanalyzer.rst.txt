@@ -3,6 +3,9 @@ tlc.shading.textureanalyzer
 
 .. automodule:: tlc.shading.textureanalyzer
 
+   .. uml:: tlc.shading
+      :packages:
+
    
    
    .. rubric:: Module Attributes

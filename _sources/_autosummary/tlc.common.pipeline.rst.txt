@@ -3,6 +3,9 @@ tlc.common.pipeline
 
 .. automodule:: tlc.common.pipeline
 
+   .. uml:: tlc.common
+      :packages:
+
    
    
    

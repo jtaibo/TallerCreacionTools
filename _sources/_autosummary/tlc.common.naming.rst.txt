@@ -3,6 +3,9 @@ tlc.common.naming
 
 .. automodule:: tlc.common.naming
 
+   .. uml:: tlc.common
+      :packages:
+
    
    
    .. rubric:: Module Attributes

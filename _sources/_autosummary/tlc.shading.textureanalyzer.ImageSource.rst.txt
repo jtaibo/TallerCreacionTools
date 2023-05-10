@@ -3,6 +3,9 @@ tlc.shading.textureanalyzer.ImageSource
 
 .. currentmodule:: tlc.shading.textureanalyzer
 
+.. uml:: tlc.shading.textureanalyzer
+    :classes:
+
 .. autoclass:: ImageSource
    :members:
    :show-inheritance:

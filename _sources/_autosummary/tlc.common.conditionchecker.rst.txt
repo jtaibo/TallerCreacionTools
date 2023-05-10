@@ -3,6 +3,9 @@ tlc.common.conditionchecker
 
 .. automodule:: tlc.common.conditionchecker
 
+   .. uml:: tlc.common
+      :packages:
+
    
    
    

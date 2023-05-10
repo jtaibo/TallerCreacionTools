@@ -3,6 +3,9 @@ tlc.common.miscutils
 
 .. automodule:: tlc.common.miscutils
 
+   .. uml:: tlc.common
+      :packages:
+
    
    
    

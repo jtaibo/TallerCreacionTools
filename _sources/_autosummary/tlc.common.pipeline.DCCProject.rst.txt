@@ -3,6 +3,9 @@ tlc.common.pipeline.DCCProject
 
 .. currentmodule:: tlc.common.pipeline
 
+.. uml:: tlc.common.pipeline
+    :classes:
+
 .. autoclass:: DCCProject
    :members:
    :show-inheritance:

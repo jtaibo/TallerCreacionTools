@@ -3,6 +3,9 @@ tlc.modeling.meshcheck
 
 .. automodule:: tlc.modeling.meshcheck
 
+   .. uml:: tlc.modeling
+      :packages:
+
    
    
    

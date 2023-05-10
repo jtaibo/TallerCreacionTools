@@ -3,6 +3,9 @@ tlc.shading.textureanalyzer\_ui.TextureAnalyzerUI
 
 .. currentmodule:: tlc.shading.textureanalyzer_ui
 
+.. uml:: tlc.shading.textureanalyzer_ui
+    :classes:
+
 .. autoclass:: TextureAnalyzerUI
    :members:
    :show-inheritance:
@@ -51,7 +54,5 @@ tlc.shading.textureanalyzer\_ui.TextureAnalyzerUI
    .. autosummary::
    
       ~TextureAnalyzerUI.fileTextureObjects
-      ~TextureAnalyzerUI.mainLayout
-      ~TextureAnalyzerUI.uiFile
    
    
