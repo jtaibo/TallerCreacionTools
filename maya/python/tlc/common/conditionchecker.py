@@ -62,34 +62,6 @@ class ConditionChecker():
     """Class ConditionChecker
     """
 
-    name = ""
-    """Condition name (short name used as an ID)
-    """
-
-    displayName = ""
-    """Condition name to be displayed in the UI
-    """
-
-    toolTip = ""
-    """Text to be showed as a tooltip for this condition
-    """
-
-    count = 0
-    """Number of components matching the condition
-    """
-
-    errorLevel = ConditionErrorLevel.NONE
-    """Error level
-    """
-
-    elms = []
-    """List of elements matching the condition
-    """
-
-    selectable = True
-    """The elements matching the condition can be selected
-    """
-
     def __init__(self, name="", displayName="", toolTip="", selectable=True):
         """Constructor
 
@@ -99,13 +71,31 @@ class ConditionChecker():
             toolTip (str, optional): Long description used as a tooltip. Defaults to "".
             selectable (bool, optional): Condition elements are selectable. Defaults to True.
         """
+        
         self.name = name
+        """Condition name (short name used as an ID)
+        """
         if displayName:
             self.displayName = displayName
+            """Condition name to be displayed in the UI
+            """
         else:
             self.displayName = name
         self.toolTip = toolTip
+        """Text to be showed as a tooltip for this condition
+        """
         self.selectable = selectable
+        """The elements matching the condition can be selected
+        """
+        self.count = 0
+        """Number of components matching the condition
+        """
+        self.errorLevel = ConditionErrorLevel.NONE
+        """Error level
+        """
+        self.elms = []
+        """List of elements matching the condition
+        """
 
     def reset(self):
         """Reset counter and selection list

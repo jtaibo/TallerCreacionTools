@@ -61,24 +61,24 @@ class MeshChecker():
     Statistics of a mesh
     """
 
-    selection = []
-    """Original selection to be analized
-    """
-
-    bbox = [ sys.float_info.max, sys.float_info.max, sys.float_info.max, -sys.float_info.max, -sys.float_info.max, -sys.float_info.max ]
-    """Global world-space bounding box for the selection [xmin, ymin, zmin, xmax, ymax, zmax]
-    """
-
-    geoConditions = dict()
-    """Dictionary/map of geometry condition checkers (using name as key)
-    """
-
-    uvConditions = dict()
-    """Dictionary/map of UV condition checkers (using name as key)
-    """
-
     def __init__(self):
         """Constructor
+        """
+
+        self.selection = []
+        """Original selection to be analized
+        """
+
+        self.bbox = [ sys.float_info.max, sys.float_info.max, sys.float_info.max, -sys.float_info.max, -sys.float_info.max, -sys.float_info.max ]
+        """Global world-space bounding box for the selection [xmin, ymin, zmin, xmax, ymax, zmax]
+        """
+
+        self.geoConditions = dict()
+        """Dictionary/map of geometry condition checkers (using name as key)
+        """
+
+        self.uvConditions = dict()
+        """Dictionary/map of UV condition checkers (using name as key)
         """
 
         self.geoConditions["meshes"] = ConditionChecker("meshes", "Meshes", "Number of meshes in selected elements", False)
@@ -251,17 +251,17 @@ class MeshChecker():
             selected_components = sel.getComponent(i)
             dag.extendToShape()
 
-            self.analyzeFaces(dag, selected_components)
+            self.__analyzeFaces(dag, selected_components)
 
-            self.analyzeVertices(dag, selected_components)
+            self.__analyzeVertices(dag, selected_components)
 
-            self.analyzeEdges(dag, selected_components)
+            self.__analyzeEdges(dag, selected_components)
 
         # Restore original selection
         om.MGlobal.setActiveSelectionList(self.selection)
 
 
-    def analyzeFaces(self, dag, selected_components):
+    def __analyzeFaces(self, dag, selected_components):
 
         if dag.apiType() != om.MFn.kMesh:
             om.MGlobal.displayError("Selection must be a polygon mesh.")
@@ -405,7 +405,7 @@ class MeshChecker():
             self.uvConditions["stdDevNTD"].count = self.uvConditions["varianceNTD"].count**0.5
 
 
-    def analyzeVertices(self, dag, selected_components):
+    def __analyzeVertices(self, dag, selected_components):
 
         cmds.select(cmds.polyListComponentConversion(toVertex=True))
 
@@ -429,7 +429,7 @@ class MeshChecker():
         self.geoConditions["poles"].setErrorLevel(ConditionErrorCriteria.WARN_WHEN_NOT_ZERO)
 
 
-    def analyzeEdges(self, dag, selected_components):
+    def __analyzeEdges(self, dag, selected_components):
 
         if dag.apiType() != om.MFn.kMesh:
             om.MGlobal.displayError("Selection must be a polygon mesh.")

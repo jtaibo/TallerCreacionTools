@@ -41,14 +41,6 @@ class DCCProject():
     different software in the future.
     """
 
-    path = ""
-    """Path where the project is located
-    """
-
-    projID = ""
-    """Project folder name (project ID)
-    """
-
     def __init__(self, projID, path):
         """Constructor
 
@@ -57,7 +49,11 @@ class DCCProject():
             path (str): Path where the project folder is located
         """
         self.path = path
+        """Path where the project is located
+        """
         self.projID = projID
+        """Project folder name (project ID)
+        """
 
     def getAssetsPath(self):
         """Return assets absolute path "normalized" (using UNIX slashes, not Windows backslashes)
@@ -131,34 +127,6 @@ class Asset():
     """Asset class
     """
 
-    project = None
-    """Project containing the asset
-
-    Returns:
-        DCCProject: Project object
-    """
-
-    assetType = None
-    """Asset type (key to access maps in naming module)
-
-    Returns:
-        str: Asset type
-    """
-
-    assetID = ""
-    """Asset ID
-
-    Returns:
-        str: Asset ID
-    """
-
-    inLibrary = False
-    """Asset in library
-
-    Returns:
-        bool: Asset is contained in library
-    """
-
     def __init__(self, project, assetType, assetID, inLibrary=False):
         """Constructor
 
@@ -169,9 +137,17 @@ class Asset():
             inLibrary (bool, optional): Asset is contained in library. Defaults to False.
         """
         self.project = project
+        """Project containing the asset
+        """
         self.assetType = assetType
+        """Asset type (key to access maps in naming module)
+        """
         self.assetID = assetID
+        """Asset ID
+        """
         self.inLibrary = inLibrary
+        """Asset is contained in library
+        """
 
     def getDirectoryName(self):
         """Get the asset directory.
@@ -266,29 +242,27 @@ class AssetFile():
     project in any of the departments and tasks defined in the pipeline
     """
 
-    asset = None
-    """Asset object
-    """
-    dptID = ""
-    """Department ID
-    """
-    taskID = ""
-    """Task ID inside the department
-    """
-    version = 0
-    """Public version
-    """
-    workingVersion = -1
-    """Working version (-1 if this is a published version, not working)
-    """
-    fullPath = ""
-    """Full path for the asset file
-    """
-
     def __init__(self):
         # I hate python! Why does it not allow constructor overloading?
         # F*ck! Shame on you Python! Did I say that I hate you so much?
-        pass
+        self.asset = None
+        """Asset object
+        """
+        self.dptID = ""
+        """Department ID
+        """
+        self.taskID = ""
+        """Task ID inside the department
+        """
+        self.version = 0
+        """Public version
+        """
+        self.workingVersion = -1
+        """Working version (-1 if this is a published version, not working)
+        """
+        self.fullPath = ""
+        """Full path for the asset file
+        """
 
     def createForOpenScene(self):
         """Constructor for currently open scene file

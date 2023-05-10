@@ -57,7 +57,16 @@ inputConnectionsToMapType = {
     "aiStandardSurface":{
         "baseColor":"albedo",
         "metalness":"metalness",
-        "specularRoughness":"roughness"
+        "specularRoughness":"roughness",
+        "opacity":"opacity",
+        "emissionColor":"emission"
+    },
+    "standardSurface":{
+        "baseColor":"albedo",
+        "metalness":"metalness",
+        "specularRoughness":"roughness",
+        "opacity":"opacity",
+        "emissionColor":"emission"
     },
     "aiToon":{
         "baseColor":"albedo",
@@ -117,98 +126,54 @@ class FileTexture():
     """File texture class
     """
 
-    nodeName = ""
-    """Texture node name
-    """
-    fullPath = ""
-    """Full path of the file texture (including file name)
-    """
-    valid = False
-    """Texture is valid (has passed basic checks)
-    """
-    errorMessage = ""
-    """Error message (set when valid==False)
-    """
-    errors = set()
-    """Errors detected (colorSpace, fileFormat)
-    """
-    missingFile = False
-    """File not found (or readable) in disk
-    """
-    pathInProject = ""
-    """File texture path in project (excluding file name)
-    """
-    fileName = ""
-    """Texture file name (including extension)
-    """
-    resX = 0
-    """Width in pixels
-    """
-    resY = 0
-    """Height in pixels
-    """
-    colorSpace = ""
-    """Color space
-    """
-    channel = ""
-    """Channel the texture is connected to
-    """
-    mapType = ""
-    """Map type (following pipeline definition)
-    """
-    target = ""
-    """Node the texture is connected to (excluding projections and other modifiers)
-
-    Returns:
-        str: Node name
-    """
-    shadingGroup = ""
-    """Shading group at the end of the shading network of the texture
-    """
-    fileFormat = ""
-    pixelFormat = ""
-    worldSize = ""
-    elementID = ""
-    version = 0
-
-    imgSrc = ImageSource.IMG_SRC_UNKNOWN
-    """Image source/origin (own or third party catalog: Megascans, HDRIHaven, ...)
-    """
-    throughAlpha = False
-    throughProjection = False
-    throughNormal = False
-    throughDisplacement = False
-    duplicate = False
-
-    # UDIM
-
-    assetFile = None
-    """AssetFile object. Asset file where texture is located
-    """
-
     def __init__(self, node):
         """Constructor
 
         Args:
             node (str): Texture file node name
         """
+
         self.errorMessage = ""
+        """Error message (set when valid==False)
+        """
         self.missingFile = False
+        """File not found (or readable) in disk
+        """
         self.pathInProject = ""
+        """File texture path in project (excluding file name)
+        """
         self.fileName = ""
+        """Texture file name (including extension)
+        """
         self.resX = 0
+        """Width in pixels
+        """
         self.resY = 0
+        """Height in pixels
+        """
         self.colorSpace = ""
+        """Color space
+        """
         self.channel = ""
+        """Channel the texture is connected to
+        """
         self.mapType = ""
+        """Map type (following pipeline definition)
+        """
         self.target = ""
+        """Node the texture is connected to (excluding projections and other modifiers)
+        """
         self.shadingGroup = ""
+        """Shading group at the end of the shading network of the texture
+        """
         self.fileFormat = ""
         self.pixelFormat = ""
         self.worldSize = ""
         self.elementID = ""
         self.version = 0
         self.imgSrc = ImageSource.IMG_SRC_UNKNOWN
+        """Image source/origin (own or third party catalog: Megascans, HDRIHaven, ...)
+        """
         self.throughAlpha = False
         self.throughProjection = False
         self.throughNormal = False
@@ -216,9 +181,23 @@ class FileTexture():
         self.duplicate = False
 
         self.nodeName = node
+        """Texture node name
+        """
         self.fullPath = cmds.getAttr( node + ".fileTextureName")
+        """Full path of the file texture (including file name)
+        """
         self.valid = True
+        """Texture is valid (has passed basic checks)
+        """
         self.errors = set()
+        """Errors detected (colorSpace, fileFormat, ...)
+        """
+        assetFile = None
+        """AssetFile object. Asset file where texture is located
+        """
+
+        # UDIM (TO-DO)
+
         self.checkFileTexture()
         print("Full path: ", self.fullPath)
         print("Node: ", self.nodeName)
@@ -254,16 +233,76 @@ class FileTexture():
         if self.imgSrc == ImageSource.IMG_SRC_UNKNOWN:
             self.errorMessage += "Image source unknown\n"
             self.errors.add("imgSrc")
-            self.valid = False
+            #self.valid = False
         print("Source: ", imgSrcName[self.imgSrc])
 
-        if not self.verifyTextureName():
+        if self.imgSrc != ImageSource.IMG_SRC_UNKNOWN and not self.verifyTextureName():
             self.valid = False
 
         self.validateColorSpace()
 
         if not self.valid:
             print("ERROR:", self.errorMessage)
+
+
+    def reCheck(self):
+        """Recheck file texture node
+        """
+        self.errorMessage = ""
+        self.missingFile = False
+        self.pathInProject = ""
+        self.fileName = ""
+        self.resX = 0
+        self.resY = 0
+        self.colorSpace = ""
+        self.channel = ""
+        self.mapType = ""
+        self.target = ""
+        self.shadingGroup = ""
+        self.fileFormat = ""
+        self.pixelFormat = ""
+        self.worldSize = ""
+        self.elementID = ""
+        self.version = 0
+        self.imgSrc = ImageSource.IMG_SRC_UNKNOWN
+        self.throughAlpha = False
+        self.throughProjection = False
+        self.throughNormal = False
+        self.throughDisplacement = False
+        self.duplicate = False
+        self.fullPath = cmds.getAttr( self.nodeName + ".fileTextureName")
+        self.valid = True
+        self.errors = set()
+
+        self.checkFileTexture()
+
+        self.colorSpace = cmds.getAttr( self.nodeName + ".colorSpace")
+
+        self.resX = int(cmds.getAttr( self.nodeName + ".outSizeX"))
+        self.resY = int(cmds.getAttr( self.nodeName + ".outSizeY"))
+
+        self.mapType = self.checkDestination(self.nodeName)
+
+        self.checkAlpha()
+
+        self.shadingGroup = self.checkShadingGroup()
+
+        self.assetFile = pipeline.AssetFile()
+        try:
+            self.assetFile.createForOpenScene()
+        except:
+            self.errorMessage += "Scene not compliant with the pipeline\n"
+            self.assetFile = None
+
+        self.imgSrc = self.getImageSource()
+        if self.imgSrc == ImageSource.IMG_SRC_UNKNOWN:
+            self.errorMessage += "Image source unknown\n"
+            self.errors.add("imgSrc")
+
+        if self.imgSrc != ImageSource.IMG_SRC_UNKNOWN and not self.verifyTextureName():
+            self.valid = False
+
+        self.validateColorSpace()
 
 
     def getConnectionsThroughAttrs(node, outAttrs):
@@ -350,6 +389,7 @@ class FileTexture():
         elif cmds.nodeType(conn) == "displacementShader":
             node = conn.split(".")[0]
             self.throughDisplacement = True
+            self.channel = "displacement"
             conn = FileTexture.getFirstConnectionThroughAttrs(node, ["displacement"])
             if not conn:
                 self.errorMessage += "Displacement shader not connected\n"
@@ -358,10 +398,12 @@ class FileTexture():
             if not cmds.nodeType(node) == "shadingEngine":
                 self.errorMessage += "Displacement shader not connected to a Shading Engine/Group\n"
                 return "unknown"
+            self.target = node
             conn = FileTexture.getFirstConnectionThroughAttrs(node, ["surfaceShader"])
             if not conn:
                 self.errorMessage += "Shading group has no surface shader: " + node + "\n"
                 return "unknown"
+            return "displacement"
 
         # Skip nodes until we reach a valid material
 #        while not validMaterial(conn):
@@ -371,8 +413,6 @@ class FileTexture():
         if FileTexture.validMaterial(conn):
             self.target = conn.split(".")[0]
             conn_attr = conn.split(".")[1]
-            if self.throughDisplacement:
-                return "displacement"
             if self.throughNormal:
                 if conn_attr != "normalCamera":
                     self.errorMessage += "Unknown connection: " + conn + "\n"
@@ -442,6 +482,21 @@ class FileTexture():
         This method sets fields pathInProject, fileName, fileFormat
         """
 
+        if not self.fullPath:
+            self.fileName = "EMPTY"
+            self.fileFormat = ""
+            self.valid = False
+            self.errorMessage += "Texture path empty"
+        elif not "." in os.path.basename(self.fullPath):
+            self.fileName = os.path.basename(self.fullPath).split(".")[0]
+            self.fileFormat = "unknown"
+            self.valid = False
+            self.errorMessage += "Texture has no extension (unknown format)"
+            self.errors.add("fileFormat")
+        else:
+            self.fileName = os.path.basename(self.fullPath).split(".")[0]
+            self.fileFormat = os.path.basename(self.fullPath).split(".")[1]
+
         # Check whether the file is accessible
         if not os.path.isfile(self.fullPath) or not os.access(self.fullPath, os.R_OK):
             self.valid = False
@@ -454,8 +509,6 @@ class FileTexture():
         if self.fullPath.startswith(sourceimages_dir):
             path = self.fullPath[len(sourceimages_dir):]
             self.pathInProject = os.path.dirname(path)
-            self.fileName = os.path.basename(path).split(".")[0]
-            self.fileFormat = os.path.basename(path).split(".")[1]
             #print("Path in project: ", self.pathInProject)
             #print("Base name: ", self.fileName)
         else:
@@ -478,6 +531,8 @@ class FileTexture():
             return self.verifyFileNameTextureHaven()
         elif self.imgSrc == ImageSource.IMG_SRC_HDRIHAVEN:
             return self.verifyFileNameHDRIHaven()
+        else:
+            return False
 
     def verifyFileTextureNameOwn(self, set_errors=True):
         """Verify texture name matches texture configuration and format defined in the pipeline
@@ -518,7 +573,9 @@ class FileTexture():
         map_type = fields[4]
         # TO-DO: Check
 
-        resolution = fields[5]
+        #resolution = fields[5]
+        resolution = fields[5].replace("K", "k")    # Permissive mode. Allow both capitalization of k
+
         if resolution != self.buildResolutionString():
             if set_errors:
                 self.errorMessage += "Texture file name error. Resolution mismatch\n"
@@ -530,7 +587,8 @@ class FileTexture():
             if set_errors:
                 self.errorMessage += "Texture file name error. Version bad formatted\n"
             naming_ok = False
-        self.version = int(str_ver[1:])
+        else:
+            self.version = int(str_ver[1:])
 
         return naming_ok
 
@@ -676,7 +734,7 @@ class FileTexture():
                     # OpenMaya API 2.0
                     dag = sel.getDagPath(i)
                     selected_components = sel.getComponent(i)
-                    dag.extendToShape()
+                    #dag.extendToShape()
                     if dag.apiType() == om.MFn.kMesh:
                         itFaces = om.MItMeshPolygon(dag, selected_components[1])
                         ntd_array = []
