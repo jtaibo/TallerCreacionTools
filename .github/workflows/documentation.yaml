@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Setup Graphviz
+        uses: ts-graphviz/setup-graphviz@v1
       - uses: actions/setup-python@v3
       - name: Install dependencies
         run: |
