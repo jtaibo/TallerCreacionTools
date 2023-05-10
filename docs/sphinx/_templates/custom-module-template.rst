@@ -2,6 +2,9 @@
 
 .. automodule:: {{ fullname }}
 
+   .. uml:: {{ module }}
+      :packages:
+
    {% block attributes %}
    {% if attributes %}
    .. rubric:: {{ _('Module Attributes') }}

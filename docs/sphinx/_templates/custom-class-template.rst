@@ -2,6 +2,9 @@
 
 .. currentmodule:: {{ module }}
 
+.. uml:: {{ module }}
+    :classes:
+
 .. autoclass:: {{ objname }}
    :members:
    :show-inheritance:
