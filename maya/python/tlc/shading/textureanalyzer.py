@@ -106,7 +106,8 @@ nonColorMapTypes = [
     "metalness",
     "normal",
     "displacement",
-    "opacity"
+    "opacity",
+    "bump"
 ]
 
 nodesToBypass = {
@@ -134,10 +135,7 @@ class FileTexture():
         """
 
         self.errorMessage = ""
-        """Error message (set when valid==False)
-        """
-        self.missingFile = False
-        """File not found (or readable) in disk
+        """Error messages (one line per detected error)
         """
         self.pathInProject = ""
         """File texture path in project (excluding file name)
@@ -176,6 +174,7 @@ class FileTexture():
         """
         self.throughAlpha = False
         self.throughProjection = False
+        self.throughBump = False
         self.throughNormal = False
         self.throughDisplacement = False
         self.duplicate = False
@@ -186,70 +185,40 @@ class FileTexture():
         self.fullPath = cmds.getAttr( node + ".fileTextureName")
         """Full path of the file texture (including file name)
         """
-        self.valid = True
-        """Texture is valid (has passed basic checks)
-        """
         self.errors = set()
         """Errors detected (colorSpace, fileFormat, ...)
         """
-        assetFile = None
+        self.warnings = set()
+        """Warnings detected (imgSrc, ...)
+        """
+        self.assetFile = None
         """AssetFile object. Asset file where texture is located
         """
 
         # UDIM (TO-DO)
 
-        self.checkFileTexture()
-        print("Full path: ", self.fullPath)
-        print("Node: ", self.nodeName)
-        print("File name: ", self.fileName)
-        print("Path in project: ", self.pathInProject)
-        print("Format: ", self.fileFormat)
+        # Perform checks (may be called anytime to update status)
+        self.reCheck()
 
-        self.colorSpace = cmds.getAttr( node + ".colorSpace")
-        print("Color space: ", self.colorSpace)
 
-        self.resX = int(cmds.getAttr( node + ".outSizeX"))
-        self.resY = int(cmds.getAttr( node + ".outSizeY"))
-        print("Resolution: ", self.resX, "x", self.resY)
+    def valid(self):
+        """Texture is valid (has passed basic checks)
+        """
+        if self.errors:
+            return False
+        else:
+            return True
 
-        self.mapType = self.checkDestination(node)
-        print("Map type: ", self.mapType)
-        print("Target: ", self.target)
-        print("Channel: ", self.channel)
-
-        self.checkAlpha()
-
-        self.shadingGroup = self.checkShadingGroup()
-        print("SG: ", self.shadingGroup)
-
-        self.assetFile = pipeline.AssetFile()
-        try:
-            self.assetFile.createForOpenScene()
-        except:
-            self.errorMessage += "Scene not compliant with the pipeline\n"
-            self.assetFile = None
-
-        self.imgSrc = self.getImageSource()
-        if self.imgSrc == ImageSource.IMG_SRC_UNKNOWN:
-            self.errorMessage += "Image source unknown\n"
-            self.errors.add("imgSrc")
-            #self.valid = False
-        print("Source: ", imgSrcName[self.imgSrc])
-
-        if self.imgSrc != ImageSource.IMG_SRC_UNKNOWN and not self.verifyTextureName():
-            self.valid = False
-
-        self.validateColorSpace()
-
-        if not self.valid:
-            print("ERROR:", self.errorMessage)
-
+    def missingFile(self):
+        """File is not found or not readable
+        """
+        return "missingFile" in self.errors
 
     def reCheck(self):
         """Recheck file texture node
         """
+        print("================== RECHECKING ================")
         self.errorMessage = ""
-        self.missingFile = False
         self.pathInProject = ""
         self.fileName = ""
         self.resX = 0
@@ -267,25 +236,42 @@ class FileTexture():
         self.imgSrc = ImageSource.IMG_SRC_UNKNOWN
         self.throughAlpha = False
         self.throughProjection = False
+        self.throughBump = False
         self.throughNormal = False
         self.throughDisplacement = False
         self.duplicate = False
+
+        # nodeName is already set in constructor
+
         self.fullPath = cmds.getAttr( self.nodeName + ".fileTextureName")
-        self.valid = True
         self.errors = set()
+        self.warnings = set()
 
         self.checkFileTexture()
+        print("Full path: ", self.fullPath)
+        print("Node: ", self.nodeName)
+        print("File name: ", self.fileName)
+        print("Path in project: ", self.pathInProject)
+        print("Format: ", self.fileFormat)
 
         self.colorSpace = cmds.getAttr( self.nodeName + ".colorSpace")
+        print("Color space: ", self.colorSpace)
 
         self.resX = int(cmds.getAttr( self.nodeName + ".outSizeX"))
         self.resY = int(cmds.getAttr( self.nodeName + ".outSizeY"))
+        print("Resolution: ", self.resX, "x", self.resY)
 
         self.mapType = self.checkDestination(self.nodeName)
+        print("Map type: ", self.mapType)
+        print("Target: ", self.target)
+        print("Channel: ", self.channel)
+        if self.mapType == "unknown":
+            self.errors.add("mapType")
 
         self.checkAlpha()
 
         self.shadingGroup = self.checkShadingGroup()
+        print("SG: ", self.shadingGroup)
 
         self.assetFile = pipeline.AssetFile()
         try:
@@ -297,12 +283,16 @@ class FileTexture():
         self.imgSrc = self.getImageSource()
         if self.imgSrc == ImageSource.IMG_SRC_UNKNOWN:
             self.errorMessage += "Image source unknown\n"
-            self.errors.add("imgSrc")
+            self.warnings.add("imgSrc")
+        print("Source: ", imgSrcName[self.imgSrc])
 
         if self.imgSrc != ImageSource.IMG_SRC_UNKNOWN and not self.verifyTextureName():
-            self.valid = False
+            self.errors.add("wrongNaming")
 
         self.validateColorSpace()
+
+        print("ERRORS:", self.errors)
+        print("ERR MSGS:", self.errorMessage)
 
 
     def getConnectionsThroughAttrs(node, outAttrs):
@@ -373,11 +363,24 @@ class FileTexture():
             self.throughProjection = True
             conn = FileTexture.getFirstConnectionThroughAttrs(node, outAttrs)
             if not conn:
-                self.errorMessage += "Texture projection is not connected\n"
+                conn = FileTexture.getFirstConnectionThroughAttrs(node, ["outAlpha"])
+                if not conn:
+                    self.errorMessage += "Texture projection is not connected\n"
+                    return "unknown"
+                else:
+                    self.throughAlpha = True
+
+        # Connected through a bump map node        
+        if cmds.nodeType(conn) == "bump2d":
+            node = conn.split(".")[0]
+            self.throughBump = True
+            conn = FileTexture.getFirstConnectionThroughAttrs(node, ["outNormal"])
+            if not conn:
+                self.errorMessage += "Bump map not connected\n"
                 return "unknown"
 
         # Connected through a normal map node        
-        if cmds.nodeType(conn) == "aiNormalMap":
+        elif cmds.nodeType(conn) == "aiNormalMap":
             node = conn.split(".")[0]
             self.throughNormal = True
             conn = FileTexture.getFirstConnectionThroughAttrs(node, ["outValue"])
@@ -413,12 +416,19 @@ class FileTexture():
         if FileTexture.validMaterial(conn):
             self.target = conn.split(".")[0]
             conn_attr = conn.split(".")[1]
-            if self.throughNormal:
+            if self.throughBump:
                 if conn_attr != "normalCamera":
                     self.errorMessage += "Unknown connection: " + conn + "\n"
                     return "unknown"
                 else:
-                    self.channel = "normal"
+                    self.channel = "normalCamera"
+                    return "bump"
+            elif self.throughNormal or self.throughBump:
+                if conn_attr != "normalCamera":
+                    self.errorMessage += "Unknown connection: " + conn + "\n"
+                    return "unknown"
+                else:
+                    self.channel = "normalCamera"
                     return "normal"
             else:
                 material = cmds.nodeType(conn)
@@ -442,7 +452,6 @@ class FileTexture():
             if not alphaIsLuminance:
                 self.errorMessage += "No alpha in image connected through alpha\n"
                 self.errors.add("alpha")
-                self.valid = False
 
 
     def checkShadingGroup(self):
@@ -485,12 +494,11 @@ class FileTexture():
         if not self.fullPath:
             self.fileName = "EMPTY"
             self.fileFormat = ""
-            self.valid = False
+            self.errors.add("noFile")
             self.errorMessage += "Texture path empty"
         elif not "." in os.path.basename(self.fullPath):
             self.fileName = os.path.basename(self.fullPath).split(".")[0]
             self.fileFormat = "unknown"
-            self.valid = False
             self.errorMessage += "Texture has no extension (unknown format)"
             self.errors.add("fileFormat")
         else:
@@ -499,8 +507,7 @@ class FileTexture():
 
         # Check whether the file is accessible
         if not os.path.isfile(self.fullPath) or not os.access(self.fullPath, os.R_OK):
-            self.valid = False
-            self.missingFile = True
+            self.errors.add("missingFile")
             self.errorMessage += "Texture file not found\n"
             return
 
@@ -512,7 +519,7 @@ class FileTexture():
             #print("Path in project: ", self.pathInProject)
             #print("Base name: ", self.fileName)
         else:
-            self.valid = False
+            self.errors.add("notInProject")
             self.errorMessage += "Texture file not in project path\n"
 
 
@@ -627,11 +634,11 @@ class FileTexture():
                 self.errorMessage += "MegaScans texture type unknown: " + fields[2] + "\n"
             return False
         map_type = megaScansMapType[fields[2]]
-        if map_type != self.mapType:
+        if map_type and map_type != self.mapType:
             if set_errors:
                 self.errors.add("mapType")
                 self.errorMessage += "MegaScans texture type mismatch: " + map_type + " vs. " + self.mapType + "\n"
-            return False
+            #return False
         return True
 
 
@@ -670,29 +677,45 @@ class FileTexture():
             if self.fileFormat != "hdr" and self.fileFormat != "exr":
                 self.errors.add("fileFormat")
                 self.errorMessage += "HDRI format should be in HDR format\n"
-                self.valid = False
             if self.colorSpace != "scene-linear Rec.709-sRGB":
                 self.errors.add("colorSpace")
                 self.errorMessage += "HDRI color space not in scene-linear sRGB\n"
-                self.valid = False
         else:
             if self.mapType in nonColorMapTypes:
                 if self.colorSpace != "Raw":
                     self.errors.add("colorSpace")
                     self.errorMessage += "Map type " + self.mapType + " should be in Raw color space\n"
-                    self.valid = False
             else:   # Color textures
                 if self.fileFormat in eightBitFormats:
                     if self.colorSpace != "sRGB":
                         self.errorMessage += "8-bit color image not in sRGB space"
                         self.errors.add("colorSpace")
-                        self.valid = False
                 else:
                     if self.colorSpace != "scene-linear Rec.709-sRGB":
                         self.errorMessage += "HDR color image not in scene-linear sRGB"
                         self.errors.add("colorSpace")
-                        self.valid = False
-    
+
+    def fixFilePath(self):
+        """Try to fix file path, working on the hypothesis that it is correct
+        relative to the sourceimages folder, only failing the absolute path
+        before this folder
+        """
+        if not "missingFile" in self.errors:
+            # Nothing to fix here. Move along...
+            return False
+
+        si_folder = naming.DCCProjTopDirs["SOURCEIMAGES"] + "/"
+        if si_folder in self.fullPath:
+            idx = self.fullPath.find(si_folder)
+            try_path = miscutils.getCurrentProject() + "/" + self.fullPath[idx:]
+            if os.path.isfile(try_path) and os.access(try_path, os.R_OK):
+                trimmed_path = self.fullPath[idx:]
+                cmds.setAttr(self.nodeName + ".fileTextureName", trimmed_path, type="string")
+                return True
+            else:
+                print("Texture path not found in current project")
+                return False
+
     def fixColorSpace(self):
         if self.mapType == "hdri":
             # Set colorspace to scene-linear Rec.709-sRGB
@@ -822,6 +845,21 @@ def getUnusedTextureNodes():
 
 def getUsedTextureNodes():
     pass
+
+
+def clipTexturePathToSourceImages():
+    """Remove potential absolute paths before sourceimages
+    """
+    keyword = naming.DCCProjTopDirs["SOURCEIMAGES"] + "/"
+    textures = cmds.ls(type="file")
+    for tex in textures:
+        path = cmds.getAttr(tex + ".fileTextureName")
+        idx = path.find(keyword)
+        if idx != -1:
+            trimmed_path = path[idx:]
+            #print("Correcting ", path, " to ", trimmed_path)
+            cmds.setAttr(tex + ".fileTextureName", trimmed_path, type="string")
+
 
 ########## TEST CODE
 

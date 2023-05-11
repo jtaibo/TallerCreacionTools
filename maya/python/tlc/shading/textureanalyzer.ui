@@ -38,7 +38,7 @@
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <layout class="QHBoxLayout" name="table_widget_layout">
        <item>
         <widget class="QTableWidget" name="texCheckerTableWidget"/>
        </item>
@@ -48,11 +48,18 @@
       <widget class="QLineEdit" name="statusLine"/>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+      <layout class="QHBoxLayout" name="buttons_layout">
        <item>
         <widget class="QPushButton" name="checkButton">
          <property name="text">
           <string>Check</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="fixPathButton">
+         <property name="text">
+          <string>Fix file paths</string>
          </property>
         </widget>
        </item>

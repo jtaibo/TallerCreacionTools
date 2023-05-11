@@ -120,10 +120,10 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         status = "OK"
         bgcolor = QtCore.Qt.green
         fgcolor = QtCore.Qt.black
-        if not file_tex.valid:
+        if not file_tex.valid():
             status = "ERROR"
             bgcolor = QtCore.Qt.red
-        elif "imgSrc" in file_tex.errors:
+        elif file_tex.warnings:
             status = "WARN"
             bgcolor = QtGui.QColor(255,127,0)   # Orange
         cell = self.addTextCell(row, col, status)
@@ -155,14 +155,14 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         col = col+1
         filename = file_tex.fileName
         cell = self.addTextCell(row, col, filename)
-        if file_tex.missingFile:
+        if file_tex.missingFile():
             filename = "FILE NOT FOUND"
             bgcolor = QtCore.Qt.red
             fgcolor = QtCore.Qt.black
             cell.setBackground(bgcolor)
             cell.setForeground(fgcolor)
         # TO-DO: set color to naming error condition
-        if not file_tex.missingFile:
+        if not file_tex.missingFile():
             if not file_tex.verifyTextureName():
                 bgcolor = QtGui.QColor(255,127,0)   # Orange
                 fgcolor = QtCore.Qt.black
@@ -203,7 +203,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
             #cell.setFlags(flags)
             table_widget.setCellWidget(row, col, combo_box)
             table_widget.resizeColumnToContents(col)
-            if not file_tex.valid and "colorSpace" in file_tex.errors:
+            if not file_tex.valid() and "colorSpace" in file_tex.errors:
                 pal = combo_box.palette()
                 pal.setColor(QtGui.QPalette.Button, QtGui.QColor(255,0,0))
                 #pal.setColor(QtGui.QPalette.Text, QtGui.QColor(127,127,127))
@@ -214,7 +214,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
                 #combo_box.setForeground(fgcolor)
         else:
             cell = self.addTextCell(row, col, file_tex.colorSpace)
-            if not file_tex.valid and "colorSpace" in file_tex.errors:
+            if "colorSpace" in file_tex.errors:
                 bgcolor = QtCore.Qt.red
                 fgcolor = QtCore.Qt.black
                 cell.setBackground(bgcolor)
@@ -223,7 +223,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         # File format
         col = col+1
         cell = self.addTextCell(row, col, file_tex.fileFormat)
-        if not file_tex.valid and "fileFormat" in file_tex.errors:
+        if "fileFormat" in file_tex.errors:
             bgcolor = QtCore.Qt.red
             fgcolor = QtCore.Qt.black
             cell.setBackground(bgcolor)
@@ -290,6 +290,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         """
         self.ui.closeButton.clicked.connect(self.close)
         self.ui.checkButton.clicked.connect(self.checkButton)
+        self.ui.fixPathButton.clicked.connect(self.fixPathsButton)
 
         self.ui.texCheckerTableWidget.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.ui.texCheckerTableWidget.customContextMenuRequested.connect(self.openMenuAstonishing)
@@ -321,6 +322,13 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
             action4 = QtWidgets.QAction("Fix alpha channel")
             action4.triggered.connect(lambda: self.fixAlphaFromLuminance(index.row()))
             menu.addAction(action4)
+        if "colorSpace" in self.fileTextureObjects[index.row()].errors:
+            action5 = QtWidgets.QAction("Fix colorspace")
+            action5.triggered.connect(lambda: self.fixColorSpace(index.row()))
+            menu.addAction(action5)
+        action6 = QtWidgets.QAction("Recheck")
+        action6.triggered.connect(lambda: self.recheckTexture(index.row()))
+        menu.addAction(action6)
         #menu.setTearOffEnabled(True)
         #menu.popup(self.ui.texCheckerTableWidget.viewport().mapToGlobal(pos))
         menu.exec_(self.ui.texCheckerTableWidget.viewport().mapToGlobal(pos))
@@ -379,6 +387,21 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         msg = "Analysis complete! (" + f"{elapsed_time:.2}" + " s)"
         self.ui.statusLine.setText(msg)
 
+    def fixPathsButton(self):
+        """Fix-paths button function/callback
+        """
+        paths_fixed = 0
+        paths_not_fixed = 0
+        for t in self.fileTextureObjects:
+            if t.missingFile():
+                if t.fixFilePath():
+                    paths_fixed += 1
+                else:
+                    paths_not_fixed += 1
+        #tlc.shading.textureanalyzer.clipTexturePathToSourceImages()
+        self.checkButton()
+        self.ui.statusLine.setText(str(paths_fixed) + " file paths fixed. " + str(paths_not_fixed) + " could not be found")
+
     def selectTexture(self, row):
         cmds.select(self.fileTextureObjects[row].nodeName)
 
@@ -388,10 +411,12 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
     def openFolder(self, row):
         os.startfile(os.path.dirname(self.fileTextureObjects[row].fullPath))
 
+    def recheckTexture(self, row):
+        self.updateRow(row)
+
     def fixAlphaFromLuminance(self, row):
         file_tex = self.fileTextureObjects[row]
         cmds.setAttr(file_tex.nodeName + ".alphaIsLuminance", 1)
-        file_tex.reCheck()
         self.updateRow(row)
 
     def selectTarget(self, row):
