@@ -25,6 +25,7 @@ tlc.shading.textureanalyzer
       :toctree:
    
       checkDuplicatedFileTextureNodes
+      clipTexturePathToSourceImages
       getAllFileTextureNodesInScene
       getUnusedTextureNodes
       getUsedTextureNodes

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tlc.shading.textureanalyzer.test &mdash; TLC v0.1 documentation</title>
+  <title>tlc.shading.textureanalyzer.clipTexturePathToSourceImages &mdash; TLC v0.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -17,8 +17,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="tlc.shading.textureanalyzer.FileTexture" href="tlc.shading.textureanalyzer.FileTexture.html" />
-    <link rel="prev" title="tlc.shading.textureanalyzer.getUsedTextureNodes" href="tlc.shading.textureanalyzer.getUsedTextureNodes.html" /> 
+    <link rel="next" title="tlc.shading.textureanalyzer.getAllFileTextureNodesInScene" href="tlc.shading.textureanalyzer.getAllFileTextureNodesInScene.html" />
+    <link rel="prev" title="tlc.shading.textureanalyzer.checkDuplicatedFileTextureNodes" href="tlc.shading.textureanalyzer.checkDuplicatedFileTextureNodes.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,11 +49,11 @@
 <li class="toctree-l3 current"><a class="reference internal" href="tlc.shading.textureanalyzer.html">tlc.shading.textureanalyzer</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.inputConnectionsToMapType.html">tlc.shading.textureanalyzer.inputConnectionsToMapType</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.checkDuplicatedFileTextureNodes.html">tlc.shading.textureanalyzer.checkDuplicatedFileTextureNodes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.clipTexturePathToSourceImages.html">tlc.shading.textureanalyzer.clipTexturePathToSourceImages</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">tlc.shading.textureanalyzer.clipTexturePathToSourceImages</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.getAllFileTextureNodesInScene.html">tlc.shading.textureanalyzer.getAllFileTextureNodesInScene</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.getUnusedTextureNodes.html">tlc.shading.textureanalyzer.getUnusedTextureNodes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.getUsedTextureNodes.html">tlc.shading.textureanalyzer.getUsedTextureNodes</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">tlc.shading.textureanalyzer.test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.test.html">tlc.shading.textureanalyzer.test</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.FileTexture.html">tlc.shading.textureanalyzer.FileTexture</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.ImageSource.html">tlc.shading.textureanalyzer.ImageSource</a></li>
 </ul>
@@ -82,9 +82,9 @@
           <li class="breadcrumb-item"><a href="tlc.html">tlc</a></li>
           <li class="breadcrumb-item"><a href="tlc.shading.html">tlc.shading</a></li>
           <li class="breadcrumb-item"><a href="tlc.shading.textureanalyzer.html">tlc.shading.textureanalyzer</a></li>
-      <li class="breadcrumb-item active">tlc.shading.textureanalyzer.test</li>
+      <li class="breadcrumb-item active">tlc.shading.textureanalyzer.clipTexturePathToSourceImages</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/_autosummary/tlc.shading.textureanalyzer.test.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/_autosummary/tlc.shading.textureanalyzer.clipTexturePathToSourceImages.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -92,12 +92,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="tlc-shading-textureanalyzer-test">
-<h1>tlc.shading.textureanalyzer.test<a class="headerlink" href="#tlc-shading-textureanalyzer-test" title="Permalink to this heading"></a></h1>
+  <section id="tlc-shading-textureanalyzer-cliptexturepathtosourceimages">
+<h1>tlc.shading.textureanalyzer.clipTexturePathToSourceImages<a class="headerlink" href="#tlc-shading-textureanalyzer-cliptexturepathtosourceimages" title="Permalink to this heading"></a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="tlc.shading.textureanalyzer.test">
-<span class="sig-prename descclassname"><span class="pre">tlc.shading.textureanalyzer.</span></span><span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.shading.textureanalyzer.test" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="tlc.shading.textureanalyzer.clipTexturePathToSourceImages">
+<span class="sig-prename descclassname"><span class="pre">tlc.shading.textureanalyzer.</span></span><span class="sig-name descname"><span class="pre">clipTexturePathToSourceImages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.shading.textureanalyzer.clipTexturePathToSourceImages" title="Permalink to this definition"></a></dt>
+<dd><p>Remove potential absolute paths before sourceimages</p>
+</dd></dl>
 
 </section>
 
@@ -105,8 +106,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="tlc.shading.textureanalyzer.getUsedTextureNodes.html" class="btn btn-neutral float-left" title="tlc.shading.textureanalyzer.getUsedTextureNodes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="tlc.shading.textureanalyzer.FileTexture.html" class="btn btn-neutral float-right" title="tlc.shading.textureanalyzer.FileTexture" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tlc.shading.textureanalyzer.checkDuplicatedFileTextureNodes.html" class="btn btn-neutral float-left" title="tlc.shading.textureanalyzer.checkDuplicatedFileTextureNodes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tlc.shading.textureanalyzer.getAllFileTextureNodesInScene.html" class="btn btn-neutral float-right" title="tlc.shading.textureanalyzer.getAllFileTextureNodesInScene" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

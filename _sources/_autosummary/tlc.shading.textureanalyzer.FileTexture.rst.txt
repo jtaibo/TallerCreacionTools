@@ -27,14 +27,17 @@ tlc.shading.textureanalyzer.FileTexture
       ~FileTexture.checkFileTexture
       ~FileTexture.checkShadingGroup
       ~FileTexture.fixColorSpace
+      ~FileTexture.fixFilePath
       ~FileTexture.getConnectionsThroughAttrs
       ~FileTexture.getFirstConnectionThroughAttrs
       ~FileTexture.getImageSource
       ~FileTexture.getMeshes
       ~FileTexture.getNormalizedTexelDensity
+      ~FileTexture.missingFile
       ~FileTexture.parseTextureName
       ~FileTexture.reCheck
       ~FileTexture.setColorSpace
+      ~FileTexture.valid
       ~FileTexture.validMaterial
       ~FileTexture.validateColorSpace
       ~FileTexture.verifyFileNameHDRIHaven
@@ -52,7 +55,6 @@ tlc.shading.textureanalyzer.FileTexture
    .. autosummary::
    
       ~FileTexture.errorMessage
-      ~FileTexture.missingFile
       ~FileTexture.pathInProject
       ~FileTexture.fileName
       ~FileTexture.resX
@@ -65,7 +67,8 @@ tlc.shading.textureanalyzer.FileTexture
       ~FileTexture.imgSrc
       ~FileTexture.nodeName
       ~FileTexture.fullPath
-      ~FileTexture.valid
       ~FileTexture.errors
+      ~FileTexture.warnings
+      ~FileTexture.assetFile
    
    
