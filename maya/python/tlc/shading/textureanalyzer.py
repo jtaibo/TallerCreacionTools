@@ -710,7 +710,9 @@ class FileTexture():
             try_path = miscutils.getCurrentProject() + "/" + self.fullPath[idx:]
             if os.path.isfile(try_path) and os.access(try_path, os.R_OK):
                 trimmed_path = self.fullPath[idx:]
+                color_space = cmds.getAttr(self.nodeName + ".colorSpace")
                 cmds.setAttr(self.nodeName + ".fileTextureName", trimmed_path, type="string")
+                cmds.setAttr(self.nodeName + ".colorSpace", color_space, type="string")
                 return True
             else:
                 print("Texture path not found in current project")
