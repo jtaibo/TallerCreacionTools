@@ -210,9 +210,20 @@ class FileTexture():
             return True
 
     def missingFile(self):
-        """File is not found or not readable
+        """Check whether file is not found or not readable
+
+        Returns:
+            bool: File is not found or not readable
         """
         return "missingFile" in self.errors
+
+    def notInProject(self):
+        """Check whether file path exists, but is not in project
+
+        Returns:
+            bool: File path exists, but is not in project
+        """
+        return "notInProject" in self.errors
 
     def reCheck(self):
         """Recheck file texture node
@@ -700,7 +711,7 @@ class FileTexture():
         relative to the sourceimages folder, only failing the absolute path
         before this folder
         """
-        if not "missingFile" in self.errors:
+        if not self.missingFile() and not self.notInProject():
             # Nothing to fix here. Move along...
             return False
 

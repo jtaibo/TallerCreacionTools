@@ -393,14 +393,21 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         paths_fixed = 0
         paths_not_fixed = 0
         for t in self.fileTextureObjects:
-            if t.missingFile():
+            if t.missingFile() or t.notInProject():
                 if t.fixFilePath():
                     paths_fixed += 1
                 else:
                     paths_not_fixed += 1
         #tlc.shading.textureanalyzer.clipTexturePathToSourceImages()
         self.checkButton()
-        self.ui.statusLine.setText(str(paths_fixed) + " file paths fixed. " + str(paths_not_fixed) + " could not be found")
+        msg = ""
+        if paths_fixed == 0 and paths_not_fixed == 0:
+            msg += "Nothing to fix."
+        if paths_fixed > 0:
+            msg += str(paths_fixed) + " file paths fixed. "
+        if paths_not_fixed > 0:
+            msg += str(paths_not_fixed) + " paths could not be found"
+        self.ui.statusLine.setText(msg)
 
     def selectTexture(self, row):
         cmds.select(self.fileTextureObjects[row].nodeName)
