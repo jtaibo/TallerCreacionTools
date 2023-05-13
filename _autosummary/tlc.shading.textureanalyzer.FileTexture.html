@@ -94,7 +94,7 @@
              
   <section id="tlc-shading-textureanalyzer-filetexture">
 <h1>tlc.shading.textureanalyzer.FileTexture<a class="headerlink" href="#tlc-shading-textureanalyzer-filetexture" title="Permalink to this heading"></a></h1>
-<a class="reference internal image-reference" href="../_images/classes_tlc.shading.textureanalyzer.png"><img alt="../_images/classes_tlc.shading.textureanalyzer.png" src="../_images/classes_tlc.shading.textureanalyzer.png" style="width: 1416.0px; height: 1071.0px;" /></a>
+<a class="reference internal image-reference" href="../_images/classes_tlc.shading.textureanalyzer.png"><img alt="../_images/classes_tlc.shading.textureanalyzer.png" src="../_images/classes_tlc.shading.textureanalyzer.png" style="width: 1416.0px; height: 1089.0px;" /></a>
 <dl class="py class">
 <dt class="sig sig-object py" id="tlc.shading.textureanalyzer.FileTexture">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tlc.shading.textureanalyzer.</span></span><span class="sig-name descname"><span class="pre">FileTexture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.shading.textureanalyzer.FileTexture" title="Permalink to this definition"></a></dt>
@@ -157,39 +157,42 @@
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.missingFile" title="tlc.shading.textureanalyzer.FileTexture.missingFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">missingFile</span></code></a>()</p></td>
-<td><p>File is not found or not readable</p></td>
+<td><p>Check whether file is not found or not readable</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parseTextureName</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.notInProject" title="tlc.shading.textureanalyzer.FileTexture.notInProject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">notInProject</span></code></a>()</p></td>
+<td><p>Check whether file path exists, but is not in project</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parseTextureName</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.reCheck" title="tlc.shading.textureanalyzer.FileTexture.reCheck"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reCheck</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.reCheck" title="tlc.shading.textureanalyzer.FileTexture.reCheck"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reCheck</span></code></a>()</p></td>
 <td><p>Recheck file texture node</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">setColorSpace</span></code>(cs)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">setColorSpace</span></code>(cs)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.valid" title="tlc.shading.textureanalyzer.FileTexture.valid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">valid</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.valid" title="tlc.shading.textureanalyzer.FileTexture.valid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">valid</span></code></a>()</p></td>
 <td><p>Texture is valid (has passed basic checks)</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validMaterial</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validMaterial</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validateColorSpace</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validateColorSpace</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyFileNameHDRIHaven</span></code>([set_errors])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyFileNameHDRIHaven</span></code>([set_errors])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyFileNameMegaScans</span></code>([set_errors])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyFileNameMegaScans</span></code>([set_errors])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyFileNameTextureHaven</span></code>([set_errors])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyFileNameTextureHaven</span></code>([set_errors])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.verifyFileTextureNameOwn" title="tlc.shading.textureanalyzer.FileTexture.verifyFileTextureNameOwn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyFileTextureNameOwn</span></code></a>([set_errors])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.verifyFileTextureNameOwn" title="tlc.shading.textureanalyzer.FileTexture.verifyFileTextureNameOwn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyFileTextureNameOwn</span></code></a>([set_errors])</p></td>
 <td><p>Verify texture name matches texture configuration and format defined in the pipeline</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyTextureName</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyTextureName</span></code>()</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -412,13 +415,35 @@ before this folder</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tlc.shading.textureanalyzer.FileTexture.missingFile">
 <span class="sig-name descname"><span class="pre">missingFile</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.shading.textureanalyzer.FileTexture.missingFile" title="Permalink to this definition"></a></dt>
-<dd><p>File is not found or not readable</p>
+<dd><p>Check whether file is not found or not readable</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>File is not found or not readable</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tlc.shading.textureanalyzer.FileTexture.nodeName">
 <span class="sig-name descname"><span class="pre">nodeName</span></span><a class="headerlink" href="#tlc.shading.textureanalyzer.FileTexture.nodeName" title="Permalink to this definition"></a></dt>
 <dd><p>Texture node name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.shading.textureanalyzer.FileTexture.notInProject">
+<span class="sig-name descname"><span class="pre">notInProject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.shading.textureanalyzer.FileTexture.notInProject" title="Permalink to this definition"></a></dt>
+<dd><p>Check whether file path exists, but is not in project</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>File path exists, but is not in project</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
