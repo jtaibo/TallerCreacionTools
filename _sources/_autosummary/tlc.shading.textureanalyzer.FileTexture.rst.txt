@@ -41,6 +41,8 @@ tlc.shading.textureanalyzer.FileTexture
       ~FileTexture.valid
       ~FileTexture.validMaterial
       ~FileTexture.validateColorSpace
+      ~FileTexture.validateNormalNode
+      ~FileTexture.verifyFileNameAmbientCG
       ~FileTexture.verifyFileNameHDRIHaven
       ~FileTexture.verifyFileNameMegaScans
       ~FileTexture.verifyFileNameTextureHaven

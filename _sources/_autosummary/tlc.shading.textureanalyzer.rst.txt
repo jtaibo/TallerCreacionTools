@@ -43,6 +43,7 @@ tlc.shading.textureanalyzer
    
       FileTexture
       ImageSource
+      NormalType
    
    
 

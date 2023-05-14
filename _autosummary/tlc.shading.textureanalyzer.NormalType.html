@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tlc.shading.textureanalyzer.getAllFileTextureNodesInScene &mdash; TLC v0.1 documentation</title>
+  <title>tlc.shading.textureanalyzer.NormalType &mdash; TLC v0.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -17,8 +17,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="tlc.shading.textureanalyzer.getUnusedTextureNodes" href="tlc.shading.textureanalyzer.getUnusedTextureNodes.html" />
-    <link rel="prev" title="tlc.shading.textureanalyzer.clipTexturePathToSourceImages" href="tlc.shading.textureanalyzer.clipTexturePathToSourceImages.html" /> 
+    <link rel="next" title="tlc.shading.textureanalyzer_ui" href="tlc.shading.textureanalyzer_ui.html" />
+    <link rel="prev" title="tlc.shading.textureanalyzer.ImageSource" href="tlc.shading.textureanalyzer.ImageSource.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,13 +50,13 @@
 <li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.inputConnectionsToMapType.html">tlc.shading.textureanalyzer.inputConnectionsToMapType</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.checkDuplicatedFileTextureNodes.html">tlc.shading.textureanalyzer.checkDuplicatedFileTextureNodes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.clipTexturePathToSourceImages.html">tlc.shading.textureanalyzer.clipTexturePathToSourceImages</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">tlc.shading.textureanalyzer.getAllFileTextureNodesInScene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.getAllFileTextureNodesInScene.html">tlc.shading.textureanalyzer.getAllFileTextureNodesInScene</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.getUnusedTextureNodes.html">tlc.shading.textureanalyzer.getUnusedTextureNodes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.getUsedTextureNodes.html">tlc.shading.textureanalyzer.getUsedTextureNodes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.test.html">tlc.shading.textureanalyzer.test</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.FileTexture.html">tlc.shading.textureanalyzer.FileTexture</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.ImageSource.html">tlc.shading.textureanalyzer.ImageSource</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tlc.shading.textureanalyzer.NormalType.html">tlc.shading.textureanalyzer.NormalType</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">tlc.shading.textureanalyzer.NormalType</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="tlc.shading.textureanalyzer_ui.html">tlc.shading.textureanalyzer_ui</a></li>
@@ -83,9 +83,9 @@
           <li class="breadcrumb-item"><a href="tlc.html">tlc</a></li>
           <li class="breadcrumb-item"><a href="tlc.shading.html">tlc.shading</a></li>
           <li class="breadcrumb-item"><a href="tlc.shading.textureanalyzer.html">tlc.shading.textureanalyzer</a></li>
-      <li class="breadcrumb-item active">tlc.shading.textureanalyzer.getAllFileTextureNodesInScene</li>
+      <li class="breadcrumb-item active">tlc.shading.textureanalyzer.NormalType</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/_autosummary/tlc.shading.textureanalyzer.getAllFileTextureNodesInScene.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/_autosummary/tlc.shading.textureanalyzer.NormalType.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -93,20 +93,29 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="tlc-shading-textureanalyzer-getallfiletexturenodesinscene">
-<h1>tlc.shading.textureanalyzer.getAllFileTextureNodesInScene<a class="headerlink" href="#tlc-shading-textureanalyzer-getallfiletexturenodesinscene" title="Permalink to this heading"></a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="tlc.shading.textureanalyzer.getAllFileTextureNodesInScene">
-<span class="sig-prename descclassname"><span class="pre">tlc.shading.textureanalyzer.</span></span><span class="sig-name descname"><span class="pre">getAllFileTextureNodesInScene</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.shading.textureanalyzer.getAllFileTextureNodesInScene" title="Permalink to this definition"></a></dt>
-<dd><p>Get a list of FileTexture objects for all file texture nodes in the scene</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of FileTexture objects</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str[]</p>
-</dd>
-</dl>
+  <section id="tlc-shading-textureanalyzer-normaltype">
+<h1>tlc.shading.textureanalyzer.NormalType<a class="headerlink" href="#tlc-shading-textureanalyzer-normaltype" title="Permalink to this heading"></a></h1>
+<a class="reference internal image-reference" href="../_images/classes_tlc.shading.textureanalyzer.png"><img alt="../_images/classes_tlc.shading.textureanalyzer.png" src="../_images/classes_tlc.shading.textureanalyzer.png" style="width: 1815.0px; height: 1167.0px;" /></a>
+<dl class="py class">
+<dt class="sig sig-object py" id="tlc.shading.textureanalyzer.NormalType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tlc.shading.textureanalyzer.</span></span><span class="sig-name descname"><span class="pre">NormalType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.shading.textureanalyzer.NormalType" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.shading.textureanalyzer.NormalType.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.shading.textureanalyzer.NormalType.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">NORMAL_TYPE_GL</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">NORMAL_TYPE_DX</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </section>
@@ -115,8 +124,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="tlc.shading.textureanalyzer.clipTexturePathToSourceImages.html" class="btn btn-neutral float-left" title="tlc.shading.textureanalyzer.clipTexturePathToSourceImages" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="tlc.shading.textureanalyzer.getUnusedTextureNodes.html" class="btn btn-neutral float-right" title="tlc.shading.textureanalyzer.getUnusedTextureNodes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tlc.shading.textureanalyzer.ImageSource.html" class="btn btn-neutral float-left" title="tlc.shading.textureanalyzer.ImageSource" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tlc.shading.textureanalyzer_ui.html" class="btn btn-neutral float-right" title="tlc.shading.textureanalyzer_ui" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
