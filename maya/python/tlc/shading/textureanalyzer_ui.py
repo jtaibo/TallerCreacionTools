@@ -180,7 +180,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         # Map type
         col = col+1
         cell = self.addTextCell(row, col, file_tex.mapType)
-        if file_tex.mapType == "unknown":
+        if file_tex.mapType == "unknown" or "normal" in file_tex.errors:
             bgcolor = QtCore.Qt.red
             fgcolor = QtCore.Qt.black
             cell.setBackground(bgcolor)
@@ -299,7 +299,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
 
     def openMenuAstonishing(self, pos):
         index = self.ui.texCheckerTableWidget.indexAt(pos)
-        if index.column() == 0:
+        if index.column() in [0, 1, 5]:
             self.contextMenuFileTextureNode(index, pos)
         elif index.column() == 9:
             self.contextMenuColorSpace(index, pos)

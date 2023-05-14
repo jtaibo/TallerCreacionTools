@@ -37,14 +37,20 @@ class ImageSource(Enum):
     IMG_SRC_OWN=1,
     IMG_SRC_MEGASCANS=2,
     IMG_SRC_TEXTUREHAVEN=3,
-    IMG_SRC_HDRIHAVEN=4
+    IMG_SRC_HDRIHAVEN=4,
+    IMG_SRC_AMBIENTCG=5
+
+class NormalType(Enum):
+    NORMAL_TYPE_GL=0,
+    NORMAL_TYPE_DX=1
 
 imgSrcName = {
     ImageSource.IMG_SRC_UNKNOWN : "Unknown",
     ImageSource.IMG_SRC_OWN : "Own",
     ImageSource.IMG_SRC_MEGASCANS : "Megascans",
     ImageSource.IMG_SRC_TEXTUREHAVEN : "Texture Haven",
-    ImageSource.IMG_SRC_HDRIHAVEN : "HDRI Haven"
+    ImageSource.IMG_SRC_HDRIHAVEN : "HDRI Haven",
+    ImageSource.IMG_SRC_AMBIENTCG: "AmbientCG"
 }
 
 inputConnectionsToMapType = {
@@ -99,6 +105,24 @@ megaScansMapType = {
     "Metalness":"metalness",
     "Displacement":"displacement",
     "Opacity":"opacity"
+}
+
+textureHavenMapType = {
+    #"arm":"arm"    # TO-DO
+    "diff":"albedo",
+    "bump":"bump",
+    "disp":"displacement",
+    "metal":"metalness",
+    "rough":"roughness",
+    "nor":"normal"
+}
+
+ambientCGMapType = {
+    "Color":"albedo",
+    "Displacement":"displacement",
+    "Roughness":"roughness",
+    "NormalGL":"normal",
+    "NormalDX":"normal"
 }
 
 nonColorMapTypes = [
@@ -178,6 +202,8 @@ class FileTexture():
         self.throughNormal = False
         self.throughDisplacement = False
         self.duplicate = False
+        self.normalMapType = NormalType.NORMAL_TYPE_GL
+        self.normalNode = None
 
         self.nodeName = node
         """Texture node name
@@ -251,6 +277,8 @@ class FileTexture():
         self.throughNormal = False
         self.throughDisplacement = False
         self.duplicate = False
+        self.normalMapType = NormalType.NORMAL_TYPE_GL
+        self.normalNode = None
 
         # nodeName is already set in constructor
 
@@ -301,6 +329,9 @@ class FileTexture():
             self.errors.add("wrongNaming")
 
         self.validateColorSpace()
+    
+        if self.throughNormal:
+            self.validateNormalNode()
 
         print("ERRORS:", self.errors)
         print("ERR MSGS:", self.errorMessage)
@@ -341,7 +372,7 @@ class FileTexture():
                 return FileTexture.getFirstConnectionThroughAttrs(node_name, nodesToBypass[node_type])
             return conns[0]
         else:
-            return None        
+            return None
 
     def validMaterial(conn):
         return cmds.nodeType(conn) in inputConnectionsToMapType
@@ -394,6 +425,7 @@ class FileTexture():
         elif cmds.nodeType(conn) == "aiNormalMap":
             node = conn.split(".")[0]
             self.throughNormal = True
+            self.normalNode = node
             conn = FileTexture.getFirstConnectionThroughAttrs(node, ["outValue"])
             if not conn:
                 self.errorMessage += "Normal map not connected\n"
@@ -547,6 +579,8 @@ class FileTexture():
             return self.verifyFileNameMegaScans()
         elif self.imgSrc == ImageSource.IMG_SRC_TEXTUREHAVEN:
             return self.verifyFileNameTextureHaven()
+        elif self.imgSrc == ImageSource.IMG_SRC_AMBIENTCG:
+            return self.verifyFileNameAmbientCG()
         elif self.imgSrc == ImageSource.IMG_SRC_HDRIHAVEN:
             return self.verifyFileNameHDRIHaven()
         else:
@@ -634,6 +668,7 @@ class FileTexture():
         if not ms_id.islower():
             if set_errors:
                 self.errorMessage += "Not a Megascans texture ID: " + ms_id + "\n"
+            return False
         res = fields[1].replace("K", "k")
         if not res in self.buildResolutionString():
             if set_errors:
@@ -668,7 +703,75 @@ class FileTexture():
         return True
 
     def verifyFileNameTextureHaven(self, set_errors=True):
-        return False
+        fields = self.fileName.split("_")
+        if len(fields) < 3:
+            return False
+        res = fields[-1]
+        if res[-1] != "k":
+            return False
+        if not res[:-1].isnumeric():
+            return False
+        if not res in self.buildResolutionString():
+            if set_errors:
+                self.errorMessage += "Texture resolution mismatch\n"
+            return False
+        # Check texture map type
+        map_type_field = fields[-2]
+        normal_types = ["gl", "dx"]
+        if map_type_field in textureHavenMapType:
+            map_type = textureHavenMapType[map_type_field]
+            if map_type != self.mapType:
+                if set_errors:
+                    self.errors.add("mapType")
+                    self.errorMessage += "Texture haven texture type mismatch: " + map_type + " vs. " + self.mapType + "\n"
+        elif map_type_field in normal_types and fields[-3] == "nor":
+            map_type = textureHavenMapType["nor"]
+            if map_type != self.mapType:
+                if set_errors:
+                    self.errors.add("mapType")
+                    self.errorMessage += "Texture haven texture type mismatch: " + map_type + " vs. " + self.mapType + "\n"
+            if set_errors:
+                if map_type_field == "gl":
+                    self.normalMapType = NormalType.NORMAL_TYPE_GL
+                elif map_type_field == "dx":
+                    self.normalMapType = NormalType.NORMAL_TYPE_DX
+        else:
+            if set_errors:
+                self.errorMessage += "Unknown map type\n"
+            return False
+        return True
+
+    def verifyFileNameAmbientCG(self, set_errors=True):
+        fields = self.fileName.split("_")
+        if len(fields) != 3:
+            return False
+        res = fields[-2]
+        if res[-1] != "K":
+            return False
+        if not res[:-1].isnumeric():
+            return False
+        if not res.lower() in self.buildResolutionString():
+            if set_errors:
+                self.errorMessage += "Texture resolution mismatch\n"
+            return False
+        # Check texture map type
+        map_type_field = fields[-1]
+        if map_type_field in ambientCGMapType:
+            map_type = ambientCGMapType[map_type_field]
+            if map_type != self.mapType:
+                if set_errors:
+                    self.errors.add("mapType")
+                    self.errorMessage += "AmbientCG texture type mismatch: " + map_type + " vs. " + self.mapType + "\n"
+            if set_errors:
+                if map_type_field == "NormalDX":
+                    self.normalMapType = NormalType.NORMAL_TYPE_DX
+                elif map_type_field == "NormalGL":
+                    self.normalMapType = NormalType.NORMAL_TYPE_GL
+        else:
+            if set_errors:
+                self.errorMessage += "Unknown map type\n"
+            return False
+        return True
 
     def getImageSource(self):
         if self.mapType == "hdri":
@@ -681,6 +784,8 @@ class FileTexture():
                 return ImageSource.IMG_SRC_MEGASCANS
             elif self.verifyFileNameTextureHaven(False):
                 return ImageSource.IMG_SRC_TEXTUREHAVEN
+            elif self.verifyFileNameAmbientCG(False):
+                return ImageSource.IMG_SRC_AMBIENTCG
         return ImageSource.IMG_SRC_UNKNOWN
     
     def validateColorSpace(self):
@@ -705,6 +810,28 @@ class FileTexture():
                     if self.colorSpace != "scene-linear Rec.709-sRGB":
                         self.errorMessage += "HDR color image not in scene-linear sRGB"
                         self.errors.add("colorSpace")
+
+    def validateNormalNode(self):
+        normal_node = self.normalNode
+        inv_x = cmds.getAttr(normal_node + ".invertX")
+        inv_y = cmds.getAttr(normal_node + ".invertY")
+        inv_z = cmds.getAttr(normal_node + ".invertZ")
+        if self.normalMapType == NormalType.NORMAL_TYPE_GL:
+            if inv_x or inv_y or inv_z:
+                self.errors.add("normal")
+                self.errorMessage += "Using GL normal map. Check normal node for correct axis orientation\n"
+        elif self.normalMapType == NormalType.NORMAL_TYPE_DX:
+            if inv_x or not inv_y or inv_z:
+                self.errors.add("normal")
+                self.errorMessage += "Using DX normal map. Check normal node for correct axis orientation\n"
+        tangent_space = cmds.getAttr(normal_node + ".tangentSpace")
+        if not tangent_space:
+            self.errors.add("normal")
+            self.errorMessage("Normal map not in tangent space")
+        color_to_signed = cmds.getAttr(normal_node + ".colorToSigned")
+        if not color_to_signed:
+            self.errors.add("normal")
+            self.errorMessage("Normal map not converting color to signed")
 
     def fixFilePath(self):
         """Try to fix file path, working on the hypothesis that it is correct
