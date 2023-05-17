@@ -707,7 +707,7 @@ class FileTexture():
         if len(fields) < 3:
             return False
         res = fields[-1]
-        if res[-1] != "k":
+        if not res or res[-1] != "k":
             return False
         if not res[:-1].isnumeric():
             return False
