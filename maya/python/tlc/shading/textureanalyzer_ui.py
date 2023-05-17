@@ -180,7 +180,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         # Map type
         col = col+1
         cell = self.addTextCell(row, col, file_tex.mapType)
-        if file_tex.mapType == "unknown" or "normal" in file_tex.errors:
+        if file_tex.mapType == "unknown" or "normal" in file_tex.errors or "mapType" in file_tex.errors:
             bgcolor = QtCore.Qt.red
             fgcolor = QtCore.Qt.black
             cell.setBackground(bgcolor)

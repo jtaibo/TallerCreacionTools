@@ -540,13 +540,13 @@ class FileTexture():
             self.errors.add("noFile")
             self.errorMessage += "Texture path empty"
         elif not "." in os.path.basename(self.fullPath):
-            self.fileName = os.path.basename(self.fullPath).split(".")[0]
+            self.fileName = os.path.basename(self.fullPath)
             self.fileFormat = "unknown"
             self.errorMessage += "Texture has no extension (unknown format)"
             self.errors.add("fileFormat")
         else:
-            self.fileName = os.path.basename(self.fullPath).split(".")[0]
-            self.fileFormat = os.path.basename(self.fullPath).split(".")[1]
+            self.fileName = os.path.splitext(os.path.basename(self.fullPath))[0]
+            self.fileFormat = os.path.basename(self.fullPath).split(".")[-1]
 
         # Check whether the file is accessible
         if not os.path.isfile(self.fullPath) or not os.access(self.fullPath, os.R_OK):
@@ -692,7 +692,7 @@ class FileTexture():
         if self.fileFormat != "exr" and self.fileFormat != "hdr":
             return False
         res = self.fileName.split("_")[-1]
-        if res[-1] != "k":
+        if not res or res[-1] != "k":
             return False
         if not res[:-1].isnumeric():
             return False
