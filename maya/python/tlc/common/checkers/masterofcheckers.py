@@ -13,6 +13,8 @@ check_dptID = { #TO-DO
     "FX" : []
 }
 
+ignored_nodes=["persp", "perspShape", "top", "topShape", "front", "frontShape", "side", "sideShape"]
+
 def start():
     check = []
     asset = asset_file.AssetFile()
@@ -26,5 +28,15 @@ def start():
 
 def sceneNodesReader():
     objects_list= []
-    objects_list = cmds.ls(tr=True, v=True) 
+    objects_list = cmds.ls(assemblies=True) 
+
+    for i in range(len(ignored_nodes)): #Delete ignored nodes
+        for o in range(len(objects_list)):
+            if ignored_nodes[i] == objects_list[o]:
+                del objects_list[o]
+                break
     return objects_list
+
+def selectWrongNodes(nodes):
+    cmds.select(nodes)
+    
