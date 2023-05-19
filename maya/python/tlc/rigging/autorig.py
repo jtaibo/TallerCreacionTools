@@ -19,7 +19,7 @@ PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with 
 this program. If not, see <https://www.gnu.org/licenses/>.
-"""
+"""  
 
 
 import maya.cmds as cmds
@@ -27,6 +27,7 @@ import maya.mel as mm
 
 ###################################################
 ###################################################
+
 def shapeParent(obj,target):
     """Parent the shape node of one object to another"""
     childs = cmds.listRelatives(obj, children=True)#Pick up the childrens from the obj
@@ -52,28 +53,39 @@ def filterNameObj(nameObj):
 def autoRoot(obj):
     #recoje el padre del objeto
     parentObj = cmds.pickWalk (obj , direction='up')
+    listNameParent= filterNameObj(parentObj[0])
+    print(listNameParent)
+
     
     #posicion y rotacion 
     valueTranslation = cmds.xform(obj, q=True, ws=True, t=True)
     valueRotation = cmds.xform(obj, q=True, ws=True, ro=True)
-    
+    namePart0=filterNameObj(obj)[0]
     namePart1=filterNameObj(obj)[1]
     namePart2=filterNameObj(obj)[2]
-    
-    grpRoot=cmds.group(empty=True, name='grp_'+namePart1 + '_root' + namePart2)
-    cmds.xform (grpRoot ,ws = True, t = valueTranslation)
-    cmds.xform (grpRoot ,ws = True, ro = valueRotation)
 
-    grpAuto=cmds.group(empty=True, name='grp_'+namePart1 + '_auto' + namePart2)     
-    cmds.xform (grpAuto ,ws = True, t = valueTranslation)
-    cmds.xform (grpAuto ,ws = True, ro = valueRotation)
-    
-    cmds.parent (obj , grpAuto)
-    cmds.parent (grpAuto, grpRoot )
-    
-    # Si el objeto padre existe, emparentar el root
-    #if cmds.objExists(parentObj):
-    cmds.parent(grpRoot, parentObj)
+    if listNameParent[0] == 'grp' and listNameParent[2].find('auto') != -1:
+        print('AutoAuto')
+        grpAutoAuto=cmds.group(empty=True, name='grp_'+namePart1 + '_AutoAuto' + namePart0[0].upper() + namePart0[1:] + namePart1.upper() + namePart2[0].upper()+ namePart2[1:], p=parentObj[0])
+        cmds.xform (grpAutoAuto ,ws = True, t = valueTranslation)
+        cmds.xform (grpAutoAuto ,ws = True, ro = valueRotation)
+        cmds.parent (obj , grpAutoAuto)
+        
+    else:
+        grpRoot=cmds.group(empty=True, name='grp_'+namePart1 + '_root' + namePart0[0].upper() + namePart0[1:] + namePart1.upper() + namePart2[0].upper()+ namePart2[1:])
+        cmds.xform (grpRoot ,ws = True, t = valueTranslation)
+        cmds.xform (grpRoot ,ws = True, ro = valueRotation)
+
+        # Si el objeto padre existe, emparentar el root
+        if parentObj[0]!=obj:
+            cmds.parent(grpRoot, parentObj)
+
+        grpAuto=cmds.group(empty=True, name='grp_'+namePart1 + '_auto' + namePart0[0].upper() + namePart0[1:] + namePart1.upper() + namePart2[0].upper()+ namePart2[1:], p=grpRoot)
+        cmds.xform (grpAuto ,ws = True, t = valueTranslation)
+        cmds.xform (grpAuto ,ws = True, ro = valueRotation)
+        print('RootAuto')
+        cmds.parent (obj , grpAuto)
+
     
     #resetea los valores si es un jnt
     typeNode = cmds.nodeType(obj)
@@ -147,7 +159,7 @@ def skin():
         cmds.setAttr(o + '.jointOrientZ', 0)
     cmds.parent('skin_c_root','grp_x_skin')  
 
-def ctl_global():
+def globalSystem():
     """Build the ctlGlobal system (Base+Root+Gravity) based on the position of a template"""
 
     ctlGlobal = cmds.ls('tmpl_c_base', 'tmpl_c_root', 'tmpl_c_gravity')
@@ -174,6 +186,7 @@ def ctl_global():
 
 def ctl_spineFk():
     pass
+
 
 class ctl_spineRib():
     def createRibbonSurface(self):
@@ -277,57 +290,70 @@ class ctl_spineRib():
                 cmds.parent(skin,skinGroup )
 
                 #SapeParent
-                shapeParent('spl_x_circleSpine', ctl)
-
+                shapeParent('spl_x_nurbSphereZ', ctl)
                 cmds.parent(ctl,'ctl_c_gravity')
 
+                #Resetear valores de transformacion y rotacion de los grupos
                 autoRoot(ctl)
+
+                #Constraint entre los ctl y skin Ribb
                 cmds.parentConstraint(ctl, skin)
 
-        #Parent ctlRibbon        
+        #Constraints para los RibMid     
+        parentObj = cmds.pickWalk (ctlRibbon[2] , direction='up')        
+        cmds.pointConstraint(ctlRibbon[0],ctlRibbon[4], parentObj)
+        cmds.orientConstraint( ctlRibbon[0], ctlRibbon[4],parentObj, skip=("y", "z") )
+        autoRoot(ctlRibbon[2])#Creamos grupo AutoAuto
+        parentObj = cmds.pickWalk (ctlRibbon[2] , direction='up')      
+
+        #Constraints para los RibSecDw
         parentObj = cmds.pickWalk (ctlRibbon[1] , direction='up')        
-        cmds.parentConstraint(ctlRibbon[0],ctlRibbon[2], parentObj)
-          
+        cmds.pointConstraint(ctlRibbon[0],ctlRibbon[2], parentObj)
+        cmds.orientConstraint( ctlRibbon[0], ctlRibbon[2],parentObj, skip=("y", "z") )
+        autoRoot(ctlRibbon[1])#Creamos grupo AutoAuto
+        parentObj = cmds.pickWalk (ctlRibbon[1] , direction='up')      
+
+        #Constraints para los RibSecUp
+        parentObj = cmds.pickWalk (ctlRibbon[3] , direction='up')        
+        cmds.pointConstraint(ctlRibbon[2],ctlRibbon[4], parentObj)
+        cmds.orientConstraint( ctlRibbon[2], ctlRibbon[4],parentObj, skip=("y", "z") )
+        autoRoot(ctlRibbon[3])#Creamos grupo AutoAuto
+        parentObj = cmds.pickWalk (ctlRibbon[3] , direction='up')      
+
     def ribbonBindSkin(self):
+        #a y b contador para los vértices
         a=0
         b=3
+        #contador para la arista
+        i=0
+
+        #Skin Cluster a todos los jnt skinRibbon
         cmds.skinCluster("geo_c_spineRibbon", self.skinRibbon)
         cmds.rename('skinCluster1','cls_x_ribbonSpine')
-        #cmds.skinCluster("skinCluster1", e=True, ai=self.skinRibbon)
-        
 
-        for j in range (2):
-            
-            if j==2:
-                cmds.skinPercent('skinCluster1', 'geo_c_spineRibbon.cv[0:7]', transformValue=[(skinRibbon[j], 1)])
-                
-            else:
-                
-                for i in range (int((self.numJoints-1)/2)):
-                    
-                    if i==0:
-                        if j==0:
-                            cmds.skinPercent('cls_x_ribbonSpine', f'geo_c_spineRibbon.cv[{a}:{b}]', transformValue=[(self.skinRibbon[j], 1)])
-                            a+=4
-                            b+=4
-                            cmds.skinPercent('cls_x_ribbonSpine', f'geo_c_spineRibbon.cv[{a}:{b}]', transformValue=[(self.skinRibbon[j], 1)])
-                            
-                        else:
-                            cmds.skinPercent('cls_x_ribbonSpine', f'geo_c_spineRibbon.cv[{a}:{b}]', transformValue=[(self.skinRibbon[j], 1)]) 
-                                
-                    if i==1:
-                        cmds.skinPercent('cls_x_ribbonSpine', f'geo_c_spineRibbon.cv[{a}:{b}]', transformValue=[(self.skinRibbon[j], 0.5),(self.skinRibbon[j+1], 0.5)])
-                        
-                    if i==2:
-                        cmds.skinPercent('cls_x_ribbonSpine', f'geo_c_spineRibbon.cv[{a}:{b}]', transformValue=[(self.skinRibbon[j], 1)])
-                        
-                    if i==3:
-                        cmds.skinPercent('cls_x_ribbonSpine', f'geo_c_spineRibbon.cv[{a}:{b}]', transformValue=[(self.skinRibbon[j], 0.5),(self.skinRibbon[j+1], 0.5)])
-                        
+        for j in range (len(self.skinRibbon)):
+            # Por cada jnt skin le damos influencia a su arista(1) y a la superior (0,5 y 0,5 el jnt siguinete)
+            if j==0:
+                if i==0:
+                    cmds.skinPercent('cls_x_ribbonSpine', f'geo_c_spineRibbon.cv[{a}:{b}]', transformValue=[(self.skinRibbon[j], 1)])
                     a+=4
                     b+=4
-                    i+=1
-        j+=1
+                    cmds.skinPercent('cls_x_ribbonSpine', f'geo_c_spineRibbon.cv[{a}:{b}]', transformValue=[(self.skinRibbon[j], 1)])
+                if i==1:
+                    cmds.skinPercent('cls_x_ribbonSpine', f'geo_c_spineRibbon.cv[{a}:{b}]', transformValue=[(self.skinRibbon[j], 0.5),(self.skinRibbon[j+1], 0.5)])
+                i+=1
+
+
+            else:
+                if i==0:
+                    cmds.skinPercent('cls_x_ribbonSpine', f'geo_c_spineRibbon.cv[{a}:{b}]', transformValue=[(self.skinRibbon[j], 1)])
+                if i==1:
+                    cmds.skinPercent('cls_x_ribbonSpine', f'geo_c_spineRibbon.cv[{a}:{b}]', transformValue=[(self.skinRibbon[j], 0.5),(self.skinRibbon[j+1], 0.5)])
+
+            a+=4
+            b+=4
+            i+=1
+            j+=1
 
     def __init__(self):
         self.ribbonJoints = cmds.ls('skin_c_pelvis*',type='joint') + cmds.ls('skin_c_spine*',type='joint') + cmds.ls('skin_c_chest00',type='joint')
@@ -357,5 +383,5 @@ class ctl_spineRib():
     
 grp_rig()
 skin()
-ctl_global()
+globalSystem()
 spine_ctl = ctl_spineRib()
