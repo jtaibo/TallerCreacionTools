@@ -20,6 +20,7 @@ class MasterOfCheckersUI(qtutils.CheckerWindow):
     checkers=[] #Department checkers already imported
     maya_nodes_public=[] #All maya nodes
     ignored_checks=[] #Array to store the ignored checks
+    header_index = 0 #Used to avoid repet checkHeaderColor if it is already red
 
     def __init__(self, parent=qtutils.getMayaMainWindow()):
 
@@ -49,22 +50,19 @@ class MasterOfCheckersUI(qtutils.CheckerWindow):
         self.ui.check_button.setStyleSheet(button_style)
         self.ui.publish_button.setStyleSheet(button_style)
 
-    def updateSize(self): #Not working
-        # self.adjustSize()
-        pass
-  
     def populateUI(self, checking):
 
-        initial_page_count = 0 #Start var to add info to the pages before have "toolboxes[]"
+        initial_page_count = 0 #Start var. to add info to the pages before have "toolboxes[]"
 
         for c in range(len(checking)):      
             for i in range(len(self.imported)):
                 if checking[c] == self.imported[i]:
+                    
                     self.toolboxes.append(CustomToolbox(self.imported[i].capitalize(), initial_page_count))#Create a custom toolbox with the name of the checker imported
                     exec ("self.checkers.append(" + self.imported[i]+"." +self.imported[i].capitalize()+"Check())")# Initialice deparment checkers, example: self.checkers.append(pipeline.PipelineCheck())
                     self.checkers[initial_page_count].checkAll(self.maya_nodes_public) # Run all checkers inside each department
-
-                    self.ui.verticalLayout_00.addWidget(self.toolboxes[initial_page_count]) #Insert toolbox
+                    
+                    self.ui.verticalLayout_01.addWidget(self.toolboxes[initial_page_count]) #Insert toolbox
                     self.toolboxes[initial_page_count].table.setRowCount(len(self.checkers[initial_page_count].data)) #Set the rows of each page to fill them later
 
                     for d,r in zip(self.checkers[initial_page_count].data, range(self.toolboxes[c].table.rowCount())): #Fill each table
@@ -113,19 +111,34 @@ class MasterOfCheckersUI(qtutils.CheckerWindow):
 
         self.checkHeaderColor(self.checkers[page_index].data, page_index) #Change header color 
 
-    def checkHeaderColor(self, condition_checker_data, toolbox_index): #Help, break loop if red
-
-        for d in condition_checker_data:
-            
-            if condition_checker_data[d].errorLevel == tlc.common.conditionchecker.ConditionErrorLevel.ERROR:
-                self.toolboxes[toolbox_index].setHeaderColor("red")
-                a = False
+    def checkHeaderColor(self, checker_data, toolbox_index):
         
-            elif condition_checker_data[d].errorLevel == tlc.common.conditionchecker.ConditionErrorLevel.WARN:
-                self.toolboxes[toolbox_index].setHeaderColor("orange")
+        if self.header_index == toolbox_index:
+            
+            for d in checker_data: #To set the correct header coor is needed to check all the error level 
                 
-            elif condition_checker_data[d].errorLevel == tlc.common.conditionchecker.ConditionErrorLevel.OK:
-                self.toolboxes[toolbox_index].setHeaderColor("green")
+                if checker_data[d].errorLevel == tlc.common.conditionchecker.ConditionErrorLevel.ERROR:
+                    self.toolboxes[toolbox_index].setHeaderColor("red")
+                    
+                    if self.toolboxes[toolbox_index].table.isHidden(): #If it's red and is hidden, show the table
+                        self.toolboxes[toolbox_index].bodyVisibility()
+                    
+                    self.header_index += 1 #If it's red change index and check other header
+                    break
+            
+                elif checker_data[d].errorLevel == tlc.common.conditionchecker.ConditionErrorLevel.WARN:
+                    self.toolboxes[toolbox_index].setHeaderColor("orange")
+                    
+                elif checker_data[d].errorLevel == tlc.common.conditionchecker.ConditionErrorLevel.OK:
+                    self.toolboxes[toolbox_index].setHeaderColor("green")
+
+                try: #Item could not exist
+                    if checker_data[d].displayName == self.toolboxes[self.header_index].table.item(len(checker_data)-1,0).text(): #If it's the last row change index
+                        self.header_index += 1
+                        break
+                        
+                except:
+                    pass
 
     def createConnections(self):
         self.ui.check_button.pressed.connect(self.checkAllButton)
@@ -145,6 +158,7 @@ class MasterOfCheckersUI(qtutils.CheckerWindow):
 
     def checkAllButton(self):
         self.updateObjects()
+        self.header_index = 0 #Reset header index to color it
 
         for c in range(len(self.toolboxes)):
             self.checkers[c].checkAll(self.maya_nodes_public)
@@ -154,6 +168,7 @@ class MasterOfCheckersUI(qtutils.CheckerWindow):
 
     def checkPageButton(self, page):
         self.updateObjects()
+        self.header_index = page
         
         self.checkers[page].checkAll(self.maya_nodes_public)
 
@@ -162,6 +177,7 @@ class MasterOfCheckersUI(qtutils.CheckerWindow):
 
     def checkOne(self, page, row, dictionary_item):
         self.updateObjects(specific_checker= self.checkers[page])
+        self.header_index = page
 
         self.getOneCheckFunction(self.checkers[page], "check"+dictionary_item.name[0].upper()+ dictionary_item.name[1:])()
         
@@ -170,7 +186,7 @@ class MasterOfCheckersUI(qtutils.CheckerWindow):
     def callSelectWrongNodes(self, nodes_checkfunction):
         main.selectWrongNodes(nodes_checkfunction)
     
-    def callFixers (self, condition_checker, page, item_row): #Need help
+    def callFixers (self, condition_checker, page, item_row):
         
         department_checker = self.checkers[page]
         checker_name = condition_checker.name[0].upper() + condition_checker.name[1:]
@@ -244,7 +260,6 @@ class CustomToolbox(QtWidgets.QWidget):
         self.table.setColumnCount(len(self.col_labels))
         self.table.setHorizontalHeaderLabels(self.col_labels)
         self.table.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
-        
 
         self.palette.setColor(QtGui.QPalette.Button, QtGui.QColor(77,77,77))
         self.button.setMinimumSize(100,0)
@@ -320,7 +335,6 @@ class CustomToolbox(QtWidgets.QWidget):
             self.header_button.setText("  "+self.nameID+"  ▲")
             self.table.hide()
             self.button.hide()
-            masterofcheckers_ui.updateSize()
 
     def contextMenu(self,pos):
 
@@ -354,7 +368,7 @@ class CustomToolbox(QtWidgets.QWidget):
             menu.exec_(self.table.viewport().mapToGlobal(pos))    
 
     def setHeaderColor(self, color):
-        
+
         self.header_button.setProperty("color", color)    
         self.header_button.setStyleSheet(self.header_button.styleSheet())
         
@@ -398,4 +412,4 @@ def run(checking):
     masterofcheckers_ui.populateUI(checking)
     masterofcheckers_ui.show()
 
-#Add scrollbar
+#Adjust size of the window to the content
