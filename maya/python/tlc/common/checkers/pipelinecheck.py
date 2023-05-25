@@ -39,9 +39,8 @@ class PipelineCheck():
             cmds.setAttr((o +".scaleY"), 1)
             cmds.setAttr((o +".scaleZ"), 1)
         
-
-
-    
     # def checkFoldersStructure(self):
+    #     pass
+    # def fixFoldersStructure(self):
     #     pass
 

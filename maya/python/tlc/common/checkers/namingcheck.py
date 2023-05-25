@@ -39,5 +39,7 @@ class NamingCheck():
     
     # def checkFoldersStructure(self):
     #     pass
+    # def fixFoldersStructure(self):
+    #     pass
 
 
