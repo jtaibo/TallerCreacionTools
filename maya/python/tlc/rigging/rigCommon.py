@@ -45,12 +45,15 @@ def autoRoot(obj):
     #recoje el padre del objeto
     parentObj = cmds.pickWalk (obj , direction='up')
     listNameParent= filterNameObj(parentObj[0])
-    print(listNameParent)
+    #print(listNameParent)
 
     
-    #posicion y rotacion 
+    #posicion y rotacion y rotateOrder
     valueTranslation = cmds.xform(obj, q=True, ws=True, t=True)
     valueRotation = cmds.xform(obj, q=True, ws=True, ro=True)
+    valueRorder = cmds.xform(obj, q=True, rotateOrder= True)
+    print(valueRorder)
+
     namePart0=filterNameObj(obj)[0]
     namePart1=filterNameObj(obj)[1]
     namePart2=filterNameObj(obj)[2]
@@ -59,13 +62,15 @@ def autoRoot(obj):
         print('AutoAuto')
         grpAutoAuto=cmds.group(empty=True, name='grp_'+namePart1 + '_AutoAuto' + namePart0[0].upper() + namePart0[1:] + namePart1.upper() + namePart2[0].upper()+ namePart2[1:], p=parentObj[0])
         cmds.xform (grpAutoAuto ,ws = True, t = valueTranslation)
-        cmds.xform (grpAutoAuto ,ws = True, ro = valueRotation)
+        cmds.xform (grpAutoAuto ,ws = True, ro = valueRotation, rotateOrder = valueRorder)
+        #cmds.xform (grpAutoAuto ,ws = True, ro = valueRotation)
         cmds.parent (obj , grpAutoAuto)
         
     else:
         grpRoot=cmds.group(empty=True, name='grp_'+namePart1 + '_root' + namePart0[0].upper() + namePart0[1:] + namePart1.upper() + namePart2[0].upper()+ namePart2[1:])
         cmds.xform (grpRoot ,ws = True, t = valueTranslation)
-        cmds.xform (grpRoot ,ws = True, ro = valueRotation)
+        cmds.xform (grpRoot ,ws = True, ro = valueRotation, rotateOrder = valueRorder)
+        #cmds.xform (grpRoot ,ws = True, ro = valueRotation)
 
         # Si el objeto padre existe, emparentar el root
         if parentObj[0]!=obj:
@@ -73,8 +78,10 @@ def autoRoot(obj):
 
         grpAuto=cmds.group(empty=True, name='grp_'+namePart1 + '_auto' + namePart0[0].upper() + namePart0[1:] + namePart1.upper() + namePart2[0].upper()+ namePart2[1:], p=grpRoot)
         cmds.xform (grpAuto ,ws = True, t = valueTranslation)
-        cmds.xform (grpAuto ,ws = True, ro = valueRotation)
-        print('RootAuto')
+        cmds.xform (grpAuto ,ws = True, ro = valueRotation, rotateOrder = valueRorder)
+        #cmds.xform (grpAuto ,ws = True, ro = valueRotation)
+
+        #print('RootAuto')
         cmds.parent (obj , grpAuto)
 
     
@@ -89,21 +96,26 @@ def autoRoot(obj):
         cmds.setAttr (obj + '.jointOrientZ' , 0)
                       
 def filterNameObj(nameObj):
-	partsObj = nameObj.split("_")
-	return  partsObj
+    partsObj = nameObj.split("_")
+    return  partsObj
+
+def getDictNotes(obj , note):
+    objNotes=cmds.getAttr(obj +  '.notes')
+    dictNotes=dict(subString.split(':') for subString in objNotes.split('\n'))
+    return(dictNotes[note])
 
 def chainFk(listJoints,shapeSpline):
     for o in listJoints:
-        nota = cmds.getAttr(o + '.notes')
-        nameParent = nota.split(":")
-
+        #nota = cmds.getAttr(o + '.notes')
+        #nameParent = nota.split(":")
+        parentCtl =getDictNotes(o, 'parentCtl')
+        #print(parentCtl)
+        #print(cfk)
+        
         jntDuplicado=cmds.duplicate(o,parentOnly=True, name='cfk_'+filterNameObj(o)[1]+'_'+filterNameObj(o)[2] )
         cfk=jntDuplicado[0]
 
-        if o != listJoints[0]:
-            cmds.parent(cfk,'cfk_'+filterNameObj(nameParent[1])[1]+'_'+filterNameObj(nameParent[1])[2] )
-        else:
-            cmds.parent(cfk, world=True)
+        cmds.parent(cfk, parentCtl)
 
         autoRoot(cfk)
         shapeParent(shapeSpline, cfk)
@@ -115,19 +127,22 @@ def applyContrain(type,target,obj,skipAxis,offset):
     #axis: ejes que no queremos constrainear. ['x','y','z'] 
     #offset: offset=True, offset=False
     #Ej: applyContrain('orient', ['lct_x_prueba01','lct_x_prueba02'],'lct_x_prueba00',['x'],offset=True)
+
+
+    parentObj = cmds.pickWalk (obj , direction='up')
+    name=obj
     tweight = round((1.0 / len(target)), 2)
-    
     if type=='parent':
-        cmds.parentConstraint(target, obj, mo=offset, st=skipAxis , sr=skipAxis, weight = tweight)
+        cmds.parentConstraint(target, parentObj, mo=offset, st=skipAxis , sr=skipAxis, weight = tweight, name='pans_c_' + filterNameObj(name)[0] + filterNameObj(name)[2])
         pass
     elif type=='point':
-        cmds.pointConstraint(target, obj, mo=offset, sk=skipAxis, weight = tweight)
+        cmds.pointConstraint(target, parentObj, mo=offset, sk=skipAxis, weight = tweight)
         pass
     elif type=='orient':
-        cmds.orientConstraint(target, obj, mo=offset, sk=skipAxis, weight = tweight) 
+        cmds.orientConstraint(target, parentObj, mo=offset, sk=skipAxis, weight = tweight) 
         pass
     elif type=='aim':
-        cmds.aimConstraint(target, obj, mo=offset, sk=skipAxis, weight = tweight)
+        cmds.aimConstraint(target, parentObj, mo=offset, sk=skipAxis, weight = tweight)
         pass
     else:
         print( type + ' no es un constrain valido')

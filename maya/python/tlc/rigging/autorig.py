@@ -25,80 +25,17 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 import maya.cmds as cmds
 import maya.mel as mm
 
-###################################################
-###################################################
-
-def shapeParent(obj,target):
-    """Parent the shape node of one object to another"""
-    childs = cmds.listRelatives(obj, children=True)#Pick up the childrens from the obj
-
-    for child in childs:#Unparent everything except shape node
-        if not child.startswith(obj):
-            cmds.parent(child, w=True)
-    shapeInst = cmds.duplicate(obj)#Duplicate transform tmpl
-
-    for child in childs:#Parent everything except shape node
-        if not child.startswith(obj):
-            cmds.parent(child, obj)
-
-    shape = cmds.listRelatives(shapeInst)
-    cmds.parent(shape, target, shape=True, relative=True)#Parent to the shape to target
-    cmds.rename(shape, target + 'Shape')
-    cmds.delete(shapeInst)#Delete duplicate transform
-
-def filterNameObj(nameObj):
-	partsObj = nameObj.split("_")
-	return  partsObj
-
-def autoRoot(obj):
-    #recoje el padre del objeto
-    parentObj = cmds.pickWalk (obj , direction='up')
-    listNameParent= filterNameObj(parentObj[0])
-    print(listNameParent)
-
-    
-    #posicion y rotacion 
-    valueTranslation = cmds.xform(obj, q=True, ws=True, t=True)
-    valueRotation = cmds.xform(obj, q=True, ws=True, ro=True)
-    namePart0=filterNameObj(obj)[0]
-    namePart1=filterNameObj(obj)[1]
-    namePart2=filterNameObj(obj)[2]
-
-    if listNameParent[0] == 'grp' and listNameParent[2].find('auto') != -1:
-        print('AutoAuto')
-        grpAutoAuto=cmds.group(empty=True, name='grp_'+namePart1 + '_AutoAuto' + namePart0[0].upper() + namePart0[1:] + namePart1.upper() + namePart2[0].upper()+ namePart2[1:], p=parentObj[0])
-        cmds.xform (grpAutoAuto ,ws = True, t = valueTranslation)
-        cmds.xform (grpAutoAuto ,ws = True, ro = valueRotation)
-        cmds.parent (obj , grpAutoAuto)
-        
-    else:
-        grpRoot=cmds.group(empty=True, name='grp_'+namePart1 + '_root' + namePart0[0].upper() + namePart0[1:] + namePart1.upper() + namePart2[0].upper()+ namePart2[1:])
-        cmds.xform (grpRoot ,ws = True, t = valueTranslation)
-        cmds.xform (grpRoot ,ws = True, ro = valueRotation)
-
-        # Si el objeto padre existe, emparentar el root
-        if parentObj[0]!=obj:
-            cmds.parent(grpRoot, parentObj)
-
-        grpAuto=cmds.group(empty=True, name='grp_'+namePart1 + '_auto' + namePart0[0].upper() + namePart0[1:] + namePart1.upper() + namePart2[0].upper()+ namePart2[1:], p=grpRoot)
-        cmds.xform (grpAuto ,ws = True, t = valueTranslation)
-        cmds.xform (grpAuto ,ws = True, ro = valueRotation)
-        print('RootAuto')
-        cmds.parent (obj , grpAuto)
-
-    
-    #resetea los valores si es un jnt
-    typeNode = cmds.nodeType(obj)
-    if typeNode == 'joint':
-        cmds.setAttr (obj + '.rotateX' , 0)
-        cmds.setAttr (obj + '.jointOrientX' , 0)
-        cmds.setAttr (obj + '.rotateY' , 0)
-        cmds.setAttr (obj + '.jointOrientY' , 0)
-        cmds.setAttr (obj + '.rotateZ' , 0)
-        cmds.setAttr (obj + '.jointOrientZ' , 0)
+from tlc.rigging.rigCommon import filterNameObj
+from tlc.rigging.rigCommon import autoRoot
+from tlc.rigging.rigCommon import shapeParent
+from tlc.rigging.rigCommon import chainFk
+from tlc.rigging.rigCommon import applyContrain
+from tlc.rigging.rigCommon import getDictNotes
 
 ###################################################
 ###################################################
+
+
 def grp_rig():
     rigGroup=cmds.group(empty=True, name="grp_x_rig")
     skinGroup=cmds.group(empty=True, name="grp_x_skin")
@@ -141,11 +78,9 @@ def skin():
         cmds.setAttr(o + '.rotateY' , 0)
         cmds.setAttr(o + '.rotateZ' ,0)
 
-        nota = cmds.getAttr(o + '.notes')
-        nameParent = nota.split(":")
-        # print(nameParent)
         if o != 'skin_c_root':
-            cmds.parent(o, nameParent[1])
+            parentSkin = getDictNotes(o,'parentSkin')
+            cmds.parent(o, parentSkin)
 
         valueX = cmds.getAttr(o + '.jointOrientX')
         valueY = cmds.getAttr(o + '.jointOrientY')
@@ -180,12 +115,46 @@ def globalSystem():
     cmds.parent('ctl_c_gravity','ctl_c_root')
     cmds.parent('ctl_c_root','ctl_c_base')
     cmds.parent('ctl_c_base','grp_x_ctl')
+    
     autoRoot('ctl_c_base')
     autoRoot('ctl_c_root')
     autoRoot('ctl_c_gravity')
 
+    #Create a locator for the extra attributes of the rig
+    ctlLocator=cmds.spaceLocator(name='ctl_x_setting')
+    cmds.xform(ctlLocator, t=(40,150,0), s=(4,4,4))
+    cmds.parent(ctlLocator[0],'ctl_c_gravity')
+    autoRoot(ctlLocator[0])
+    cmds.addAttr(ctlLocator[0], ln='visExtraCtl', at='bool', keyable=True)
+    cmds.addAttr(ctlLocator[0], ln='FkIkspine', at='bool', keyable=True)
+
 def ctl_spineFk():
-    pass
+    jointsSpineFk = cmds.ls('skin_c_pelvis', 'skin_c_spine0*','skin_c_chest00' ,type='joint')
+    j=0
+    for o in jointsSpineFk:
+        parentCtl = getDictNotes(o, 'parentCfk')
+        jntDuplicado = cmds.duplicate(o, parentOnly=True, name='cfk_' + filterNameObj(o)[1] + '_' + filterNameObj(o)[2])
+        cfk = jntDuplicado[0]
+        cmds.parent(cfk, parentCtl)
+        autoRoot(cfk)
+
+        if j % 2 == 0:
+            shapeParent('spl_x_03' ,cfk)
+        elif j % 2 != 0:
+            shapeParent('spl_x_circle' ,cfk)
+            childs = cmds.listRelatives(cfk, children=True)
+            shape=childs[0]
+            cmds.connectAttr('ctl_x_setting.visExtraCtl', shape + '.visibility',)
+            #cmds.setAttr(shape + '.visibility', False)
+        j+=1
+
+
+    jntDuplicado=cmds.duplicate('skin_c_pelvis',parentOnly=True, name='cfk_c_pelvis00')
+    cfk=jntDuplicado[0]
+    autoRoot(cfk)
+    shapeParent( 'spl_x_circle' , cfk )
+    cvs = cmds.ls(cfk + 'Shape.cv[*]', flatten=True)
+    cmds.scale(0.85, 0.85, 0.85, cvs, relative=True)
 
 
 class ctl_spineRib():
@@ -250,10 +219,22 @@ class ctl_spineRib():
             #Grupos AutoRoot
             autoRoot(main)
 
-            #Parent del main al locator correspondiente
-            parentObj = cmds.pickWalk (main , direction='up')
-            cmds.parentConstraint('lct_'+filterNameObj(i)[1] + '_' + filterNameObj(i)[2], parentObj[0] )
+            cvs = cmds.ls(main + 'Shape.cv[*]', flatten=True)
+            cmds.scale(0.5, 0.5, 0.5, cvs, relative=True)
 
+            #Shape visibility
+            cmds.connectAttr('ctl_x_setting.visExtraCtl', main + 'Shape.visibility')
+            
+            #Parent del main al locator correspondiente o al control Fkf
+            #parentObj = cmds.pickWalk (main , direction='up')
+            applyContrain('parent', ['lct_'+filterNameObj(i)[1] + '_' + filterNameObj(i)[2],'cfk_'+filterNameObj(i)[1] + '_' + filterNameObj(i)[2]], main, [], offset=False)
+
+            #conectar constrain IKFk
+            cmds.connectAttr("ctl_x_setting.FkIkspine", "pans_c_" + filterNameObj(main)[0] + filterNameObj(main)[2] + ".lct_c_"+filterNameObj(main)[2] + "W0")
+            reverse_node = cmds.createNode("reverse")
+            cmds.connectAttr('ctl_x_setting.FkIkspine',reverse_node + ".inputX")
+            cmds.connectAttr(reverse_node + ".outputX", "pans_c_"+ filterNameObj(main)[0] + filterNameObj(main)[2] + ".cfk_c_" + filterNameObj(main)[2] + "W1")
+            #cmds.parentConstraint('lct_'+filterNameObj(i)[1] + '_' + filterNameObj(i)[2], parentObj[0] )
             o+=1
 
     def ctlSystem(self):
@@ -384,4 +365,5 @@ class ctl_spineRib():
 grp_rig()
 skin()
 globalSystem()
-spine_ctl = ctl_spineRib()
+ctl_spineFk()
+spine_ctl = ctl_spineRib() 
