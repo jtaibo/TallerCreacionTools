@@ -9,12 +9,17 @@ class ModelingCheck():
     objects_list = []
     data = ModelingCheck().data
 
+    def updateObjectsList(self, maya_objects):
+        self.objects_list = maya_objects
+
     def checkAll(self, maya_objects):
 
         self.objects_list = maya_objects
-        #self.checkFoldersStructure()...
+        #self.checkNodeFields()...
+
+    #def checkNodeFields(self):
+    #    pass
+
+    #def fixNodeFields(self, error_objects):
+        #...
     
-    # def checkFoldersStructure(self):
-    #     pass
-
-

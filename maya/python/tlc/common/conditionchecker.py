@@ -61,8 +61,20 @@ class ConditionErrorCriteria(Enum):
 class ConditionChecker():
     """Class ConditionChecker
     """
+    PROPERTY_NONE = 0            # 0000
+    """Condition is fixable
+    """
+    PROPERTY_FIXABLE = 1         # 0001
+    """Condition is fixable
+    """
+    PROPERTY_IGNORABLE = 2       # 0010
+    """Condition is ignorable
+    """
+    PROPERTY_SELECTABLE = 4      # 0100
+    """Condition is selectable
+    """
 
-    def __init__(self, name="", displayName="", toolTip="", selectable=True):
+    def __init__(self, name="", displayName="", toolTip="", selectable=True, propertyFlag=PROPERTY_NONE ):
         """Constructor
 
         Args:
@@ -70,6 +82,7 @@ class ConditionChecker():
             displayName (str, optional): Condition name used to display on UI. Defaults to "".
             toolTip (str, optional): Long description used as a tooltip. Defaults to "".
             selectable (bool, optional): Condition elements are selectable. Defaults to True.
+            propertyFlag (optional): Type of properties for the element. Default none.
         """
         
         self.name = name
@@ -95,6 +108,9 @@ class ConditionChecker():
         """
         self.elms = []
         """List of elements matching the condition
+        """
+        self.propertyFlag = propertyFlag
+        """Type of element properties
         """
 
     def reset(self):
