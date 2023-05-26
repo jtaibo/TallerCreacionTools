@@ -42,50 +42,53 @@ def shapeParent(obj,target):
     cmds.delete(shapeInst)#Delete duplicate transform
 
 def autoRoot(obj):
-    #recoje el padre del objeto
-    parentObj = cmds.pickWalk (obj , direction='up')
-    listNameParent= filterNameObj(parentObj[0])
-    #print(listNameParent)
+    """"Create the AutoRoot groups to freeze the transformations"""
 
-    
-    #posicion y rotacion y rotateOrder
+    parentObj = cmds.pickWalk (obj , direction='up') #get the parent of the object
+    listNameParent= filterNameObj(parentObj[0]) #filter parent name
+
+    #Collect position, rotation & rotateOrder
     valueTranslation = cmds.xform(obj, q=True, ws=True, t=True)
     valueRotation = cmds.xform(obj, q=True, ws=True, ro=True)
     valueRorder = cmds.xform(obj, q=True, rotateOrder= True)
-    print(valueRorder)
 
+    #Filter name obj
     namePart0=filterNameObj(obj)[0]
     namePart1=filterNameObj(obj)[1]
     namePart2=filterNameObj(obj)[2]
 
+    #If auto group exists, create create group autoAuto
     if listNameParent[0] == 'grp' and listNameParent[2].find('auto') != -1:
         print('AutoAuto')
         grpAutoAuto=cmds.group(empty=True, name='grp_'+namePart1 + '_AutoAuto' + namePart0[0].upper() + namePart0[1:] + namePart1.upper() + namePart2[0].upper()+ namePart2[1:], p=parentObj[0])
+        #Paste translation, rotation & rotateOrder
         cmds.xform (grpAutoAuto ,ws = True, t = valueTranslation)
         cmds.xform (grpAutoAuto ,ws = True, ro = valueRotation, rotateOrder = valueRorder)
-        #cmds.xform (grpAutoAuto ,ws = True, ro = valueRotation)
-        cmds.parent (obj , grpAutoAuto)
-        
+
+        cmds.parent (obj , grpAutoAuto)#Parent obj to group autoAuto
+
+    #Create group Root and Auto   
     else:
+        print('RootAuto')
+        #Create group root
         grpRoot=cmds.group(empty=True, name='grp_'+namePart1 + '_root' + namePart0[0].upper() + namePart0[1:] + namePart1.upper() + namePart2[0].upper()+ namePart2[1:])
+        #Paste translation, rotation & rotateOrder
         cmds.xform (grpRoot ,ws = True, t = valueTranslation)
         cmds.xform (grpRoot ,ws = True, ro = valueRotation, rotateOrder = valueRorder)
-        #cmds.xform (grpRoot ,ws = True, ro = valueRotation)
 
-        # Si el objeto padre existe, emparentar el root
+        # If parent object exists, parent the root
         if parentObj[0]!=obj:
             cmds.parent(grpRoot, parentObj)
 
+        #Create group auto
         grpAuto=cmds.group(empty=True, name='grp_'+namePart1 + '_auto' + namePart0[0].upper() + namePart0[1:] + namePart1.upper() + namePart2[0].upper()+ namePart2[1:], p=grpRoot)
+        #Paste translation, rotation & rotateOrder
         cmds.xform (grpAuto ,ws = True, t = valueTranslation)
         cmds.xform (grpAuto ,ws = True, ro = valueRotation, rotateOrder = valueRorder)
-        #cmds.xform (grpAuto ,ws = True, ro = valueRotation)
 
-        #print('RootAuto')
-        cmds.parent (obj , grpAuto)
+        cmds.parent (obj , grpAuto)#Parent obj to group auto
 
-    
-    #resetea los valores si es un jnt
+    #If obj is a joint, reset the values
     typeNode = cmds.nodeType(obj)
     if typeNode == 'joint':
         cmds.setAttr (obj + '.rotateX' , 0)
@@ -100,27 +103,24 @@ def filterNameObj(nameObj):
     return  partsObj
 
 def getDictNotes(obj , note):
+    """Take a value from the dictionary notes"""
     objNotes=cmds.getAttr(obj +  '.notes')
     dictNotes=dict(subString.split(':') for subString in objNotes.split('\n'))
     return(dictNotes[note])
 
 def chainFk(listJoints,shapeSpline):
+    """Creates an fk system based on a jnt chain"""
     for o in listJoints:
-        #nota = cmds.getAttr(o + '.notes')
-        #nameParent = nota.split(":")
         parentCtl =getDictNotes(o, 'parentCtl')
-        #print(parentCtl)
-        #print(cfk)
-        
         jntDuplicado=cmds.duplicate(o,parentOnly=True, name='cfk_'+filterNameObj(o)[1]+'_'+filterNameObj(o)[2] )
         cfk=jntDuplicado[0]
-
         cmds.parent(cfk, parentCtl)
-
         autoRoot(cfk)
         shapeParent(shapeSpline, cfk)
 
 def applyContrain(type,target,obj,skipAxis,offset):
+    """Creates a contrain to an object, from one or more targets"""
+
     #Type: 'parent', 'point', 'orient', 'aim'
     #Target: objeto o objetos target para el constraint
     #obj: objeto al que aplicar el contraint

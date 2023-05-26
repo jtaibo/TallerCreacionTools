@@ -47,30 +47,29 @@ def grp_rig():
 def skin():
     """Build the skin system based on the position of a template"""
 
-    allTmpJoints = cmds.ls('tmpl_*',type='joint')
+    allTmpJoints = cmds.ls('tmpl_*',type='joint') #Make a list of all tamplate jnt
 
     for o in allTmpJoints:
 
-        #create, position and rotate joi
+        #Create and rename jnt
         skinJoint = cmds.createNode('joint', name = ('skin_' + filterNameObj(o)[1] + '_' + filterNameObj(o)[2]))
-        #cmds.setAttr(skinJoint + '.displayLocalAxis', 1)
+        #Copy & paste translation and rotation from tmpl
         valueTranslation = cmds.xform(o, q=True, ws=True, t=True)
         valueRotation = cmds.xform(o, q=True, ws=True, ro=True)
         cmds.xform (skinJoint , ws = True , t = valueTranslation )
         cmds.xform (skinJoint , ws = True , ro = valueRotation )
 
-        #copy & add notes from tmpl
+        #Copy & add notes from tmpl
         attrNotes = cmds.getAttr(o + '.notes')
         cmds.addAttr(skinJoint, ln='notes', dt='string')
         cmds.setAttr(skinJoint + '.notes', attrNotes, type='string')
         # print(cmds.getAttr(skinJoint + '.notas'))
 
-    allSkinJoints = cmds.ls ('skin*',type='joint')
-
+    allSkinJoints = cmds.ls ('skin*',type='joint')#Make a list of all skin jnt
     for o in allSkinJoints: 
-
+        #Pick up the rotate
         valueRotate = cmds.xform (o , q = True , ws = True , ro = True )
-
+        #Pass the values ​​to the jnt orient
         cmds.setAttr(o + '.jointOrientX' , valueRotate[0])
         cmds.setAttr(o + '.jointOrientY' , valueRotate[1])
         cmds.setAttr(o + '.jointOrientZ' , valueRotate[2])
@@ -79,20 +78,20 @@ def skin():
         cmds.setAttr(o + '.rotateZ' ,0)
 
         if o != 'skin_c_root':
-            parentSkin = getDictNotes(o,'parentSkin')
+            parentSkin = getDictNotes(o,'parentSkin')#collect the parent of the notes
             cmds.parent(o, parentSkin)
 
         valueX = cmds.getAttr(o + '.jointOrientX')
         valueY = cmds.getAttr(o + '.jointOrientY')
         valueZ = cmds.getAttr(o + '.jointOrientZ')
-        
+        #Pass the values ​​to rotate
         cmds.setAttr(o + '.rotateX', valueX)
         cmds.setAttr(o + '.rotateY', valueY)
         cmds.setAttr(o + '.rotateZ', valueZ)
         cmds.setAttr(o + '.jointOrientX', 0)
         cmds.setAttr(o + '.jointOrientY', 0)
         cmds.setAttr(o + '.jointOrientZ', 0)
-    cmds.parent('skin_c_root','grp_x_skin')  
+    cmds.parent('skin_c_root','grp_x_skin')#parent root jnt to skin group
 
 def globalSystem():
     """Build the ctlGlobal system (Base+Root+Gravity) based on the position of a template"""
@@ -101,21 +100,23 @@ def globalSystem():
 
     for o in ctlGlobal:
         if o == 'tmpl_c_root':
-            transform_node = cmds.createNode("joint", name= 'ctl_' + filterNameObj(o)[1] + '_' + filterNameObj(o)[2])#Create transform node
+            transform_node = cmds.createNode("joint", name= 'ctl_' + filterNameObj(o)[1] + '_' + filterNameObj(o)[2])
         else:
-            transform_node = cmds.createNode("transform", name= 'ctl_' + filterNameObj(o)[1] + '_' + filterNameObj(o)[2])#Create transform node
-
+            transform_node = cmds.createNode("transform", name= 'ctl_' + filterNameObj(o)[1] + '_' + filterNameObj(o)[2])
+        #copy the shape from tmpl to ctl
         shapeParent(o,transform_node)
         
+        #copy & paste translation & rotation
         valueTranslation = cmds.xform(o, q=True, ws=True, t=True)
         valueRotation = cmds.xform(o, q=True, ws=True, ro=True)
         cmds.xform(transform_node, ws=True, t=valueTranslation)
         cmds.xform(transform_node, ws=True, ro=valueRotation)
 
+    #Creates the hierarchy
     cmds.parent('ctl_c_gravity','ctl_c_root')
     cmds.parent('ctl_c_root','ctl_c_base')
     cmds.parent('ctl_c_base','grp_x_ctl')
-    
+    #Freeze ctl
     autoRoot('ctl_c_base')
     autoRoot('ctl_c_root')
     autoRoot('ctl_c_gravity')
@@ -124,19 +125,21 @@ def globalSystem():
     ctlLocator=cmds.spaceLocator(name='ctl_x_setting')
     cmds.xform(ctlLocator, t=(40,150,0), s=(4,4,4))
     cmds.parent(ctlLocator[0],'ctl_c_gravity')
-    autoRoot(ctlLocator[0])
+    autoRoot(ctlLocator[0])#Freeze
+    #Add attributes
     cmds.addAttr(ctlLocator[0], ln='visExtraCtl', at='bool', keyable=True)
     cmds.addAttr(ctlLocator[0], ln='FkIkspine', at='bool', keyable=True)
 
 def ctl_spineFk():
-    jointsSpineFk = cmds.ls('skin_c_pelvis', 'skin_c_spine0*','skin_c_chest00' ,type='joint')
+    """Creates  spine fk system"""
+    jointsSpineFk = cmds.ls('skin_c_pelvis', 'skin_c_spine0*','skin_c_chest00' ,type='joint')#Make a list of all spine jnt
     j=0
     for o in jointsSpineFk:
-        parentCtl = getDictNotes(o, 'parentCfk')
+        parentCtl = getDictNotes(o, 'parentCfk')#Collect parent to the notes
         jntDuplicado = cmds.duplicate(o, parentOnly=True, name='cfk_' + filterNameObj(o)[1] + '_' + filterNameObj(o)[2])
         cfk = jntDuplicado[0]
-        cmds.parent(cfk, parentCtl)
-        autoRoot(cfk)
+        cmds.parent(cfk, parentCtl)#Parent
+        autoRoot(cfk)#Freeze
 
         if j % 2 == 0:
             shapeParent('spl_x_03' ,cfk)
@@ -144,89 +147,90 @@ def ctl_spineFk():
             shapeParent('spl_x_circle' ,cfk)
             childs = cmds.listRelatives(cfk, children=True)
             shape=childs[0]
-            cmds.connectAttr('ctl_x_setting.visExtraCtl', shape + '.visibility',)
-            #cmds.setAttr(shape + '.visibility', False)
+            cmds.connectAttr('ctl_x_setting.visExtraCtl', shape + '.visibility')#Connect the visibility with the ctl_x_settings attribute 
+
         j+=1
 
 
-    jntDuplicado=cmds.duplicate('skin_c_pelvis',parentOnly=True, name='cfk_c_pelvis00')
+    jntDuplicado=cmds.duplicate('skin_c_pelvis',parentOnly=True, name='cfk_c_pelvis00')#create extra ctl pelvis00
     cfk=jntDuplicado[0]
     autoRoot(cfk)
     shapeParent( 'spl_x_circle' , cfk )
-    cvs = cmds.ls(cfk + 'Shape.cv[*]', flatten=True)
+    cvs = cmds.ls(cfk + 'Shape.cv[*]', flatten=True)#Scale the cvs
     cmds.scale(0.85, 0.85, 0.85, cvs, relative=True)
 
 
 class ctl_spineRib():
+    """Creates a ribbon based on a jnt list"""
     def createRibbonSurface(self):
+        """Create ribbon surface"""
+        #Create 2 curves
         cmds.curve(d=3, ep=self.jointTranslation)
         cmds.duplicate("curve1")
-        #posicionar curvas
+        #positioning curves curvas
         cmds.xform("curve1", ws=True, t=(-1,0,0))
         cmds.xform("curve2", ws=True, t=(1,0,0))
         
         cmds.select("curve2","curve1")
-        cmds.loft(ch=True, u=True, c=0, ar=True, d=3, ss=1, rn=False, po=0, rsn=True)#crear plano
-        
+        cmds.loft(ch=True, u=True, c=0, ar=True, d=3, ss=1, rn=False, po=0, rsn=True)#create plane loft
+        cmds.rename('geo_c_spineRibbon')
+
         cmds.delete("curve 1","curve 2")
         
-        #Emparentar al toolKit
-        cmds.rename('geo_c_spineRibbon')
-        cmds.parent('geo_c_spineRibbon','grp_x_toolKit')
-        grpFol=cmds.group(empty=True, name='grp_x_folRibbon')
+        cmds.parent('geo_c_spineRibbon','grp_x_toolKit')#Parent to toolKit
+        grpFol=cmds.group(empty=True, name='grp_x_folRibbon')#Create follicle group
         cmds.parent(grpFol,'grp_x_toolKit')
    
     def follicleSystem(self):
-        
-        #crear follicles
+        """Creates follicles and locators following the ribbon geometry"""
         cmds.select('geo_c_spineRibbon')
+        #create nhair to create follicles
         mm.eval("createHair 9 1 9 0 0 1 0 5 0 1 2 1;")
     
-        follicles=cmds.ls('geo_c_spineRibbonFollicle*')
+        follicles=cmds.ls('geo_c_spineRibbonFollicle*')#list follicles
 
         i=0
         for o in self.ribbonJoints:
-            fol=cmds.rename(follicles[i],'fol_' + filterNameObj(o)[1] + '_' + filterNameObj(o)[2])
+            fol=cmds.rename(follicles[i],'fol_' + filterNameObj(o)[1] + '_' + filterNameObj(o)[2])#rename follicle by joint
             cmds.parent(fol, 'grp_x_folRibbon')
 
-            #creamos lct
+            #crete lct
             locator=cmds.spaceLocator(name='lct_' + filterNameObj(o)[1] + '_' + filterNameObj(o)[2])
             
             #Pega la posicion y orientacion a cada lct
             cmds.xform(locator,os=True, t=self.jointTranslation[i])
             cmds.xform(locator,os=True, ro=self.jointRotation[i])
 
-            #emparentamos lct a folicles
+            #Parent lct a folicles
             cmds.parent(locator, fol)
             
             i+=1
             
-        #Eliminamos todo y dejamos los follicles
+        #Remove everything from the nhair except the follicles
         cmds.delete('pfxHair1' , 'hairSystem1' , 'nucleus1' , 'hairSystem1Follicles' , 'curve*')
     
     def mainSystem(self):
+        """Create spine main system"""
         mainGroup=cmds.group(empty=True, name='grp_x_mainSpine')
         cmds.parent(mainGroup,'ctl_c_gravity')
         o=0
         for i in self.ribbonJoints:
+            #Create jnt, paste position and rotation
             main= cmds.createNode('joint', name='main_'+ filterNameObj(i)[1] + '_' + filterNameObj(i)[2]) 
             cmds.xform(main,os=True, t=self.jointTranslation[o])
             cmds.xform(main,os=True, ro=self.jointRotation[o])
 
-            #ShapeParent
+            #ShapeParent, Freeze and Parent
             shapeParent('spl_x_circle', main)
             cmds.parent(main,'grp_x_mainSpine')
-            #Grupos AutoRoot
             autoRoot(main)
-
             cvs = cmds.ls(main + 'Shape.cv[*]', flatten=True)
             cmds.scale(0.5, 0.5, 0.5, cvs, relative=True)
 
-            #Shape visibility
+            #Conect shape visibility with the ctl_x_settings attribute 
             cmds.connectAttr('ctl_x_setting.visExtraCtl', main + 'Shape.visibility')
             
             #Parent del main al locator correspondiente o al control Fkf
-            #parentObj = cmds.pickWalk (main , direction='up')
             applyContrain('parent', ['lct_'+filterNameObj(i)[1] + '_' + filterNameObj(i)[2],'cfk_'+filterNameObj(i)[1] + '_' + filterNameObj(i)[2]], main, [], offset=False)
 
             #conectar constrain IKFk
@@ -234,15 +238,16 @@ class ctl_spineRib():
             reverse_node = cmds.createNode("reverse")
             cmds.connectAttr('ctl_x_setting.FkIkspine',reverse_node + ".inputX")
             cmds.connectAttr(reverse_node + ".outputX", "pans_c_"+ filterNameObj(main)[0] + filterNameObj(main)[2] + ".cfk_c_" + filterNameObj(main)[2] + "W1")
-            #cmds.parentConstraint('lct_'+filterNameObj(i)[1] + '_' + filterNameObj(i)[2], parentObj[0] )
             o+=1
 
     def ctlSystem(self):
+        """Creates the controls to move the ribbon"""
         ctlRibbon=[]
         skinGroup=cmds.group(empty=True, name='grp_x_skinRibbon')
         cmds.parent(skinGroup,'grp_x_toolKit')
-        #crear jnt ctl y skin que controlan la ribbon
+
         for i in range(self.numJoints):
+            #Create ctl and skin jnt for ribbon
             bool=True
             if i==0:
                 ctl=cmds.createNode('joint', name='ctl_c_spineRibPelvis')
@@ -284,25 +289,25 @@ class ctl_spineRib():
         parentObj = cmds.pickWalk (ctlRibbon[2] , direction='up')        
         cmds.pointConstraint(ctlRibbon[0],ctlRibbon[4], parentObj)
         cmds.orientConstraint( ctlRibbon[0], ctlRibbon[4],parentObj, skip=("y", "z") )
-        autoRoot(ctlRibbon[2])#Creamos grupo AutoAuto
-        parentObj = cmds.pickWalk (ctlRibbon[2] , direction='up')      
+        #autoRoot(ctlRibbon[2])#Creamos grupo AutoAuto
+        #parentObj = cmds.pickWalk (ctlRibbon[2] , direction='up')      
 
         #Constraints para los RibSecDw
         parentObj = cmds.pickWalk (ctlRibbon[1] , direction='up')        
         cmds.pointConstraint(ctlRibbon[0],ctlRibbon[2], parentObj)
         cmds.orientConstraint( ctlRibbon[0], ctlRibbon[2],parentObj, skip=("y", "z") )
-        autoRoot(ctlRibbon[1])#Creamos grupo AutoAuto
-        parentObj = cmds.pickWalk (ctlRibbon[1] , direction='up')      
+        #autoRoot(ctlRibbon[1])#Creamos grupo AutoAuto
+        #parentObj = cmds.pickWalk (ctlRibbon[1] , direction='up')      
 
         #Constraints para los RibSecUp
         parentObj = cmds.pickWalk (ctlRibbon[3] , direction='up')        
         cmds.pointConstraint(ctlRibbon[2],ctlRibbon[4], parentObj)
         cmds.orientConstraint( ctlRibbon[2], ctlRibbon[4],parentObj, skip=("y", "z") )
-        autoRoot(ctlRibbon[3])#Creamos grupo AutoAuto
-        parentObj = cmds.pickWalk (ctlRibbon[3] , direction='up')      
+        #autoRoot(ctlRibbon[3])#Creamos grupo AutoAuto
+        #parentObj = cmds.pickWalk (ctlRibbon[3] , direction='up')      
 
     def ribbonBindSkin(self):
-        #a y b contador para los vértices
+        #a y b contador para los vertices
         a=0
         b=3
         #contador para la arista
@@ -337,6 +342,7 @@ class ctl_spineRib():
             j+=1
 
     def __init__(self):
+        #Make a list for ribbon
         self.ribbonJoints = cmds.ls('skin_c_pelvis*',type='joint') + cmds.ls('skin_c_spine*',type='joint') + cmds.ls('skin_c_chest00',type='joint')
         self.numJoints= len(self.ribbonJoints)
 
@@ -347,15 +353,15 @@ class ctl_spineRib():
 
 
         for i in self.ribbonJoints:
-            #Recoge la posición y orientación de cada jnt
+            #Collects position & orientation 
             valueTranslation = cmds.xform(i, q=True, ws=True, t=True)
             valueRotation = cmds.xform(i, q=True, ws=True, ro=True)
 
-            # Añadimos a la lista los valores
+            # add values to list 
             self.jointTranslation.append(tuple(valueTranslation))
             self.jointRotation.append(tuple(valueRotation))
             
-            
+        #calls functions
         self.createRibbonSurface()
         self.follicleSystem()
         self.mainSystem()
