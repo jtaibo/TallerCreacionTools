@@ -31,6 +31,7 @@ tlc.shading.textureanalyzer\_ui.TextureAnalyzerUI
       ~TextureAnalyzerUI.createLayout
       ~TextureAnalyzerUI.fixAlphaFromLuminance
       ~TextureAnalyzerUI.fixColorSpace
+      ~TextureAnalyzerUI.fixPath
       ~TextureAnalyzerUI.fixPathsButton
       ~TextureAnalyzerUI.initUI
       ~TextureAnalyzerUI.openFolder
