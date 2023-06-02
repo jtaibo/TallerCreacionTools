@@ -424,6 +424,11 @@ class FileTexture():
         # Connected through a normal map node        
         elif cmds.nodeType(conn) == "aiNormalMap":
             node = conn.split(".")[0]
+            dest_attr = conn.split(".")[1]
+            if dest_attr != "input":
+                self.errorMessage += "Normal map not connected to aiNormalMap input : " + dest_attr + "\n"
+                self.errors.add("normal")
+
             self.throughNormal = True
             self.normalNode = node
             conn = FileTexture.getFirstConnectionThroughAttrs(node, ["outValue"])
