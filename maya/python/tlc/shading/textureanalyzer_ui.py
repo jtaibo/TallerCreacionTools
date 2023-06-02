@@ -329,6 +329,10 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         action6 = QtWidgets.QAction("Recheck")
         action6.triggered.connect(lambda: self.recheckTexture(index.row()))
         menu.addAction(action6)
+        if self.fileTextureObjects[index.row()].missingFile():
+            action7 = QtWidgets.QAction("Fix path")
+            action7.triggered.connect(lambda: self.fixPath(index.row()))
+            menu.addAction(action7)
         #menu.setTearOffEnabled(True)
         #menu.popup(self.ui.texCheckerTableWidget.viewport().mapToGlobal(pos))
         menu.exec_(self.ui.texCheckerTableWidget.viewport().mapToGlobal(pos))
@@ -439,8 +443,14 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         cmds.select(geo)
 
     def fixColorSpace(self, row):
-        self.fileTextureObjects[row].fixColorSpace()
         file_tex = self.fileTextureObjects[row]
+        file_tex.fixColorSpace()
+        file_tex.reCheck()
+        self.updateRow(row)
+
+    def fixPath(self, row):
+        file_tex = self.fileTextureObjects[row]
+        file_tex.fixFilePath()
         file_tex.reCheck()
         self.updateRow(row)
 
