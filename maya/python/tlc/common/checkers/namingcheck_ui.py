@@ -11,7 +11,7 @@ class NamingCheck():
         
         self.data["scene"] = (ConditionChecker(name= "scene",displayName="Scene", toolTip="Correct naming of the scene, <projID>_<typeID>_<deptmD>_<assetID>_<version>_<workingVersion>"))
         self.data["nodeFields"] = (ConditionChecker(name= "nodeFields",displayName="Node fields", propertyFlag=ConditionChecker.PROPERTY_FIXABLE + ConditionChecker.PROPERTY_IGNORABLE, toolTip="Every node name in the scene with three fields but lights."))
-        self.data["nodeId"] = (ConditionChecker(name= "nodeID",displayName="Node ID", toolTip="1º field must correctly identify the type of node."))
+        self.data["nodeId"] = (ConditionChecker(name= "nodeId",displayName="Node ID", toolTip="1º field must correctly identify the type of node."))
         self.data["groupsId"] = (ConditionChecker(name= "groupsID",displayName="Groups ID", toolTip="Groups 1º field -> grp"))
         self.data["locatorsId"] = (ConditionChecker(name= "locatorsID",displayName="Locators ID", toolTip="Locators 1º field -> lct"))
         self.data["splinesId"] = (ConditionChecker(name= "splinesID",displayName="Splines ID", toolTip="Splines 1º field -> spl"))
@@ -21,7 +21,8 @@ class NamingCheck():
         self.data["inputConnections"] = (ConditionChecker(name= "inputConnections",displayName="Input connections", toolTip="Imput connections name with three fields."))
         self.data["transformsShapes"] = (ConditionChecker(name= "transformsShapes",displayName="Transforms shapes", toolTip="Shape name = Transform name + shape."))
         self.data["invalidCharacters"] = (ConditionChecker(name= "invalidCharacters",displayName="Invalid characters", toolTip="Non invalid characters or spaces."))
-        self.data["differentNodeName"] = (ConditionChecker(name= "differentNodeName",displayName="Different node name", toolTip="Every node name is different."))
+        self.data["uniqueNames"] = (ConditionChecker(name= "uniqueNames",displayName="Duplicate Nodes", toolTip="Nodes can't be duplicated"))
+        # self.data["differentNodeName"] = (ConditionChecker(name= "differentNodeName",displayName="Different node name", toolTip="Every node name is different."))
         self.data["lightsNaming"] = (ConditionChecker(name= "lightsNaming",displayName="Lights naming", toolTip="Every light in the scene with four fields."))
         self.data["layersNaming"] = (ConditionChecker(name= "layersNaming",displayName="Layers naming", toolTip="Display and animation layers naming divided in two fields-> ly_<layerID>"))
         self.data["groupsLayersId"] = (ConditionChecker(name= "groupsLayersId",displayName="Groups layers ID", toolTip="Group layersID: grp_x_geo -> geo/grp_x_rig -> rig/...light/...anim/...puppet"))

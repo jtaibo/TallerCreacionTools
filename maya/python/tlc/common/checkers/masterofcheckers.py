@@ -29,7 +29,7 @@ def start():
 
 def sceneNodesReader():
     objects_list= []
-    objects_list = cmds.ls(assemblies=True) 
+    objects_list = cmds.ls(dag=True) 
 
     for i in range(len(ignored_nodes)): 
         for o in range(len(objects_list)):

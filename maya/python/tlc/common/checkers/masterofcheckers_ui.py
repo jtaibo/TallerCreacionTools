@@ -180,7 +180,6 @@ class MasterOfCheckersUI(qtutils.CheckerWindow):
         
         check_result = self.get_error_level_results(checker_data)
 
-
         if check_result.get("ERROR"):
             if step_toolbox.table.isHidden():
                 step_toolbox.set_header_visibility()
@@ -188,6 +187,8 @@ class MasterOfCheckersUI(qtutils.CheckerWindow):
             return
         
         if check_result.get("WARN"):
+            if step_toolbox.table.isHidden():
+                step_toolbox.set_header_visibility()
             step_toolbox.setHeaderColor("orange")
             return
         

@@ -277,3 +277,48 @@ filesToIgnore = ["desktop.ini"]
 directoriesToIgnore = [".mayaSwatches"]
 """Directories to ignore when analyzing project contents
 """
+
+### OUTLINER NAMING RULES
+separator = "_"
+
+
+naming_maya = {
+    "geometry": "geo",
+    "group": "grp",
+    "control": "ctl",
+    "locator": "lct",
+    "spline": "spl",
+    "joint": "jnt",
+    "controlIK": "cik",
+    "controlFK": "cfk",
+    "cluster": "cls",
+    "jointMain": "main",
+    "jointSkin": "skin",
+    "light": "lgt",
+    "camera": "cam",
+    "imagePlane": "imp",
+    "orientConstraint": "ons",
+    "pointConstraint": "pns",
+    "aimConstraint": "ans",
+    "parentConstraint": "pans",
+    "scaleConstraint": "sns",
+    "ikHandle": "ikh",
+    "ikEffector": "eft"
+}
+
+###
+###  Node Location Flag
+###
+
+location_flags = {
+    "irrelevant": "x",
+    "center": "c",
+    "left": "l",
+    "right": "r",
+    "front": "f",
+    "back": "b",
+    "up": "u",
+    "down": "d"
+}
+
+pipeline_groups = ["geo", "rig", "ctl", "toolkit", "skin", "lct"]
