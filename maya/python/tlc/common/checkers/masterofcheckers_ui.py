@@ -1,7 +1,7 @@
 import os
 import tlc.common.qtutils as qtutils
 import tlc.common.conditionchecker
-from tlc.common.conditionchecker import ConditionChecker
+from tlc.common.conditionchecker import ConditionChecker, ConditionErrorLevel
 import tlc.common.checkers.masterofcheckers as main
 
 from PySide2.QtCore import Qt
@@ -14,22 +14,31 @@ import tlc.common.checkers.modelingcheck as modeling
 
 class MasterOfCheckersUI(qtutils.CheckerWindow):
 
-    imported= ["pipeline","rigging","cloth","shading","modeling","naming"] #All possible department checkers which could be imported
+    # imported= ["pipeline","rigging","cloth","shading","modeling","naming"] #All possible department checkers which could be imported
+    imported= ["pipeline","cloth","shading","modeling","naming"] #All possible department checkers which could be imported
     toolboxes=[] # Custom toolboxes created 
+    mra_toolboxes = dict()
     dpt_checkers=[] #Department checkers imported 
+    mra_dpt_checkers=list() #Department checkers imported 
     maya_nodes_public=[] #All maya nodes
     ignored_checks=[] #Array to store the ignored checks
     header_index = 0 #Used to avoid repet checkHeaderColor if it is already red
 
-    def __init__(self, parent=qtutils.getMayaMainWindow()):
+    def __init__(self, dpt_checkers, parent=qtutils.getMayaMainWindow()):
 
         ui_file = os.path.basename(__file__).split(".")[0].replace("_", ".")
         title = "Checker"
         super(MasterOfCheckersUI, self).__init__(os.path.dirname(__file__) + "/" + ui_file, title, parent)
-
-        self.setBaseStyles()
+        self.checkers_to_run = dpt_checkers
+        
+        self.checkers_data = dict()
+        self.department_toolboxes = dict()
+        self.set_base_style()
+        self.update_objects()
+        self.run_required_checks()
+        # self.populateUI(dpt_checkers)
     
-    def setBaseStyles(self):
+    def set_base_style(self):
 
         button_style = """ 
         QPushButton {
@@ -49,67 +58,78 @@ class MasterOfCheckersUI(qtutils.CheckerWindow):
         self.ui.check_button.setStyleSheet(button_style)
         self.ui.publish_button.setStyleSheet(button_style)
 
-    def populateUI(self, checking):
+    def run_required_checks(self):
+        for check_step in self.checkers_to_run:
+            self.run_checker(check_step)
 
-        initial_page_count = 0 #Start variable to add info to the UI before have create toolboxes
+    def run_checker(self,check_step):
+        toolbox_index = len(self.department_toolboxes)
+        department_toolbox = self.create_toolbox(check_step, toolbox_index)
+        department_data = self.get_checker_data(check_step)
+        self.populateUI(department_toolbox, department_data)
+    
+    def create_toolbox(self,check_step, toolbox_index):
 
-        for c in range(len(checking)):      
-            for i in range(len(self.imported)):
-                if checking[c] == self.imported[i]:
-                    
-                    self.toolboxes.append(CustomToolbox(self.imported[i].capitalize(), initial_page_count))#Create a custom toolbox with the name of the checker imported
-                    exec ("self.dpt_checkers.append(" + self.imported[i]+"." +self.imported[i].capitalize()+"Check())")# Initialice department checker, example: self.dpt_checkers.append(pipeline.PipelineCheck())
-                    self.dpt_checkers[initial_page_count].checkAll(self.maya_nodes_public) # Run all checks inside the department
-                    
-                    self.ui.verticalLayout_01.addWidget(self.toolboxes[initial_page_count]) #Insert toolbox in the 
-                    self.toolboxes[initial_page_count].table.setRowCount(len(self.dpt_checkers[initial_page_count].data)) #Set the rows of each page to fill them later
-
-                    for d,r in zip(self.dpt_checkers[initial_page_count].data, range(self.toolboxes[c].table.rowCount())): #Fill each table
-                        condition_checker = self.dpt_checkers[initial_page_count].data[d] # Each conditionChecker inside the data dictionary of the department
-                        table = self.toolboxes[initial_page_count].table
-
-                        table.setItem(r,0,QTableWidgetItem(condition_checker.displayName)) # Set name
-                        table.setItem(r,1,QTableWidgetItem(""))
-                        table.item(r,1).setTextAlignment(Qt.AlignCenter)
-
-                        table.item(r,0).setToolTip(condition_checker.toolTip) # Set tooltip
-                        table.item(r,1).setToolTip(condition_checker.toolTip)
-
-                        self.setItemColor(condition_checker, initial_page_count, r) # Set color
-
-                    initial_page_count += 1
-                    
-    def setItemColor (self, condition_checker_info, page_index, row): #Color a item in a "page" in a "row" with the information from the conditionChecker
+        department_toolbox = CustomToolbox(check_step.capitalize(),toolbox_index)
+        self.department_toolboxes.update({check_step:department_toolbox})
         
-        if condition_checker_info.errorLevel == tlc.common.conditionchecker.ConditionErrorLevel.NONE: #Base error level -> missing code, probably the check function
-            bg_color = QBrush(QGradient().Preset(QGradient.StarWine)) #Beautiful gradients
-            fg_color = Qt.white
-        elif condition_checker_info.errorLevel == tlc.common.conditionchecker.ConditionErrorLevel.OK:
-            bg_color = QBrush(QGradient().Preset(QGradient.NewLife)) 
-            fg_color = Qt.black
 
-            if condition_checker_info.propertyFlag & ConditionChecker.PROPERTY_SELECTABLE:
-                condition_checker_info.propertyFlag -= ConditionChecker.PROPERTY_SELECTABLE #There aren't any wrong nodes to select
+        return department_toolbox
+    
+    def get_checker_data(self,check_step):
+        
+        department_checker_object = self.get_department_checker_obj(check_step)
+        department_checker_object().checkAll(self.maya_nodes_public)
+        
+        self.checkers_data.update({check_step:department_checker_object.data})
+        
+        return department_checker_object.data
 
-        elif condition_checker_info.errorLevel == tlc.common.conditionchecker.ConditionErrorLevel.WARN:
-            bg_color = QColor(240, 152, 25, 255)
-            fg_color = Qt.black
+    def populateUI(self, department_toolbox, deparment_data):
 
+        self.ui.verticalLayout_01.addWidget(department_toolbox)   
+        department_toolbox.table.setRowCount(len(deparment_data))
+
+        for index, data_value in enumerate(deparment_data):
+            condition_checker = deparment_data.get(data_value)
+
+            department_toolbox.table.setItem(index,0,QTableWidgetItem(condition_checker.displayName)) # Set name
+            department_toolbox.table.setItem(index,1,QTableWidgetItem(""))
+            department_toolbox.table.item(index,1).setTextAlignment(Qt.AlignCenter)
+            department_toolbox.table.item(index,0).setToolTip(condition_checker.toolTip) # Set tooltip
+            department_toolbox.table.item(index,1).setToolTip(condition_checker.toolTip)
+
+            self.set_checker_row_error_level(condition_checker, department_toolbox, index) # Set color
+            
+    def get_department_checker_obj(self, department):
+        department_file = globals()[department]
+        department_function = getattr(department_file,f"{department.capitalize()}Check")
+        
+        return department_function
+     
+    def set_checker_row_error_level(self, condition_checker_info, step_toolbox, row): #Color a item in a "page" in a "row" with the information from the conditionChecker
+        error_level = condition_checker_info.errorLevel
+        bg_color, fg_color = self.get_color_for_error_level(error_level)
+
+        if error_level != ConditionErrorLevel.NONE:
             if not condition_checker_info.propertyFlag & ConditionChecker.PROPERTY_SELECTABLE:
                 condition_checker_info.propertyFlag += ConditionChecker.PROPERTY_SELECTABLE
+                return
+            condition_checker_info.propertyFlag -= ConditionChecker.PROPERTY_SELECTABLE
 
-        elif condition_checker_info.errorLevel == tlc.common.conditionchecker.ConditionErrorLevel.ERROR:
-            bg_color = QBrush(QGradient().Preset(QGradient.PhoenixStart))
-            fg_color = Qt.black
+        step_toolbox.table.item(row,1).setBackground(bg_color)
+        step_toolbox.table.item(row,1).setForeground(fg_color)
 
-            if not condition_checker_info.propertyFlag & ConditionChecker.PROPERTY_SELECTABLE:
-                condition_checker_info.propertyFlag += ConditionChecker.PROPERTY_SELECTABLE
-
-        self.toolboxes[page_index].table.item(row,1).setBackground(bg_color)
-        self.toolboxes[page_index].table.item(row,1).setForeground(fg_color)
-
-        self.checkHeaderColor(self.dpt_checkers[page_index].data, page_index) #Change header color 
-
+        # self.checkHeaderColor(self.dpt_checkers[page_index].data, page_index) #Change header color 
+    def get_color_for_error_level(self,error_level):
+        color_dictionary = {
+            ConditionErrorLevel.NONE:[QBrush(QGradient().Preset(QGradient.StarWine)), Qt.white],
+            ConditionErrorLevel.OK:[QBrush(QGradient().Preset(QGradient.NewLife)), Qt.black],
+            ConditionErrorLevel.WARN:[QColor(240, 152, 25, 255), Qt.black],
+            ConditionErrorLevel.ERROR:[QBrush(QGradient().Preset(QGradient.PhoenixStart)), Qt.black]
+        }
+        return color_dictionary.get(error_level)
+    
     def checkHeaderColor(self, checker_data, toolbox_index):
         
         if self.header_index == toolbox_index:
@@ -143,12 +163,12 @@ class MasterOfCheckersUI(qtutils.CheckerWindow):
         self.ui.check_button.pressed.connect(self.buttonCheckAll)
         self.ui.publish_button.pressed.connect(self.publishButton)
 
-    def updateObjects(self, specific_dpt_checker=None):
+    def update_objects(self, specific_dpt_checker=None):
         if specific_dpt_checker == None:
             self.maya_nodes_public = main.sceneNodesReader() #Update the list of maya objects
         else:
             self.maya_nodes_public = main.sceneNodesReader() 
-            specific_dpt_checker.updateObjectsList(self.maya_nodes_public) #Update the checker maya objects
+            specific_dpt_checker.update_objectsList(self.maya_nodes_public) #Update the checker maya objects
 
     def getOneCheckFunction (self, department_checker, function_name):
 
@@ -156,31 +176,35 @@ class MasterOfCheckersUI(qtutils.CheckerWindow):
         return check_function
 
     def buttonCheckAll(self):
-        self.updateObjects()
+        self.update_objects()
         self.header_index = 0 #Reset header index to color the header
 
         for c in range(len(self.toolboxes)):
             self.dpt_checkers[c].checkAll(self.maya_nodes_public)
 
             for d,r in zip (self.dpt_checkers[c].data, range(self.toolboxes[c].table.rowCount())): #For each key of the dictionary and each row of the table
-                    self.setItemColor(self.dpt_checkers[c].data[d], c, r) #Update colors
+                    self.set_checker_row_error_level(self.dpt_checkers[c].data[d], c, r) #Update colors
 
-    def buttonCheckToolbox(self, page):
-        self.updateObjects()
-        self.header_index = page
-        
-        self.dpt_checkers[page].checkAll(self.maya_nodes_public)
+    def buttonCheckToolbox(self, check_step):
+        """
+        Recieves call from a specific department recheck button.
+        Runs the given checker again and refreshes UI.
+        """
+        self.update_objects()
 
-        for d,r in zip (self.dpt_checkers[page].data, range(self.toolboxes[page].table.rowCount())): #For each key of the dictionary and each row of the table
-                self.setItemColor(self.dpt_checkers[page].data[d], page, r)
+        toolbox = self.department_toolboxes.get(check_step)
+        data = self.get_checker_data(check_step)
+
+        for index, data_value in enumerate(data):
+            self.set_checker_row_error_level(data.get(data_value), toolbox, index)
 
     def checkRow(self, page, row, condition_checker):
-        self.updateObjects(specific_dpt_checker= self.dpt_checkers[page])
+        self.update_objects(specific_dpt_checker= self.dpt_checkers[page])
         self.header_index = page
 
         self.getOneCheckFunction(self.dpt_checkers[page], "check"+condition_checker.name[0].upper()+ condition_checker.name[1:])()
         
-        self.setItemColor(condition_checker, page, row)
+        self.set_checker_row_error_level(condition_checker, page, row)
     
     def callFixers (self, condition_checker, page, item_row):
         
@@ -218,7 +242,7 @@ class CustomToolbox(QWidget):
 
     def __init__(self, nameID, index):
         super().__init__()
-
+        self.lower_name = nameID.lower()
         self.nameID = nameID
         self.index = index
     
@@ -278,7 +302,7 @@ class CustomToolbox(QWidget):
     def createConnections(self):
             
         self.header_button.pressed.connect(lambda: self.bodyVisibility())
-        self.button.pressed.connect(lambda: masterofcheckers_ui.buttonCheckToolbox(self.index))
+        self.button.pressed.connect(lambda: masterofcheckers_ui.buttonCheckToolbox(self.lower_name))
         self.table.customContextMenuRequested.connect(self.contextMenu)
 
     def setStylesSheets(self):
@@ -335,7 +359,7 @@ class CustomToolbox(QWidget):
         item_row = self.table.row(self.table.itemAt(pos))
         item_selected = self.table.item(item_row,0).text()
         checker_dictionary_key = item_selected.split(" ") #Variable where will be the key of the dictionary to acces conditionChecker
-        masterofcheckers_ui.updateObjects(specific_dpt_checker= masterofcheckers_ui.dpt_checkers[self.index])
+        masterofcheckers_ui.update_objects(specific_dpt_checker = masterofcheckers_ui.checkers_to_run.get(self.lower_name))
     
         if len(checker_dictionary_key) > 1: #If there are multiple words
             base_name = checker_dictionary_key[0].lower()
@@ -347,7 +371,7 @@ class CustomToolbox(QWidget):
             checker_dictionary_key = checker_dictionary_key[0].lower() 
         
        
-        condition_checker = masterofcheckers_ui.dpt_checkers[self.index].data[checker_dictionary_key]
+        condition_checker = masterofcheckers_ui.checkers_to_run.get(self.lower_name).data[checker_dictionary_key]
 
         menu = Menu(self.index, item_row, condition_checker)
         
@@ -358,7 +382,7 @@ class CustomToolbox(QWidget):
         if  condition_checker.propertyFlag & ConditionChecker.PROPERTY_IGNORABLE and condition_checker.errorLevel != tlc.common.conditionchecker.ConditionErrorLevel.OK :
             menu.addIgnore()
         if  condition_checker.propertyFlag & ~ConditionChecker.PROPERTY_NONE:
-            masterofcheckers_ui.wrong_nodes = masterofcheckers_ui.getOneCheckFunction(masterofcheckers_ui.dpt_checkers[self.index],"check" + condition_checker.name[0].upper() + condition_checker.name[1:])()
+            masterofcheckers_ui.wrong_nodes = masterofcheckers_ui.getOneCheckFunction(masterofcheckers_ui.checkers_to_run.get(self.lower_name),"check" + condition_checker.name[0].upper() + condition_checker.name[1:])()
             menu.exec_(self.table.viewport().mapToGlobal(pos))    
 
     def setHeaderColor(self, color):
@@ -394,16 +418,14 @@ class Menu(QMenu):
         self.actionFix.triggered.connect(lambda: masterofcheckers_ui.callFixers(self.condition_checker, self.page, self.item_row))
         self.insertAction(None,self.actionFix)
 
-def run(checking):
+def run(checking=[]):
     global masterofcheckers_ui# define as a global variable, so there is only one window for this checker
     try:
         masterofcheckers_ui.close() # pylint: disable=E0601
         masterofcheckers_ui.deleteLater()
     except:
         pass
-    masterofcheckers_ui = MasterOfCheckersUI()
-    masterofcheckers_ui.updateObjects()
-    masterofcheckers_ui.populateUI(checking)
+    masterofcheckers_ui = MasterOfCheckersUI(checking)
     masterofcheckers_ui.show()
 
 #Adjust size of the window to the content

@@ -2,10 +2,12 @@ import maya.cmds as cmds
 import tlc.common.checkers.masterofcheckers_ui as main_ui
 import tlc.common.pipeline as pipeline
 
+
+
 check_basic = ["pipeline","naming"]
 check_dptID = { #TO-DO
     "MODELING" : ["modeling"],
-    "RIGGING" : ["modeling","rigging"],
+    "RIGGING" : ["modeling"],
     "CLOTH" : [], 
     "HAIR" : [],
     "SHADING" : ["modeling","shading"],
@@ -18,9 +20,10 @@ asset = pipeline.AssetFile()
 
 def start():
     check = []
-    global asset
-    asset.createForOpenScene()
-    check = check_basic + check_dptID[asset.dptID]
+    # global asset
+    # asset.createForOpenScene()
+    # check = check_basic + check_dptID["RIGGING"]
+    check = check_basic 
     
     main_ui.run(check)
 
