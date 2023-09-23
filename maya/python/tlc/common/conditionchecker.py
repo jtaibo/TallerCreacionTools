@@ -124,7 +124,12 @@ class ConditionChecker():
         """Select components that matched the condition
         """
         cmds.select(self.elms)
-    
+
+    def set_elements(self, elements):
+        self.elms = elements
+        self.count = len(self.elms)
+        
+
     def setErrorLevel(self, crit):
         """Set error level following the criteria supplied
 
