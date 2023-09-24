@@ -12,21 +12,41 @@ class NamingCheck():
     data = NamingCheck().data
 
     def updateObjectsList(self, maya_objects):
+        """Updates self.object list to most recent execution
+
+        Args:
+            maya_objects (list): scene object list
+        """
         self.objects_list = maya_objects
 
-    def checkAll(self, maya_objects):
-        self.objects_list = maya_objects
+    def checkAll(self, *args):
+        """Run all checks declared in this checker class.
+        This function gets each checklist element from the data dictionary. Gets a reference
+        for each function and executes it automatically.
+        """
+        self.object_list = args
+
+        # Get checklist functions
         functions = self.data.keys()
+        # Run each function
         for func in functions:
             try:
+                # Get class' reference object
                 cmd = globals()[self.__class__.__name__]
+                # Get "check_{function}" reference function
                 checker_function = getattr(cmd,f"check_{func}")
+                # Execute checker function
                 checker_function(self)
             except:
-                print(f"## NOTE: Function 'check_{func}' from {self.__class__.__name__} not implemented yet, skipping...")
+                print(f"#{self.__class__.__name__.upper()}: Function 'check_{func}' not implemented yet")
+                print(f"#{self.__class__.__name__.upper()}: Skipping 'check_{func}'...")
                 continue
     
     def check_uniqueNames(self):
+        """Check function
+        Searches for PIPE '|' character in node names, if found, adds item to error list
+        Error level is setted if error list is not 0
+        """
         error_list = list()
         for obj in self.objects_list:
             if obj.find("|") > 0:
@@ -35,6 +55,14 @@ class NamingCheck():
         self.data["uniqueNames"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
     
     def is_group(self,node):
+        """Helper Function
+
+        Args:
+            node (str): Node name
+
+        Returns:
+            bool: Returns if node is group of other transforms and doesnt have shapes as children
+        """
         if cmds.objectType(node,isType='transform'):
             try:
                 children = cmds.listRelatives(node,c=True)
@@ -47,17 +75,26 @@ class NamingCheck():
         return False
     
     def check_groupsId(self):
+        """Checker function
+        Chekcs for every node if its a group with a helper function (is_group)
+        Then checks if groupId part of name is pipeline compliant
+        Sets error level if list_errors is not 0
+        """
         error_list = list()
         for obj in self.objects_list:
             if self.is_group(obj):
                 obj_name_parts = self.get_nice_name(obj)
-                if obj_name_parts[0] not in NAMING.naming_maya.values():
+                if obj_name_parts[0] not in NAMING.naming_maya.get("group"):
                     error_list.append(obj)
         self.data["groupsId"].set_elements(error_list)
         self.data["groupsId"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
 
 
     def check_nodeId(self):
+        """Chekcer function
+        Checks for every node if nodeId mathces naming pipeline rules
+        Sets error level if error_list is not 0
+        """
         error_list = list()
         for obj in self.objects_list:
             obj_name_parts = self.get_nice_name(obj)
@@ -68,6 +105,10 @@ class NamingCheck():
         self.data["nodeId"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
     
     def check_positionField(self):
+        """Checker function
+        Checks for every node if its positionField matches naming pipeline rules
+        Sets error level if error_list is not 0
+        """
         error_list = list()
         for obj in self.objects_list:
             obj_name_parts = self.get_nice_name(obj)
@@ -78,6 +119,13 @@ class NamingCheck():
         self.data["positionField"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
 
     def check_nodeFields(self):
+        """Checker function
+        Checks for every node if its node Fields are 3
+        Sets error level if error_list is not 0
+
+        Returns:
+            list: Error objects
+        """
         error_objects = []
 
         for obj in self.objects_list:
@@ -91,6 +139,14 @@ class NamingCheck():
         return error_objects
     
     def get_nice_name(self,name_obj):
+        """Helper function
+
+        Args:
+            name_obj (str): Node Name
+
+        Returns:
+            list: List of nodeFields
+        """
         if (name_obj.find(':')) > 0:
             obj = name_obj.split(':')[1]
 
@@ -105,7 +161,13 @@ class NamingCheck():
             parts_obj = name_obj.split("_")
             return parts_obj
         
-    def fixNodeFields(self, error_objects):
+    def fix_nodeFields(self, error_objects):
+        """Fix function
+        not implemented yet
+
+        Args:
+            error_objects (list): error_objects
+        """
         for o in error_objects:
             if len(o.split("_")) == 2:
                 cmds.rename(o, o+"_")
