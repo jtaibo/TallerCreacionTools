@@ -112,7 +112,6 @@ class ConditionChecker():
         self.propertyFlag = propertyFlag
         """Type of element properties
         """
-
     def reset(self):
         """Reset counter and selection list
         """

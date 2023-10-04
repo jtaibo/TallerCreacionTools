@@ -1,0 +1,66 @@
+import maya.cmds as cmds
+import sys
+import importlib
+sys.dont_write_bytecode = True
+
+import tlc.common.checkers.masterofcheckers_ui as main_ui
+import tlc.common.pipeline as pipeline
+
+importlib.reload(main_ui)
+importlib.reload(pipeline)
+
+check_basic = ["pipeline","naming"]
+check_dptID = { #TO-DO
+    "MODELING" : ["modeling"],
+    "RIGGING" : ["modeling","rigging"],
+    "CLOTH" : [], 
+    "HAIR" : [],
+    "SHADING" : ["modeling","shading"],
+    "LIGHTING" : [],
+    "FX" : []
+}
+
+ignored_nodes={"persp", "perspShape", "top", "topShape", "front", "frontShape", "side", "sideShape"}
+asset = pipeline.AssetFile()
+
+def start():
+    check = []
+    # global asset
+    # asset.createForOpenScene()
+    # check = check_basic + check_dptID["RIGGING"]
+    check = check_basic 
+    
+    main_ui.run(check)
+
+def sceneNodesReader():
+
+    object_list = set(cmds.ls(dag=True))
+    return_list = list(object_list - ignored_nodes)
+    return return_list
+
+def selectWrongNodes(nodes):
+    cmds.select(nodes)
+
+def publishScene():
+
+    path = cmds.file(q=True, sn=True)
+    
+    path_splitted = path.split("/")
+    fields_splitted = path_splitted[-1].split("_")
+
+    if len(fields_splitted) == 5:
+
+        print ("\n File is already published \n")
+    
+    if len(fields_splitted) >= 6:
+        path_splitted.pop(); path_splitted.pop() #Remove fields_splitted and working folder
+        fields_splitted.pop() #Remove working version + .mb
+        
+        new_path = "/".join(path_splitted) + "/" + "_".join(fields_splitted) + ".mb"
+
+        cmds.file(rename = new_path)
+        cmds.file(save = True)
+        print("\n File saved in: "+ new_path+"\n")
+    
+
+

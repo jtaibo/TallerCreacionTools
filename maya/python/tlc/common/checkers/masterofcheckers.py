@@ -1,13 +1,26 @@
 import maya.cmds as cmds
-import tlc.common.checkers.masterofcheckers_ui as main_ui
-import tlc.common.pipeline as pipeline
+import sys
+import importlib
+from pprint import pprint
+sys.dont_write_bytecode = True
 
+import importlib
+import tlc.common.conditionchecker as condition_checker
+import tlc.common.checkers.namingcheck as Naming
+import tlc.common.checkers.pipelinecheck as Pipeline
+import tlc.common.checkers.riggingcheck as Rigging
+import tlc.common.checkers.basecheck as BaseCheck
 
+importlib.reload(Naming)
+importlib.reload(Pipeline)
+importlib.reload(Rigging)
+importlib.reload(BaseCheck)
+importlib.reload(condition_checker)
 
-check_basic = ["pipeline","naming"]
 check_dptID = { #TO-DO
+    "DEFAULT":["naming","pipeline"],
     "MODELING" : ["modeling"],
-    "RIGGING" : ["modeling"],
+    "RIGGING" : ["rigging"],
     "CLOTH" : [], 
     "HAIR" : [],
     "SHADING" : ["modeling","shading"],
@@ -15,52 +28,37 @@ check_dptID = { #TO-DO
     "FX" : []
 }
 
-ignored_nodes=["persp", "perspShape", "top", "topShape", "front", "frontShape", "side", "sideShape"]
-asset = pipeline.AssetFile()
+ignored_nodes={"persp", "perspShape", "top", "topShape", "front", "frontShape", "side", "sideShape"}
+class MasterOfCheckers():
+    def __init__(self,dptID="DEFAULT"):
+        self.checks_to_run = check_dptID.get(dptID)
+        self.check_objs_dict = dict()
+        self.maya_objects = []
+        self.checking_output = dict()
 
-def start():
-    check = []
-    # global asset
-    # asset.createForOpenScene()
-    # check = check_basic + check_dptID["RIGGING"]
-    check = check_basic 
-    
-    main_ui.run(check)
+        for check in self.checks_to_run:
 
-def sceneNodesReader():
-    objects_list= []
-    objects_list = cmds.ls(dag=True) 
-
-    for i in range(len(ignored_nodes)): 
-        for o in range(len(objects_list)):
-            if ignored_nodes[i] == objects_list[o]:
-                del objects_list[o] #Remove ignored nodes
-                break
-    return objects_list
-
-def selectWrongNodes(nodes):
-    cmds.select(nodes)
-
-def publishScene():
-
-    path = cmds.file(q=True, sn=True)
-    
-    path_splitted = path.split("/")
-    fields_splitted = path_splitted[-1].split("_")
-
-    if len(fields_splitted) == 5:
-
-        print ("\n File is already published \n")
-    
-    if len(fields_splitted) >= 6:
-        path_splitted.pop(); path_splitted.pop() #Remove fields_splitted and working folder
-        fields_splitted.pop() #Remove working version + .mb
+            checker = globals()[check.capitalize()]
+            check_obj = getattr(checker,f"{check.capitalize()}Check")
+            self.check_objs_dict.update({check:check_obj})
         
-        new_path = "/".join(path_splitted) + "/" + "_".join(fields_splitted) + ".mb"
-
-        cmds.file(rename = new_path)
-        cmds.file(save = True)
-        print("\n File saved in: "+ new_path+"\n")
+    def get_nodes_public(self):
+        object_list = set(cmds.ls(dag=True))
+        return_list = list(object_list - ignored_nodes)
+        self.maya_objects = return_list
     
+    def run_ALL(self):
+        self.get_nodes_public()
+        for check in self.check_objs_dict.values():
+            check().checkAll(self.maya_objects)
+            self.checking_output.update(check.data)
+        # pprint(self.checking_output)
+            pprint(check.data)
+            for dpt_id, checker in check.data.items():
+                for ConditionChecker in checker.values():
+                    pprint(f"{ConditionChecker.name}: {ConditionChecker.elms}")
 
-
+    def run_check(self, dpt_check):
+        self.get_nodes_public()
+        check_obj = self.check_objs_dict.get(dpt_check)
+        check_obj().checkAll(self.maya_objects)
