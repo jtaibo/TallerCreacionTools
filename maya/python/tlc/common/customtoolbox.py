@@ -7,18 +7,18 @@ from tlc.common.conditionchecker import ConditionChecker, ConditionErrorLevel
 
 class CustomToolbox(QWidget):
 
-    def __init__(self, nameID, index):
+    def __init__(self, nameID, index, checker_class_object):
         super().__init__()
         self.lower_name = nameID.lower()
         self.nameID = nameID
         self.index = index
-    
+        self.checker_class = checker_class_object
         self.palette = QGuiApplication.palette()
         self.font = QGuiApplication.font()
         self.col_labels = ["Name", "Status"] # Columns
 
         self.widget = QWidget()
-        self.header_button = QPushButton("  "+self.nameID+"  ▲")
+        self.header_button = QPushButton("  "+self.nameID+"  ▼")
         self.vertical_layout = QVBoxLayout()
         self.button = QPushButton("Recheck")
         self.table = QTableWidget(0,0)
@@ -34,7 +34,26 @@ class CustomToolbox(QWidget):
         border-radius: 3px;
         color: head_color;
         }"""
+        self._init_toolbox_rows()
         
+    def _init_toolbox_rows(self):
+            """Sets the rows of the toolbox object based on that department checklist
+
+            Args:
+                department_toolbox (CustomToolbox): Department's custom toolbox object
+                department (str): Department's Name
+            """
+            
+            data_len = self.checker_class.data.get(self.lower_name)
+            self.table.setRowCount(len(data_len))
+            # dptm_checker = self.get_department_checker_obj(department)
+            # data_len = dptm_checker.data
+            for index, data_value in enumerate(data_len):
+                condition_checker = data_len.get(data_value)
+
+                self.table.setItem(index,0,QTableWidgetItem(condition_checker.displayName)) # Set name
+                self.table.item(index,0).setToolTip(condition_checker.toolTip) # Set tooltip
+                
     def createToolBox (self):
 
         self.header_button.setSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed)
@@ -124,11 +143,11 @@ class CustomToolbox(QWidget):
     def set_header_visibility(self):
 
         if self.table.isHidden():
-            self.header_button.setText("  "+self.nameID+"  ▼")
+            self.header_button.setText("  "+self.nameID+"  ▲")
             self.table.show()
             self.button.show()
         else:
-            self.header_button.setText("  "+self.nameID+"  ▲")
+            self.header_button.setText("  "+self.nameID+"  ▼")
             self.table.hide()
             self.button.hide()
 
