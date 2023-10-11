@@ -457,3 +457,16 @@ def createDirectoryTemplate(proj_ID="TPL"):
     """
     pass
     # TO-DO: IMPLEMENTE ME!!!
+    
+checkers_from_dptID = { #TO-DO
+    "DEFAULT":["naming","pipeline"],
+    "MODELING" : ["modeling"],
+    "RIGGING" : ["rigging"],
+    "CLOTH" : [], 
+    "HAIR" : [],
+    "SHADING" : ["modeling","shading"],
+    "LIGHTING" : [],
+    "FX" : []
+}
+
+ignored_nodes={"persp", "perspShape", "top", "topShape", "front", "frontShape", "side", "sideShape"}

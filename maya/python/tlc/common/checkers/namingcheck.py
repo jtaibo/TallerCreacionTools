@@ -12,19 +12,19 @@ class NamingCheck(BaseCheck.BaseCheck):
     
     objects_list = []
 
-    data = {}
+    # data = {}
 
     def __init__(self):
-        self.data.clear()
+        # self.data.clear() 
         self.data["naming"] = dict()
         self.data["naming"]["sceneName"] = (CCH.ConditionChecker(name= "sceneName",displayName="Scene Name", toolTip="Correct naming of the scene, <projID>_<typeID>_<deptmD>_<assetID>_<version>_<workingVersion>"))
-        self.data["naming"]["nodeFields"] = (CCH.ConditionChecker(name= "nodeFields",displayName="Node fields", propertyFlag=CCH.ConditionChecker.PROPERTY_FIXABLE + CCH.ConditionChecker.PROPERTY_IGNORABLE, toolTip="Every node name in the scene with three fields but lights."))
+        self.data["naming"]["nodeFields"] = (CCH.ConditionChecker(name= "nodeFields",displayName="Node fields", propertyFlag=CCH.ConditionChecker.PROPERTY_SELECTABLE + CCH.ConditionChecker.PROPERTY_FIXABLE + CCH.ConditionChecker.PROPERTY_IGNORABLE, toolTip="Every node name in the scene with three fields but lights."))
         self.data["naming"]["nodeId"] = (CCH.ConditionChecker(name= "nodeId",displayName="Node ID", toolTip="1º field must correctly identify the type of node."))
         self.data["naming"]["groupsId"] = (CCH.ConditionChecker(name= "groupsID",displayName="Groups ID", toolTip="Groups 1º field -> grp"))
         self.data["naming"]["locatorsId"] = (CCH.ConditionChecker(name= "locatorsID",displayName="Locators ID", toolTip="Locators 1º field -> lct"))
         self.data["naming"]["splinesId"] = (CCH.ConditionChecker(name= "splinesID",displayName="Splines ID", toolTip="Splines 1º field -> spl"))
         self.data["naming"]["camerasId"] = (CCH.ConditionChecker(name= "camerasID",displayName="Cameras ID", toolTip="Cameras 1º field -> cam"))
-        self.data["naming"]["positionField"] = (CCH.ConditionChecker(name= "positionField",displayName="Position field", toolTip="2ª field must identify the node correct position in the scene _x_/_l_/_r_/_c_."))
+        self.data["naming"]["positionField"] = (CCH.ConditionChecker(name= "positionField",propertyFlag=CCH.ConditionChecker.PROPERTY_SELECTABLE + CCH.ConditionChecker.PROPERTY_FIXABLE + CCH.ConditionChecker.PROPERTY_IGNORABLE,displayName="Position field", toolTip="2ª field must identify the node correct position in the scene _x_/_l_/_r_/_c_."))
         self.data["naming"]["nodeName"] = (CCH.ConditionChecker(name= "nodeName",displayName="Node name", toolTip="3º field must correctly identify the name of the node."))
         self.data["naming"]["inputConnections"] = (CCH.ConditionChecker(name= "inputConnections",displayName="Input connections", toolTip="Imput connections name with three fields."))
         self.data["naming"]["transformsShapes"] = (CCH.ConditionChecker(name= "transformsShapes",displayName="Transforms shapes", toolTip="Shape name = Transform name + shape."))
@@ -36,9 +36,6 @@ class NamingCheck(BaseCheck.BaseCheck):
         self.data["naming"]["lightsNaming"] = (CCH.ConditionChecker(name= "lightsNaming",displayName="Lights naming", toolTip="Every light in the scene with four fields."))
         self.data["naming"]["layersNaming"] = (CCH.ConditionChecker(name= "layersNaming",displayName="Layers naming", toolTip="Display and animation layers naming divided in two fields-> ly_<layerID>"))
         self.data["naming"]["groupsLayersId"] = (CCH.ConditionChecker(name= "groupsLayersId",displayName="Groups layers ID", toolTip="Group layersID: grp_x_geo -> geo/grp_x_rig -> rig/...light/...anim/...puppet"))
-    def check_jointNaming(self):
-        self.data["naming"]["jointNaming"].set_elements([0,1])
-        self.data["naming"]["jointNaming"].setErrorLevel(CCH.ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
         
     def check_uniqueNames(self):
         """Check function
@@ -82,11 +79,12 @@ class NamingCheck(BaseCheck.BaseCheck):
         for obj in self.objects_list:
             if self.is_group(obj):
                 obj_name_parts = self.get_nice_name(obj)
+                if not isinstance(obj_name_parts,list):
+                    error_list.append(obj)
                 if obj_name_parts[0] not in NAMING.naming_maya.get("group"):
                     error_list.append(obj)
         self.data["naming"]["groupsId"].set_elements(error_list)
         self.data["naming"]["groupsId"].setErrorLevel(CCH.ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
-
 
     def check_nodeId(self):
         """Chekcer function
@@ -96,6 +94,9 @@ class NamingCheck(BaseCheck.BaseCheck):
         error_list = list()
         for obj in self.objects_list:
             obj_name_parts = self.get_nice_name(obj)
+            pprint(f"NodeId object parts: {obj_name_parts}")
+            if not isinstance(obj_name_parts,list):
+                error_list.append(obj)
             if obj_name_parts[0] not in NAMING.naming_maya.values():
                 error_list.append(obj)
 
@@ -110,11 +111,19 @@ class NamingCheck(BaseCheck.BaseCheck):
         error_list = list()
         for obj in self.objects_list:
             obj_name_parts = self.get_nice_name(obj)
+            if not isinstance(obj_name_parts,list):
+                error_list.append(obj)
             if obj_name_parts[1] not in NAMING.location_flags.values():
                 error_list.append(obj)
 
         self.data["naming"]["positionField"].set_elements(error_list)
         self.data["naming"]["positionField"].setErrorLevel(CCH.ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
+        # pprint(self.data["naming"]["positionField"].get_elements())
+    
+    def fix_positionField(self, error_elements):
+        
+        # error_elements = self.data["naming"]["positionField"].get_elements()
+        print(error_elements)
 
     def check_nodeFields(self):
         """Checker function

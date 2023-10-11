@@ -1,6 +1,7 @@
 import importlib
 from pprint import pprint
 class BaseCheck():
+    data = dict()
     def update_objectList(self, maya_objects):
         """Updates self.object list to most recent execution
 
@@ -17,7 +18,7 @@ class BaseCheck():
             _func (str, optional): If _func parameter is given, it will only run that check function. Defaults to "".
         """
 
-        pprint(f"public_nodes: {public_nodes}")
+        # pprint(f"public_nodes: {public_nodes}")
         self.objects_list = public_nodes
         
         functions = _func
@@ -39,3 +40,23 @@ class BaseCheck():
             except AttributeError:
                 print(f"Method {func} not implemented yet, skipping...")
                 continue
+            
+    def check_func(self, public_nodes, _func):
+        # pprint(f"public_nodes: {public_nodes}")
+        self.objects_list = public_nodes
+        try:
+            check = getattr(self, f"check_{_func}")
+            check()
+        except AttributeError:
+            print(f"Method to Check {_func} not implemented yet, skipping...")
+            return
+        
+    def fix_func(self,error_list, _func):
+        # pprint(f"public_nodes: {public_nodes}")
+        # print(error_list)
+        try:
+            check = getattr(self, f"fix_{_func}")
+            check(error_list)
+        except AttributeError:
+            print(f"Method to Fix {_func} not implemented yet, skipping...")
+            return

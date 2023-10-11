@@ -30,8 +30,9 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 import re
 import os
 import math
-import maya.cmds as cmd
+import maya.cmds as cmds
 import maya.OpenMaya as om
+import tlc.common.pipeline as PIPELINE
 
 
 class BoundingBox():
@@ -43,7 +44,7 @@ class BoundingBox():
         Args:
             node (string): Node to analyze
         """
-        self.bbox = cmd.exactWorldBoundingBox(node)
+        self.bbox = cmds.exactWorldBoundingBox(node)
 
     def get(self):
         """Get AABB
@@ -143,16 +144,16 @@ class BoundingBox():
         bb_w = self.bbox[3] - self.bbox[0]
         bb_h = self.bbox[4] - self.bbox[1]
         bb_d = self.bbox[5] - self.bbox[2]
-        dbg_bbox = cmd.polyCube(width=bb_w, height=bb_h, depth=bb_d, name=name)
-        cmd.xform(dbg_bbox, translation=[self.bbox[0]+bb_w/2, 
+        dbg_bbox = cmds.polyCube(width=bb_w, height=bb_h, depth=bb_d, name=name)
+        cmds.xform(dbg_bbox, translation=[self.bbox[0]+bb_w/2, 
                                          self.bbox[1]+bb_h/2, 
                                          self.bbox[2]+bb_d/2])
         print("dbg_bbox=", dbg_bbox)
         # Display as template
-        cmd.setAttr(dbg_bbox[0] + ".template", 1)
+        cmds.setAttr(dbg_bbox[0] + ".template", 1)
         # Hide the bbox
         if hidden:
-            cmd.setAttr(dbg_bbox[0] + ".visibility", 0)
+            cmds.setAttr(dbg_bbox[0] + ".visibility", 0)
         return dbg_bbox
 
 
@@ -165,13 +166,16 @@ def isNameUnique(n):
     Returns:
         bool: Unique node name
     """
-    query = cmd.ls(n)
+    query = cmds.ls(n)
     if len(query) > 1:
         return False
     else:
         return True
 
-
+def get_public_nodes():
+    object_list = set(cmds.ls(dag=True))
+    return_list = list(object_list - PIPELINE.ignored_nodes)
+    return return_list
 ###############################################################################
 #
 #   Instances
@@ -200,9 +204,9 @@ def uninstance(instances):
         instances (string[]): List of nodes to uninstance
     """
     while len(instances):
-        parent = cmd.listRelatives(instances[0], parent=True)[0]
-        cmd.duplicate(parent, renameChildren=True)
-        cmd.delete(parent)
+        parent = cmds.listRelatives(instances[0], parent=True)[0]
+        cmds.duplicate(parent, renameChildren=True)
+        cmds.delete(parent)
         instances = getInstances()
 
 
@@ -222,7 +226,7 @@ def importFile(file_path, group_name):
     Returns:
         string: Return of "maya.cmds.file()" command (probably None)
     """
-    the_file = cmd.file(file_path, i=True, namespace=group_name+"NS", 
+    the_file = cmds.file(file_path, i=True, namespace=group_name+"NS", 
                         groupReference=True, groupName=group_name)
     return the_file
 
@@ -236,7 +240,7 @@ def referenceFile(file_path, group_name):
     Returns:
         string: Return of "maya.cmds.file()" command (probably None)
     """
-    the_file = cmd.file(file_path, reference=True, groupReference=True, 
+    the_file = cmds.file(file_path, reference=True, groupReference=True, 
                         groupLocator=True, lockReference=True, 
                         groupName=group_name)
     return the_file
@@ -254,12 +258,12 @@ def deleteChannelsAndHistory(group_name):
     Args:
         group_name (string): Node in the scenegraph to clean up
     """
-    cmd.delete(group_name, constructionHistory=True, channels=True, all=True)
+    cmds.delete(group_name, constructionHistory=True, channels=True, all=True)
 
 def deleteChannelsAndHistoryForAll():
     """Delete channels (animCurves) and construction history for all the scene
     """
-    cmd.delete(constructionHistory=True, channels=True, all=True)
+    cmds.delete(constructionHistory=True, channels=True, all=True)
 
 def getEmptyGroups():
     """Return empty groups in current scene
@@ -267,14 +271,14 @@ def getEmptyGroups():
     Returns:
         string[]: List of empty group names
     """
-    objs = cmd.ls(dag=True, long=True)
+    objs = cmds.ls(dag=True, long=True)
 
     empty_groups = []
 
     for obj in objs:
-        if cmd.nodeType(obj) == "transform":
+        if cmds.nodeType(obj) == "transform":
             # Check empty groups
-            children = cmd.listRelatives(obj, fullPath=True)
+            children = cmds.listRelatives(obj, fullPath=True)
             if not children :
                 empty_groups.append(obj)
             else:
@@ -303,19 +307,19 @@ def deleteEmptyGroups():
                 # Check if group exists or use capture exceptions in delete()
                 # because in case of references, the group may already have 
                 # been deleted
-                if cmd.objExists(g):
-                    cmd.delete(g)
+                if cmds.objExists(g):
+                    cmds.delete(g)
 
 def renameNonUniqueNodes():
     """Rename non-unique name nodes (adding a number as a postfix)
     """
-    nodes = cmd.ls(shortNames=True)
+    nodes = cmds.ls(shortNames=True)
     for n in nodes:
         if '|' in n:
             # Non-unique names have full path
             short_name = n.rpartition('|')[-1]
             if not isNameUnique(short_name):
-                cmd.rename(n, short_name + "#")
+                cmds.rename(n, short_name + "#")
 
 def getNodesWithInvalidCharacters():
     """Get nodes in scene with invalid characters
@@ -323,7 +327,7 @@ def getNodesWithInvalidCharacters():
     Returns:
         string[]: List of node names with invalid characters
     """
-    nodes = cmd.ls(shortNames=True)
+    nodes = cmds.ls(shortNames=True)
     illegal_node_names = []
     regex = re.compile('[^A-Za-z0-9_|]')
     for n in nodes:
@@ -341,7 +345,7 @@ def getCopyPastedNodes():
     Returns:
         string[]: List of copy-pasted nodes
     """
-    nodes = cmd.ls()
+    nodes = cmds.ls()
     copypasted_nodes = []
     for n in nodes:
         if "pasted__" in n:
@@ -360,7 +364,7 @@ def getReferences():
     Returns:
         string[]: List of referenced nodes
     """
-    return cmd.ls(type="reference")
+    return cmds.ls(type="reference")
 
 def getBrokenReferences():
     """Return a list of the broken references in the scene
@@ -374,7 +378,7 @@ def getBrokenReferences():
     broken_refs = []
     for r in refs:
         try:
-            path = cmd.referenceQuery(r, filename=True, withoutCopyNumber=True)
+            path = cmds.referenceQuery(r, filename=True, withoutCopyNumber=True)
             if not os.path.isfile(path):
                 print("Reference %s cannot be reached at path %s"%(r, path))
                 broken_refs.append(r)
@@ -460,4 +464,4 @@ def getCurrentProject():
     Returns:
         str: Maya project path
     """
-    return cmd.workspace(q=True, active=True)
+    return cmds.workspace(q=True, active=True)

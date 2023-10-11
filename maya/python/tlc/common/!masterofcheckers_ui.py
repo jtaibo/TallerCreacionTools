@@ -129,7 +129,7 @@ class MasterOfCheckersUI(qtutils.CheckerWindow):
             data = self.get_checker_data(check_step)
 
             for index, data_value in enumerate(data):
-                self.set_checker_row_error_level(data.get(data_value), toolbox, index,check_step)
+                self.set_checker_row_error_level(data.get(data_value), toolbox, index, check_step)
     
     def get_checker_data(self,check_step):
         

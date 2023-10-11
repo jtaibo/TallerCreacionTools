@@ -12,10 +12,10 @@ import tlc.common.pipeline as PIPELINE
 
 class PipelineCheck(BaseCheck.BaseCheck):
     
-    object_list = []
-    data = {}
+    objects_list = []
+    # data = {}
     def __init__(self):
-        self.data.clear()
+        # self.data.clear()
         self.data["pipeline"]= dict()
         self.data["pipeline"]["foldersStructure"] = (CCH.ConditionChecker(name = "foldersStructure",displayName="Folders structure", toolTip="<projID>\00_transDep, 01_dev, 02_prod, 03_post, maya project in 02_prod, scene structure."))
         self.data["pipeline"]["mayaProject"] = (CCH.ConditionChecker(name = "mayaProject",displayName="Maya project", toolTip="The project must be inside 02_production."))
@@ -73,14 +73,16 @@ class PipelineCheck(BaseCheck.BaseCheck):
         """Checks every node scale and sets error level if the scale is not (1, 1, 1)
         """
         error_objects = []
-        for obj in self.object_list:
+
+        for obj in self.objects_list:
             try:
                 object_scale = cmds.getAttr(f"{obj}.scale")
+                print(object_scale)
+                if object_scale != [(1.0,1.0,1.0)]:
+                    error_objects.append(obj)
             except:
                 print(f"Obj {obj} does not have scale")
-                return
-            if object_scale != [(1.0,1.0,1.0)]:
-                error_objects.append(obj)
+                continue
 
         # Obtener el count en otro lado ¿? podria tenerse la lista de objetos en el data directamente,
         # si queremos la longitud podriamos utilizar el metodo len despues      

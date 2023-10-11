@@ -60,19 +60,6 @@ class MasterOfCheckersUI(qtutils.CheckerWindow):
             """
             self.ui.verticalLayout_01.addWidget(department_toolbox)
             
-#             data_len = department_toolbox.checker_class.data.get(department)
-#             department_toolbox.table.setRowCount(len(data_len))
-#             # dptm_checker = self.get_department_checker_obj(department)
-#             # data_len = dptm_checker.data
-# # 
-#             for index, data_value in enumerate(data_len):
-#                 condition_checker = data_len.get(data_value)
-# # 
-#                 department_toolbox.table.setItem(index,0,QTableWidgetItem(condition_checker.displayName)) # Set name
-#                 department_toolbox.table.item(index,0).setToolTip(condition_checker.toolTip) # Set tooltip
-
-
-
 def run(department):
     global masterofcheckers_ui# define as a global variable, so there is only one window for this checker
     try:

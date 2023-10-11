@@ -128,6 +128,8 @@ class ConditionChecker():
         self.elms = elements
         self.count = len(self.elms)
         
+    def get_elements(self):
+        return self.elms
 
     def setErrorLevel(self, crit):
         """Set error level following the criteria supplied
