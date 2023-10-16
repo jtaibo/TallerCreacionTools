@@ -9,12 +9,10 @@ import tlc.common.conditionchecker as CCH
 
 
 class NamingCheck(BaseCheck.BaseCheck):
-    
-    objects_list = []
-
     # data = {}
 
     def __init__(self):
+        super().__init__()
         # self.data.clear() 
         self.data["naming"] = dict()
         self.data["naming"]["sceneName"] = (CCH.ConditionChecker(name= "sceneName",displayName="Scene Name", toolTip="Correct naming of the scene, <projID>_<typeID>_<deptmD>_<assetID>_<version>_<workingVersion>"))

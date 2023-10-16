@@ -11,10 +11,8 @@ import tlc.common.naming as NAMING
 import tlc.common.pipeline as PIPELINE
 
 class PipelineCheck(BaseCheck.BaseCheck):
-    
-    objects_list = []
-    # data = {}
     def __init__(self):
+        super().__init__()
         # self.data.clear()
         self.data["pipeline"]= dict()
         self.data["pipeline"]["foldersStructure"] = (CCH.ConditionChecker(name = "foldersStructure",displayName="Folders structure", toolTip="<projID>\00_transDep, 01_dev, 02_prod, 03_post, maya project in 02_prod, scene structure."))

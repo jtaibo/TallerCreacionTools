@@ -1,7 +1,10 @@
 import importlib
 from pprint import pprint
 class BaseCheck():
-    data = dict()
+    # data = dict()
+    def __init__(self):
+        self.data: dict = dict()
+        self.objects_list: list = list()
     def update_objectList(self, maya_objects):
         """Updates self.object list to most recent execution
 

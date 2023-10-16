@@ -30,7 +30,6 @@ from shiboken2 import wrapInstance
 from PySide2 import QtWidgets
 from PySide2 import QtCore
 from PySide2 import QtUiTools
-from PySide2 import QSizePolicy
 
 
 from abc import abstractmethod

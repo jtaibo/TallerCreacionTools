@@ -11,10 +11,8 @@ from tlc.common.checkers.pipelinecheck import PipelineCheck
 
 class RiggingCheck(NamingCheck, PipelineCheck):
     
-    objects_list = []
-    data = NamingCheck().data
-    data.update(PipelineCheck().data)
     def __init__(self):
+        super().__init__()
         # super(RiggingCheck).__init__(NamingCheck)
         # super(RiggingCheck).__init__(PipelineCheck)
 
