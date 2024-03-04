@@ -54,8 +54,10 @@ REM This installer will place scripts in Maya scripts directory
 
 set MAYA_VERSIONS=2023 2024
 
+FOR /F "tokens=3* delims= " %%a in ('reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v "Personal"') do (set MYDOCUMENTS=%%a)
+
 (for %%v in (%MAYA_VERSIONS%) do (
-	set MAYA_DOCS=%HOMEDRIVE%\%HOMEPATH%\Documents\maya\%%v\
+	set MAYA_DOCS=%MYDOCUMENTS%\maya\%%v\
 	if exist !MAYA_DOCS!\ (
 		echo Installing tools for Maya %%v
 		call:install_tlc %%v
