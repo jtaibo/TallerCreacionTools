@@ -1,0 +1,29 @@
+tlc.modeling.meshcheck\_ui.FloatDelegate
+========================================
+
+.. currentmodule:: tlc.modeling.meshcheck_ui
+
+.. uml:: tlc.modeling.meshcheck_ui
+    :classes:
+
+.. autoclass:: FloatDelegate
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~FloatDelegate.__init__
+      ~FloatDelegate.paint
+   
+   
+
+   
+   
+   

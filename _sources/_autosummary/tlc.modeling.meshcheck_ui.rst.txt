@@ -29,6 +29,7 @@ tlc.modeling.meshcheck\_ui
       :toctree:
       :template: custom-class-template.rst
    
+      FloatDelegate
       MeshCheckerUI
    
    
