@@ -89,7 +89,8 @@ class MeshChecker():
         self.geoConditions["vertices"] = ConditionChecker("vertices", "Vertices", "Number of vertices in selected elements", False)
         self.geoConditions["edges"] = ConditionChecker("edges", "Edges", "Number of edges in selected elements", False)
         self.geoConditions["faces"] = ConditionChecker("faces", "Faces", "Number of faces/polygons in selected elements", False)
-        self.geoConditions["area"] = ConditionChecker("area")
+        self.geoConditions["area"] = ConditionChecker("area", "Area", "Surface area (object space)", False)
+        self.geoConditions["worldArea"] = ConditionChecker("worldArea", "WS Area", "Surface Area (world space)", False)
 
         # Face checks
         self.geoConditions["quads"] = ConditionChecker("quads", "Quads", "Number of quads in selected elements")
@@ -208,6 +209,7 @@ class MeshChecker():
         if not selected_shapes:
             # Nothing to analyze. We're done here
             return
+        self.geoConditions["meshes"].count = len(selected_shapes)
 
         # Select shapes from original selection
         cmds.select(selected_shapes, replace=True)
@@ -218,6 +220,8 @@ class MeshChecker():
         self.geoConditions["vertices"].count = poly_eval["vertex"]
         self.geoConditions["edges"].count = poly_eval["edge"]
         self.geoConditions["faces"].count = poly_eval["face"]
+        self.geoConditions["area"].count = poly_eval["area"]
+        self.geoConditions["worldArea"].count = poly_eval["worldArea"]
 
         #print("POLY EVAL: ", poly_eval)
 

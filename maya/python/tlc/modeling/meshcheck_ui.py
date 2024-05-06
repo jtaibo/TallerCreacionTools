@@ -33,6 +33,22 @@ from PySide2 import QtGui
 import tlc.common.qtutils as qtutils
 import maya.cmds as cmds
 
+class FloatDelegate(QtWidgets.QItemDelegate):
+    def __init__(self, decimals, parent=None):
+        QtWidgets.QItemDelegate.__init__(self, parent=parent)
+        self.nDecimals = decimals
+
+    def paint(self, painter, option, index):
+        value = index.model().data(index, QtCore.Qt.EditRole)
+        try:
+            number = float(value)
+            if number.is_integer():
+                painter.drawText(option.rect, QtCore.Qt.AlignLeft, number)
+            else:
+                painter.drawText(option.rect, QtCore.Qt.AlignLeft, "{:.{}f}".format(number, self.nDecimals))
+        except :
+            QtWidgets.QItemDelegate.paint(self, painter, option, index)
+
 
 class MeshCheckerUI(qtutils.CheckerWindow):
     """User interface for MeshChecker
@@ -51,7 +67,6 @@ class MeshCheckerUI(qtutils.CheckerWindow):
         ui_file = os.path.basename(__file__).split(".")[0].replace("_", ".")
         title = "Mesh analyzer"
         super(MeshCheckerUI, self).__init__(os.path.dirname(__file__) + "/" + ui_file, title, parent)
-
 
     def addConditionChecker(self, table_widget, cond):
         """Add a condition checker
@@ -121,6 +136,9 @@ class MeshCheckerUI(qtutils.CheckerWindow):
         Args:
             mesh_checker (MeshChecker): MeshChecker object to populate the table
         """
+
+        self.ui.geoCheckerTableWidget.setItemDelegate(FloatDelegate(3))
+        self.ui.uvCheckerTableWidget.setItemDelegate(FloatDelegate(3))
 
         # Clear the tables
         self.ui.geoCheckerTableWidget.setRowCount(0)
