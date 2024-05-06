@@ -90,6 +90,15 @@ inputConnectionsToMapType = {
     "aiSkyDomeLight":{
         "color":"hdri",
         "groundAlbedo":"hdri"
+    },
+    "aiMeshLight":{
+        "color":"meshLight"
+    },
+    "areaLight":{
+        "color":"areaLight"
+    },
+    "aiAreaLight":{
+        "color":"areaLight"
     }
 }
 """Map of input connections recognized per materials/lightsources and translation to map type name
@@ -319,13 +328,13 @@ class FileTexture():
             self.errorMessage += "Scene not compliant with the pipeline\n"
             self.assetFile = None
 
-        self.imgSrc = self.getImageSource()
+        self.imgSrc = self.getImageSource(False)
         if self.imgSrc == ImageSource.IMG_SRC_UNKNOWN:
             self.errorMessage += "Image source unknown\n"
             self.warnings.add("imgSrc")
         print("Source: ", imgSrcName[self.imgSrc])
 
-        if self.imgSrc != ImageSource.IMG_SRC_UNKNOWN and not self.verifyTextureName():
+        if self.imgSrc != ImageSource.IMG_SRC_UNKNOWN and not self.verifyTextureName(True):
             self.errors.add("wrongNaming")
 
         self.validateColorSpace()
@@ -508,7 +517,7 @@ class FileTexture():
         Returns:
             str: ShadingGroup/shadingEngine node name
         """
-        if self.mapType == "hdri" or not self.target:
+        if self.mapType == "hdri" or self.mapType == "meshLight" or self.mapType == "areaLight" or not self.target:
             return None
         node = self.target
         while cmds.nodeType(node) != "shadingEngine":
@@ -577,17 +586,17 @@ class FileTexture():
     def buildFileTextureName(self):
         pass
 
-    def verifyTextureName(self):
+    def verifyTextureName(self, set_errors=True):
         if self.imgSrc == ImageSource.IMG_SRC_OWN:
-            return self.verifyFileTextureNameOwn()
+            return self.verifyFileTextureNameOwn(set_errors)
         elif self.imgSrc == ImageSource.IMG_SRC_MEGASCANS:
-            return self.verifyFileNameMegaScans()
+            return self.verifyFileNameMegaScans(set_errors)
         elif self.imgSrc == ImageSource.IMG_SRC_TEXTUREHAVEN:
-            return self.verifyFileNameTextureHaven()
+            return self.verifyFileNameTextureHaven(set_errors)
         elif self.imgSrc == ImageSource.IMG_SRC_AMBIENTCG:
-            return self.verifyFileNameAmbientCG()
+            return self.verifyFileNameAmbientCG(set_errors)
         elif self.imgSrc == ImageSource.IMG_SRC_HDRIHAVEN:
-            return self.verifyFileNameHDRIHaven()
+            return self.verifyFileNameHDRIHaven(set_errors)
         else:
             return False
 
@@ -667,7 +676,7 @@ class FileTexture():
         fields = self.fileName.split("_")
         if len(fields) != 3:
             if set_errors:
-                self.errorMessage += "MegaScans texture name mismatch: " + len(fields) + " fields (should be 3) " + "\n"
+                self.errorMessage += "MegaScans texture name mismatch: " + str(len(fields)) + " fields (should be 3) " + "\n"
             return False
         ms_id = fields[0]
         if not ms_id.islower():
@@ -778,18 +787,18 @@ class FileTexture():
             return False
         return True
 
-    def getImageSource(self):
+    def getImageSource(self, set_errors=True):
         if self.mapType == "hdri":
-            if self.verifyFileNameHDRIHaven(False):
+            if self.verifyFileNameHDRIHaven(set_errors):
                 return ImageSource.IMG_SRC_HDRIHAVEN
         else:
-            if self.verifyFileTextureNameOwn(False):
+            if self.verifyFileTextureNameOwn(set_errors):
                 return ImageSource.IMG_SRC_OWN
-            elif self.verifyFileNameMegaScans(False):
+            elif self.verifyFileNameMegaScans(set_errors):
                 return ImageSource.IMG_SRC_MEGASCANS
-            elif self.verifyFileNameTextureHaven(False):
+            elif self.verifyFileNameTextureHaven(set_errors):
                 return ImageSource.IMG_SRC_TEXTUREHAVEN
-            elif self.verifyFileNameAmbientCG(False):
+            elif self.verifyFileNameAmbientCG(set_errors):
                 return ImageSource.IMG_SRC_AMBIENTCG
         return ImageSource.IMG_SRC_UNKNOWN
     
