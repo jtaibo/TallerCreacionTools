@@ -6,8 +6,8 @@ This module contains texture utilities for shading department
 """
 """
 This file is part of TLC (https://github.com/jtaibo/TallerCreacionTools).
-Copyright (c) 2022-2023 Universidade da Coruña
-Copyright (c) 2022-2023 Javier Taibo <javier.taibo@udc.es>
+Copyright (c) 2022-2024 Universidade da Coruña
+Copyright (c) 2022-2024 Javier Taibo <javier.taibo@udc.es>
 
 This program is free software: you can redistribute it and/or modify it under 
 the terms of the GNU General Public License as published by the Free Software 
@@ -249,8 +249,13 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         # Texel density
         col = col+1
 
-        ntd_text = file_tex.getNormalizedTexelDensity()
-        cell = self.addTextCell(row, col, file_tex.getNormalizedTexelDensity())
+        ntd_text = "unknown"
+        ntd = file_tex.getNormalizedTexelDensity()
+        if ntd:
+            mean_res = (file_tex.resX+file_tex.resY)/2.
+            td = ntd * mean_res
+            ntd_text = "%.2f" % round(td,2)
+        cell = self.addTextCell(row, col, ntd_text)
 
         # Meshes
         col = col+1

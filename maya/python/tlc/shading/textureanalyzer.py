@@ -6,8 +6,8 @@ This module contains texture utilities for shading department
 """
 """
 This file is part of TLC (https://github.com/jtaibo/TallerCreacionTools).
-Copyright (c) 2022-2023 Universidade da Coruña
-Copyright (c) 2022-2023 Javier Taibo <javier.taibo@udc.es>
+Copyright (c) 2022-2024 Universidade da Coruña
+Copyright (c) 2022-2024 Javier Taibo <javier.taibo@udc.es>
 
 This program is free software: you can redistribute it and/or modify it under 
 the terms of the GNU General Public License as published by the Free Software 
@@ -608,7 +608,6 @@ class FileTexture():
         """
         naming_ok = True
         fields = self.fileName.split("_")
-        print("Fields: ", fields)
 
         if len(fields) < 7:
             if set_errors:
@@ -911,7 +910,7 @@ class FileTexture():
                     # OpenMaya API 2.0
                     dag = sel.getDagPath(i)
                     selected_components = sel.getComponent(i)
-                    #dag.extendToShape()
+                    dag.extendToShape()
                     if dag.apiType() == om.MFn.kMesh:
                         itFaces = om.MItMeshPolygon(dag, selected_components[1])
                         ntd_array = []
@@ -958,11 +957,10 @@ class FileTexture():
             #     cell.setToolTip(texel_density)
 
         #cell = self.addTextCell(table_widget, row, col, "unknown")
-        ntd_text = "unknown"
         if ntds:
-            ntd_text = f"{ntds[0]:.2E}"
-
-        return ntd_text
+            return math.sqrt(ntds[0])
+        else:
+            return None
 
 
 def getAllFileTextureNodesInScene():
