@@ -910,7 +910,11 @@ class FileTexture():
                     # OpenMaya API 2.0
                     dag = sel.getDagPath(i)
                     selected_components = sel.getComponent(i)
-                    dag.extendToShape()
+                    try:
+                        dag.extendToShape()
+                    except:
+                        # No shape!
+                        continue
                     if dag.apiType() == om.MFn.kMesh:
                         itFaces = om.MItMeshPolygon(dag, selected_components[1])
                         ntd_array = []
