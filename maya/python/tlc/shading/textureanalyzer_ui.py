@@ -423,7 +423,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
             self.contextMenuFileTextureNode(index, pos)
         elif index.column() == 9:
             self.contextMenuColorSpace(index, pos)
-        elif index.column() == 15:
+        elif index.column() == 19:
             self.contextMenuFileTextureGeometry(index, pos)
 
     def contextMenuFileTextureNode(self, index, pos):
@@ -493,7 +493,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         elif col == 4:
             # Shading group (shading engine)
             self.selectShadingGroup(row)
-        elif col == 15:
+        elif col == 19:
             # Meshes
             self.selectAllGeometry(row)
 
