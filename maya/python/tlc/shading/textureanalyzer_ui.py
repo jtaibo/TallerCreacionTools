@@ -105,6 +105,10 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         self.diskUsage = 0
         self.txUsage = 0
         self.renderColorSpace = cmds.colorManagementPrefs(q=True, renderingSpaceName=True)
+        self.cam_center = []
+        self.screen_width = 0.
+        self.tan_fovh_2 = 0.
+        self.updateCameraList()
 
     def addTextCell(self, row, col, text):
         cell = QtWidgets.QTableWidgetItem(text)
@@ -331,6 +335,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         # Texel density
         col = col+1
         ntd_text = "unknown"
+        td = 0
         ntd = file_tex.getNormalizedTexelDensity()
         if ntd:
             mean_res = (file_tex.resX+file_tex.resY)/2.
@@ -340,19 +345,14 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
 
         # Texels per pixel
         col = col+1
-        tpp_text = "unknown"
-        # units per pixel
-        selected_camera = self.ui.cameraComboBox.currentText()
-        # check geometry visibility and discard off-screen elements
-        # check geometry position (bounding box center? vertices? surface sampling?)
-        # d = distance from camera to geometry
-        # fov_h
-        # resolution_h
-        # 
-        # tan = sin / cos
-        # tan(fov_h/2) = screen_width/2 / d
-        # screen_width = 2 * tan(fov_h/2) * d
-        # texel/unit * unit/pixel = texel/pixel
+        if td > 0.:
+            tpp = file_tex.getTexelsPerPixel(self.cam_center, self.tan_fovh_2, self.screen_width, td)
+            if tpp[0] == tpp[1]:
+                tpp_text = "%.2f" % round(tpp[0],2)
+            else:
+                tpp_text = "%.2f - %.2f" %( round(tpp[0],2), round(tpp[1],2) )
+        else:
+            tpp_text = "-"
         cell = self.addTextCell(row, col, tpp_text)
 
         # Meshes
@@ -376,13 +376,12 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
 
         # Global settings
         self.renderColorSpace = cmds.colorManagementPrefs(q=True, renderingSpaceName=True)
+        self.updateCameraParams(self.ui.cameraComboBox.currentText())
 
         # Set columns
         col_labels = ["Node", "Status", "Dup", "Target", "Shading Group", "File name", "Pjtd", "Map type", "Res", "Color space", "Format", "Ver", "Source", "ElementID", "Memory usage", "Disk usage", ".tx size", "Texel density", "Texel/pixel", "Meshes"]
         self.ui.texCheckerTableWidget.setColumnCount(len(col_labels))
         self.ui.texCheckerTableWidget.setHorizontalHeaderLabels(col_labels)
-
-        self.updateCameraList()
 
         self.numErrors = 0
         self.numDupes = 0
@@ -394,12 +393,12 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         for tex in textures:
             self.addFileTexture(tex)
 
-        self.ui.errorText.insert(str(self.numErrors))
-        self.ui.dupesText.insert(str(self.numDupes))
-        self.ui.textureUsageText.insert(formatUnits(self.textureUsage, "pixels"))
-        self.ui.memoryUsageText.insert(formatUnitsBinary(self.memoryUsage, "Bytes"))
-        self.ui.diskUsageText.insert(formatUnitsBinary(self.diskUsage, "Bytes"))
-        self.ui.txUsageText.insert(formatUnitsBinary(self.txUsage, "Bytes"))
+        self.ui.errorText.setText(str(self.numErrors))
+        self.ui.dupesText.setText(str(self.numDupes))
+        self.ui.textureUsageText.setText(formatUnits(self.textureUsage, "pixels"))
+        self.ui.memoryUsageText.setText(formatUnitsBinary(self.memoryUsage, "Bytes"))
+        self.ui.diskUsageText.setText(formatUnitsBinary(self.diskUsage, "Bytes"))
+        self.ui.txUsageText.setText(formatUnitsBinary(self.txUsage, "Bytes"))
 
         if not self.resized:
             #self.ui.texCheckerTableWidget.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
@@ -577,14 +576,45 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
 
     def updateCameraList(self):
         self.ui.cameraComboBox.clear()
+        self.ui.cameraComboBox.currentTextChanged.connect(self.cameraChange)
         cameras=cmds.ls(cameras=True)
         for c in cameras:
             if cmds.getAttr(c+".renderable"):
                 self.ui.cameraComboBox.addItem(c)
 
+    def updateCameraParams(self, camera):
+        self.cam_center = cmds.objectCenter(camera)
+        resolution = cmds.listConnections("defaultRenderGlobals.resolution")[0]
+        self.screen_width = cmds.getAttr(resolution + ".width")
+        focal_length = cmds.getAttr(camera + ".focalLength")
+        aperture_h = cmds.getAttr(camera + ".horizontalFilmAperture") * 25.4   # inches to mm
+        self.tan_fovh_2 = (aperture_h/2.) / focal_length
+
+    def cameraChange(self, new_camera):
+        if new_camera:
+            self.updateCameraParams(new_camera)
+            self.updateTexelsPerPixel()
+
     def updateTexelsPerPixel(self):
-        pass
         # TO-DO: implement me!
+        col = 18  # TPP column index
+        for row in range(self.table_widget.rowCount()):
+            item = self.table_widget.item(row, col)
+            try:
+                td = float(self.table_widget.item(row, 17).text())  # to-do TD may be a file_tex attribute @TO-DO!!!
+                if td > 0.:
+                    file_tex = self.fileTextureObjects[row]
+                    tpp = file_tex.getTexelsPerPixel(self.cam_center, self.tan_fovh_2, self.screen_width, td)
+                    if tpp[0] == tpp[1]:
+                        tpp_text = "%.2f" % round(tpp[0],2)
+                    else:
+                        tpp_text = "%.2f - %.2f" %( round(tpp[0],2), round(tpp[1],2) )
+                else:
+                    tpp_text = "-"
+                item.setText(tpp_text)
+            except:
+                item.setText("-")
+
 
 def run():
     """Run the checker

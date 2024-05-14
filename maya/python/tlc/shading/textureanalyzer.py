@@ -967,10 +967,39 @@ class FileTexture():
             return math.sqrt(ntds[0])
         else:
             return None
-        
+
+
+    def getTexelsPerPixel(self, cam_center, tan_fovh_2, screen_width, texel_density):
+        meshes = self.getMeshes()
+        tpp_list = []
+        if meshes:
+            for m in meshes:
+                tpp = 0
+                # check geometry visibility and discard off-screen elements
+                if False:   # not_visible
+                    continue
+
+                # This is a very rough approximation, we are only considering distance from camera to 
+                # BB center. We could have a better approximation by sampling visible points in the surface
+                # of the geometry (FUTURE DEVELOPMENT). It would be a more expensive approach, however
+
+                # check geometry position (bounding box center? vertices? surface sampling?)
+                geo_center = cmds.objectCenter(m)
+                # distance from camera to geometry
+                distance_vector = [ geo_center[0]-cam_center[0], geo_center[1]-cam_center[1], geo_center[2]-cam_center[2] ]
+                distance = math.sqrt(distance_vector[0]*distance_vector[0]+distance_vector[1]*distance_vector[1]+distance_vector[2]*distance_vector[2])
+                upp = 2 * distance * tan_fovh_2 / screen_width
+                tpp = texel_density * upp
+                tpp_list.append(tpp)
+        if tpp_list:
+            # Currently taking the maximum value (maybe we could return min/max)
+            return [ min(tpp_list), max(tpp_list) ]
+        else:
+            return [ 0, 0 ]
+
     def bytesPerPixel(self):
         # TO-DO : Make a better implementation
-        num_channels = 3
+        num_channels = 3    
         channel_size = 1    # review!
         if self.fileHasAlpha:
             num_channels = num_channels + 1
