@@ -22,6 +22,7 @@ tlc.shading.textureanalyzer.FileTexture
       ~FileTexture.__init__
       ~FileTexture.buildFileTextureName
       ~FileTexture.buildResolutionString
+      ~FileTexture.bytesPerPixel
       ~FileTexture.checkAlpha
       ~FileTexture.checkDestination
       ~FileTexture.checkFileTexture

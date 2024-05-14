@@ -99,7 +99,7 @@
              
   <section id="tlc-shading-textureanalyzer-filetexture">
 <h1>tlc.shading.textureanalyzer.FileTexture<a class="headerlink" href="#tlc-shading-textureanalyzer-filetexture" title="Link to this heading"></a></h1>
-<a class="reference internal image-reference" href="../_images/classes_tlc.shading.textureanalyzer.png"><img alt="../_images/classes_tlc.shading.textureanalyzer.png" src="../_images/classes_tlc.shading.textureanalyzer.png" style="width: 1815.0px; height: 1167.0px;" /></a>
+<a class="reference internal image-reference" href="../_images/classes_tlc.shading.textureanalyzer.png"><img alt="../_images/classes_tlc.shading.textureanalyzer.png" src="../_images/classes_tlc.shading.textureanalyzer.png" style="width: 1815.0px; height: 1205.0px;" /></a>
 <dl class="py class">
 <dt class="sig sig-object py" id="tlc.shading.textureanalyzer.FileTexture">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tlc.shading.textureanalyzer.</span></span><span class="sig-name descname"><span class="pre">FileTexture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.shading.textureanalyzer.FileTexture" title="Link to this definition"></a></dt>
@@ -128,82 +128,85 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">buildResolutionString</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkAlpha</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bytesPerPixel</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.checkDestination" title="tlc.shading.textureanalyzer.FileTexture.checkDestination"><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkDestination</span></code></a>(node)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkAlpha</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.checkDestination" title="tlc.shading.textureanalyzer.FileTexture.checkDestination"><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkDestination</span></code></a>(node)</p></td>
 <td><p>Check the destination of the texture and return the map type This method sets the self.target attribute</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.checkFileTexture" title="tlc.shading.textureanalyzer.FileTexture.checkFileTexture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkFileTexture</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.checkFileTexture" title="tlc.shading.textureanalyzer.FileTexture.checkFileTexture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkFileTexture</span></code></a>()</p></td>
 <td><p>Check file texture (fullPath).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.checkShadingGroup" title="tlc.shading.textureanalyzer.FileTexture.checkShadingGroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkShadingGroup</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.checkShadingGroup" title="tlc.shading.textureanalyzer.FileTexture.checkShadingGroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkShadingGroup</span></code></a>()</p></td>
 <td><p>Find the shading group/engine for material where the texture is used</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixColorSpace</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixColorSpace</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.fixFilePath" title="tlc.shading.textureanalyzer.FileTexture.fixFilePath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixFilePath</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.fixFilePath" title="tlc.shading.textureanalyzer.FileTexture.fixFilePath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixFilePath</span></code></a>()</p></td>
 <td><p>Try to fix file path, working on the hypothesis that it is correct relative to the sourceimages folder, only failing the absolute path before this folder</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.getConnectionsThroughAttrs" title="tlc.shading.textureanalyzer.FileTexture.getConnectionsThroughAttrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getConnectionsThroughAttrs</span></code></a>(outAttrs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.getConnectionsThroughAttrs" title="tlc.shading.textureanalyzer.FileTexture.getConnectionsThroughAttrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getConnectionsThroughAttrs</span></code></a>(outAttrs)</p></td>
 <td><p>Get the list of connections for the first attribute in the list that has a connection</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.getFirstConnectionThroughAttrs" title="tlc.shading.textureanalyzer.FileTexture.getFirstConnectionThroughAttrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getFirstConnectionThroughAttrs</span></code></a>(outAttrs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.getFirstConnectionThroughAttrs" title="tlc.shading.textureanalyzer.FileTexture.getFirstConnectionThroughAttrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getFirstConnectionThroughAttrs</span></code></a>(outAttrs)</p></td>
 <td><p>Get the first connection for any of the output attributes</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getImageSource</span></code>([set_errors])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getImageSource</span></code>([set_errors])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.getMeshes" title="tlc.shading.textureanalyzer.FileTexture.getMeshes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getMeshes</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.getMeshes" title="tlc.shading.textureanalyzer.FileTexture.getMeshes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getMeshes</span></code></a>()</p></td>
 <td><p>Get meshes connected to the shading engine</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getNormalizedTexelDensity</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getNormalizedTexelDensity</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.missingFile" title="tlc.shading.textureanalyzer.FileTexture.missingFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">missingFile</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.missingFile" title="tlc.shading.textureanalyzer.FileTexture.missingFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">missingFile</span></code></a>()</p></td>
 <td><p>Check whether file is not found or not readable</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.notInProject" title="tlc.shading.textureanalyzer.FileTexture.notInProject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">notInProject</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.notInProject" title="tlc.shading.textureanalyzer.FileTexture.notInProject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">notInProject</span></code></a>()</p></td>
 <td><p>Check whether file path exists, but is not in project</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parseTextureName</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parseTextureName</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.reCheck" title="tlc.shading.textureanalyzer.FileTexture.reCheck"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reCheck</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.reCheck" title="tlc.shading.textureanalyzer.FileTexture.reCheck"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reCheck</span></code></a>()</p></td>
 <td><p>Recheck file texture node</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">setColorSpace</span></code>(cs)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">setColorSpace</span></code>(cs)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.valid" title="tlc.shading.textureanalyzer.FileTexture.valid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">valid</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.valid" title="tlc.shading.textureanalyzer.FileTexture.valid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">valid</span></code></a>()</p></td>
 <td><p>Texture is valid (has passed basic checks)</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validMaterial</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validMaterial</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validateColorSpace</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validateColorSpace</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validateNormalNode</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validateNormalNode</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyFileNameAmbientCG</span></code>([set_errors])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyFileNameAmbientCG</span></code>([set_errors])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyFileNameHDRIHaven</span></code>([set_errors])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyFileNameHDRIHaven</span></code>([set_errors])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyFileNameMegaScans</span></code>([set_errors])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyFileNameMegaScans</span></code>([set_errors])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyFileNameTextureHaven</span></code>([set_errors])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyFileNameTextureHaven</span></code>([set_errors])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.verifyFileTextureNameOwn" title="tlc.shading.textureanalyzer.FileTexture.verifyFileTextureNameOwn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyFileTextureNameOwn</span></code></a>([set_errors])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.shading.textureanalyzer.FileTexture.verifyFileTextureNameOwn" title="tlc.shading.textureanalyzer.FileTexture.verifyFileTextureNameOwn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyFileTextureNameOwn</span></code></a>([set_errors])</p></td>
 <td><p>Verify texture name matches texture configuration and format defined in the pipeline</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyTextureName</span></code>([set_errors])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyTextureName</span></code>([set_errors])</p></td>
 <td><p></p></td>
 </tr>
 </tbody>

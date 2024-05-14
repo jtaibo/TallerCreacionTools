@@ -17,6 +17,8 @@ tlc.shading.textureanalyzer\_ui
    .. autosummary::
       :toctree:
    
+      formatUnits
+      formatUnitsBinary
       run
    
    

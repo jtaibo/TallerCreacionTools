@@ -1,0 +1,6 @@
+tlc.shading.textureanalyzer\_ui.formatUnits
+===========================================
+
+.. currentmodule:: tlc.shading.textureanalyzer_ui
+
+.. autofunction:: formatUnits
