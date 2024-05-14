@@ -38,6 +38,39 @@ import tlc.modeling.meshcheck
 import maya.cmds as cmds
 
 
+def formatUnits(val, units):
+    symbol = ""
+    if val > 1e12:
+        val = val / 1e12
+        symbol = "T"
+    elif val > 1e9:
+        val = val / 1e9
+        symbol = "G"
+    elif val > 1e6:
+        val = val / 1e6
+        symbol = "M"
+    elif val > 1e3:
+        val = val / 1e3
+        symbol = "k"
+    return "%.2f" % round(val,2) + " " + symbol + units
+
+def formatUnitsBinary(val, units):
+    symbol = ""
+    if val > pow(2,40):
+        val = val / pow(2,40)
+        symbol = "Ti"
+    elif val > pow(2,30):
+        val = val / pow(2,30)
+        symbol = "Gi"
+    elif val > pow(2,20):
+        val = val / pow(2,20)
+        symbol = "Mi"
+    elif val > pow(2,10):
+        val = val / pow(2,10)
+        symbol = "ki"
+    return "%.2f" % round(val,2) + " " + symbol + units
+
+
 class TextureAnalyzerUI(qtutils.CheckerWindow):
     """User interface for TextureAnalyzer
     
@@ -65,7 +98,13 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         #self.ui.statusLine.setBackgroundColor(QtCore.Qt.green)
         self.table_widget = self.ui.texCheckerTableWidget
         self.resized = False
-
+        self.numErrors = 0
+        self.numDupes = 0
+        self.textureUsage = 0
+        self.memoryUsage = 0
+        self.diskUsage = 0
+        self.txUsage = 0
+        self.renderColorSpace = cmds.colorManagementPrefs(q=True, renderingSpaceName=True)
 
     def addTextCell(self, row, col, text):
         cell = QtWidgets.QTableWidgetItem(text)
@@ -123,6 +162,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         if not file_tex.valid():
             status = "ERROR"
             bgcolor = QtCore.Qt.red
+            self.numErrors = self.numErrors + 1
         elif file_tex.warnings:
             status = "WARN"
             bgcolor = QtGui.QColor(255,127,0)   # Orange
@@ -136,6 +176,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         status = ""
         if file_tex.duplicate:
             status = "X"
+            self.numDupes = self.numDupes + 1
         cell = self.addTextCell(row, col, status)
 
         # Target name
@@ -246,9 +287,49 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         col = col+1
         cell = self.addTextCell(row, col, file_tex.elementID)
 
+        # Memory usage
+        col = col+1
+        num_texels = file_tex.resX * file_tex.resY
+        self.textureUsage = self.textureUsage + num_texels
+        bytes_per_pixel = file_tex.bytesPerPixel()
+        mu = num_texels * bytes_per_pixel
+        cell = self.addTextCell(row, col, formatUnitsBinary(mu, "B"))
+        self.memoryUsage = self.memoryUsage + mu
+
+        # Disk usage
+        col = col+1
+        if os.path.isfile(file_tex.fullPath):
+            tex_st = os.stat(file_tex.fullPath)
+            du = tex_st.st_size
+        else:
+            du = 0
+        cell = self.addTextCell(row, col, formatUnitsBinary(du, "B"))
+        if du == 0:
+            bgcolor = QtCore.Qt.red
+            fgcolor = QtCore.Qt.black
+            cell.setBackground(bgcolor)
+            cell.setForeground(fgcolor)
+
+        self.diskUsage = self.diskUsage + du
+
+        # .tx disk usage
+        col = col+1
+        txu = 0
+        split_tex_path = os.path.splitext(file_tex.fullPath)
+        tx_path = split_tex_path[0] + "_" + file_tex.colorSpace + "_" + self.renderColorSpace + split_tex_path[1] + ".tx"
+        if os.path.isfile(tx_path):
+            tex_st = os.stat(tx_path)
+            txu = tex_st.st_size
+        cell = self.addTextCell(row, col, formatUnitsBinary(txu, "B"))
+        if txu == 0:
+            bgcolor = QtCore.Qt.red
+            fgcolor = QtCore.Qt.black
+            cell.setBackground(bgcolor)
+            cell.setForeground(fgcolor)
+        self.txUsage = self.txUsage + txu
+
         # Texel density
         col = col+1
-
         ntd_text = "unknown"
         ntd = file_tex.getNormalizedTexelDensity()
         if ntd:
@@ -256,6 +337,23 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
             td = ntd * mean_res
             ntd_text = "%.2f" % round(td,2)
         cell = self.addTextCell(row, col, ntd_text)
+
+        # Texels per pixel
+        col = col+1
+        tpp_text = "unknown"
+        # units per pixel
+        selected_camera = self.ui.cameraComboBox.currentText()
+        # check geometry visibility and discard off-screen elements
+        # check geometry position (bounding box center? vertices? surface sampling?)
+        # d = distance from camera to geometry
+        # fov_h
+        # resolution_h
+        # 
+        # tan = sin / cos
+        # tan(fov_h/2) = screen_width/2 / d
+        # screen_width = 2 * tan(fov_h/2) * d
+        # texel/unit * unit/pixel = texel/pixel
+        cell = self.addTextCell(row, col, tpp_text)
 
         # Meshes
         col = col+1
@@ -276,19 +374,37 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         self.ui.texCheckerTableWidget.setRowCount(0)
         self.fileTextureObjects.clear()
 
+        # Global settings
+        self.renderColorSpace = cmds.colorManagementPrefs(q=True, renderingSpaceName=True)
+
         # Set columns
-        col_labels = ["Node", "Status", "Dup", "Target", "Shading Group", "File name", "Pjtd", "Map type", "Res", "Color space", "Format", "Ver", "Source", "ElementID", "Texel density", "Meshes"]
+        col_labels = ["Node", "Status", "Dup", "Target", "Shading Group", "File name", "Pjtd", "Map type", "Res", "Color space", "Format", "Ver", "Source", "ElementID", "Memory usage", "Disk usage", ".tx size", "Texel density", "Texel/pixel", "Meshes"]
         self.ui.texCheckerTableWidget.setColumnCount(len(col_labels))
         self.ui.texCheckerTableWidget.setHorizontalHeaderLabels(col_labels)
 
+        self.updateCameraList()
+
+        self.numErrors = 0
+        self.numDupes = 0
+        self.textureUsage = 0
+        self.memoryUsage = 0
+        self.diskUsage = 0
+        self.txUsage = 0
+
         for tex in textures:
             self.addFileTexture(tex)
+
+        self.ui.errorText.insert(str(self.numErrors))
+        self.ui.dupesText.insert(str(self.numDupes))
+        self.ui.textureUsageText.insert(formatUnits(self.textureUsage, "pixels"))
+        self.ui.memoryUsageText.insert(formatUnitsBinary(self.memoryUsage, "Bytes"))
+        self.ui.diskUsageText.insert(formatUnitsBinary(self.diskUsage, "Bytes"))
+        self.ui.txUsageText.insert(formatUnitsBinary(self.txUsage, "Bytes"))
 
         if not self.resized:
             #self.ui.texCheckerTableWidget.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
             self.resizeTable()
             self.resized = True
-
 
     def createConnections(self):
         """Connect buttons to functions
@@ -458,6 +574,17 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         file_tex.fixFilePath()
         file_tex.reCheck()
         self.updateRow(row)
+
+    def updateCameraList(self):
+        self.ui.cameraComboBox.clear()
+        cameras=cmds.ls(cameras=True)
+        for c in cameras:
+            if cmds.getAttr(c+".renderable"):
+                self.ui.cameraComboBox.addItem(c)
+
+    def updateTexelsPerPixel(self):
+        pass
+        # TO-DO: implement me!
 
 def run():
     """Run the checker

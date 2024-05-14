@@ -205,6 +205,7 @@ class FileTexture():
         self.imgSrc = ImageSource.IMG_SRC_UNKNOWN
         """Image source/origin (own or third party catalog: Megascans, HDRIHaven, ...)
         """
+        self.fileHasAlpha = False
         self.throughAlpha = False
         self.throughProjection = False
         self.throughBump = False
@@ -280,6 +281,7 @@ class FileTexture():
         self.elementID = ""
         self.version = 0
         self.imgSrc = ImageSource.IMG_SRC_UNKNOWN
+        self.fileHasAlpha = False
         self.throughAlpha = False
         self.throughProjection = False
         self.throughBump = False
@@ -501,10 +503,10 @@ class FileTexture():
 
 
     def checkAlpha(self):
+        self.fileHasAlpha = int(cmds.getAttr( self.nodeName + ".fileHasAlpha"))
         if not self.throughAlpha:
             return
-        hasAlpha = int(cmds.getAttr( self.nodeName + ".fileHasAlpha"))
-        if self.throughAlpha and not hasAlpha:
+        if self.throughAlpha and not self.fileHasAlpha:
             alphaIsLuminance = int(cmds.getAttr(self.nodeName + ".alphaIsLuminance"))
             if not alphaIsLuminance:
                 self.errorMessage += "No alpha in image connected through alpha\n"
@@ -965,6 +967,15 @@ class FileTexture():
             return math.sqrt(ntds[0])
         else:
             return None
+        
+    def bytesPerPixel(self):
+        # TO-DO : Make a better implementation
+        num_channels = 3
+        channel_size = 1    # review!
+        if self.fileHasAlpha:
+            num_channels = num_channels + 1
+        return num_channels * channel_size
+
 
 
 def getAllFileTextureNodesInScene():

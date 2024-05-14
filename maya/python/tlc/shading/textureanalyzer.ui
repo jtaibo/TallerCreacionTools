@@ -109,6 +109,34 @@
         </widget>
        </item>
        <item>
+        <widget class="QLabel" name="diskUsageLabel">
+         <property name="text">
+          <string>Disk usage</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="diskUsageText">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="txUsageLabel">
+         <property name="text">
+          <string>.tx usage</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="txUsageText">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QLabel" name="cameraLabel">
          <property name="text">
           <string>Camera</string>
