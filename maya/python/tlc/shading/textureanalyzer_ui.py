@@ -105,9 +105,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         self.diskUsage = 0
         self.txUsage = 0
         self.renderColorSpace = cmds.colorManagementPrefs(q=True, renderingSpaceName=True)
-        self.cam_center = []
-        self.screen_width = 0.
-        self.tan_fovh_2 = 0.
+        self.camera = tlc.shading.textureanalyzer.RenderCamera()
         self.updateCameraList()
 
     def addTextCell(self, row, col, text):
@@ -345,15 +343,8 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
 
         # Texels per pixel
         col = col+1
-        if td > 0.:
-            tpp = file_tex.getTexelsPerPixel(self.cam_center, self.tan_fovh_2, self.screen_width, td)
-            if tpp[0] == tpp[1]:
-                tpp_text = "%.2f" % round(tpp[0],2)
-            else:
-                tpp_text = "%.2f - %.2f" %( round(tpp[0],2), round(tpp[1],2) )
-        else:
-            tpp_text = "-"
-        cell = self.addTextCell(row, col, tpp_text)
+        cell = self.addTextCell(row, col, "-")
+        self.updateTexelsPerPixelInRow(row)
 
         # Meshes
         col = col+1
@@ -376,7 +367,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
 
         # Global settings
         self.renderColorSpace = cmds.colorManagementPrefs(q=True, renderingSpaceName=True)
-        self.updateCameraParams(self.ui.cameraComboBox.currentText())
+        self.camera.configure(self.ui.cameraComboBox.currentText())
 
         # Set columns
         col_labels = ["Node", "Status", "Dup", "Target", "Shading Group", "File name", "Pjtd", "Map type", "Res", "Color space", "Format", "Ver", "Source", "ElementID", "Memory usage", "Disk usage", ".tx size", "Texel density", "Texel/pixel", "Meshes"]
@@ -582,38 +573,41 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
             if cmds.getAttr(c+".renderable"):
                 self.ui.cameraComboBox.addItem(c)
 
-    def updateCameraParams(self, camera):
-        self.cam_center = cmds.objectCenter(camera)
-        resolution = cmds.listConnections("defaultRenderGlobals.resolution")[0]
-        self.screen_width = cmds.getAttr(resolution + ".width")
-        focal_length = cmds.getAttr(camera + ".focalLength")
-        aperture_h = cmds.getAttr(camera + ".horizontalFilmAperture") * 25.4   # inches to mm
-        self.tan_fovh_2 = (aperture_h/2.) / focal_length
-
     def cameraChange(self, new_camera):
         if new_camera:
-            self.updateCameraParams(new_camera)
+            self.camera.configure(new_camera)
             self.updateTexelsPerPixel()
 
-    def updateTexelsPerPixel(self):
-        # TO-DO: implement me!
+    def updateTexelsPerPixelInRow(self, row):
         col = 18  # TPP column index
-        for row in range(self.table_widget.rowCount()):
-            item = self.table_widget.item(row, col)
-            try:
-                td = float(self.table_widget.item(row, 17).text())  # to-do TD may be a file_tex attribute @TO-DO!!!
-                if td > 0.:
-                    file_tex = self.fileTextureObjects[row]
-                    tpp = file_tex.getTexelsPerPixel(self.cam_center, self.tan_fovh_2, self.screen_width, td)
-                    if tpp[0] == tpp[1]:
-                        tpp_text = "%.2f" % round(tpp[0],2)
+        item = self.table_widget.item(row, col)
+        try:
+            td = float(self.table_widget.item(row, 17).text())  # to-do TD may be a file_tex attribute @TO-DO!!!
+            if td > 0.:
+                file_tex = self.fileTextureObjects[row]
+                tpp = file_tex.getTexelsPerPixel(self.camera, td)
+                if tpp[0] == tpp[1]:
+                    if tpp[0] == 0:
+                        tpp_text = "-"
                     else:
-                        tpp_text = "%.2f - %.2f" %( round(tpp[0],2), round(tpp[1],2) )
+                        tpp_text = "%.2f" % round(tpp[0],2)
                 else:
-                    tpp_text = "-"
-                item.setText(tpp_text)
-            except:
-                item.setText("-")
+                    tpp_text = "%.2f - %.2f" %( round(tpp[0],2), round(tpp[1],2) )
+            else:
+                tpp_text = "-"
+            item.setText(tpp_text)
+        except:
+            item.setText("-")
+
+    def updateTexelsPerPixel(self):
+        start_time = time.time()
+        self.ui.statusLine.setText("Recomputing texels per pixel...")
+        for row in range(self.table_widget.rowCount()):
+            self.updateTexelsPerPixelInRow(row)
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        msg = "Texels per pixel computation complete! (" + f"{elapsed_time:.2}" + " s)"
+        self.ui.statusLine.setText(msg)
 
 
 def run():

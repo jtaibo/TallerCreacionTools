@@ -969,14 +969,15 @@ class FileTexture():
             return None
 
 
-    def getTexelsPerPixel(self, cam_center, tan_fovh_2, screen_width, texel_density):
+    def getTexelsPerPixel(self, camera, texel_density):
         meshes = self.getMeshes()
         tpp_list = []
         if meshes:
             for m in meshes:
                 tpp = 0
                 # check geometry visibility and discard off-screen elements
-                if False:   # not_visible
+                if m not in camera.visibleObjects:   # not_visible
+                    # This mesh is not visible in the camera
                     continue
 
                 # This is a very rough approximation, we are only considering distance from camera to 
@@ -986,9 +987,9 @@ class FileTexture():
                 # check geometry position (bounding box center? vertices? surface sampling?)
                 geo_center = cmds.objectCenter(m)
                 # distance from camera to geometry
-                distance_vector = [ geo_center[0]-cam_center[0], geo_center[1]-cam_center[1], geo_center[2]-cam_center[2] ]
+                distance_vector = [ geo_center[0]-camera.center[0], geo_center[1]-camera.center[1], geo_center[2]-camera.center[2] ]
                 distance = math.sqrt(distance_vector[0]*distance_vector[0]+distance_vector[1]*distance_vector[1]+distance_vector[2]*distance_vector[2])
-                upp = 2 * distance * tan_fovh_2 / screen_width
+                upp = 2 * distance * camera.tanFovH2 / camera.width
                 tpp = texel_density * upp
                 tpp_list.append(tpp)
         if tpp_list:
@@ -1005,6 +1006,30 @@ class FileTexture():
             num_channels = num_channels + 1
         return num_channels * channel_size
 
+
+class RenderCamera():
+
+    def __init__(self, camera_name=""):
+        if camera_name:
+            self.configure(camera_name)
+
+    def configure(self, camera_name):
+        self.camera = camera_name
+        self.center = cmds.objectCenter(self.camera)
+        resolution = cmds.listConnections("defaultRenderGlobals.resolution")[0]
+        self.width = cmds.getAttr(resolution + ".width")
+        self.height = cmds.getAttr(resolution + ".height")
+        self.focalLength = cmds.getAttr(self.camera + ".focalLength")
+        self.apertureH = cmds.getAttr(self.camera + ".horizontalFilmAperture") * 25.4   # inches to mm
+        self.tanFovH2 = (self.apertureH/2.) / self.focalLength
+        self.visibleObjects = self.getVisibleObjects()
+
+    def getVisibleObjects(self):
+        cmds.lookThru(self.camera)
+        om.MGlobal.selectFromScreen(0, 0, self.width, self.height, om.MGlobal.kReplaceList )
+        selected_geometry = cmds.ls(selection=True)
+        cmds.select(clear=True)
+        return selected_geometry
 
 
 def getAllFileTextureNodesInScene():
