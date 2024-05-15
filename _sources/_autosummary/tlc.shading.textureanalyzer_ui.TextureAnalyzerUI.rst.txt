@@ -48,9 +48,9 @@ tlc.shading.textureanalyzer\_ui.TextureAnalyzerUI
       ~TextureAnalyzerUI.selectTarget
       ~TextureAnalyzerUI.selectTexture
       ~TextureAnalyzerUI.updateCameraList
-      ~TextureAnalyzerUI.updateCameraParams
       ~TextureAnalyzerUI.updateRow
       ~TextureAnalyzerUI.updateTexelsPerPixel
+      ~TextureAnalyzerUI.updateTexelsPerPixelInRow
    
    
 
