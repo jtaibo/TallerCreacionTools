@@ -384,7 +384,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         for tex in textures:
             self.addFileTexture(tex)
 
-        self.ui.errorText.setText(str(self.numErrors))
+        self.ui.errorText.setText(str(self.numErrors) + "/" + str(len(textures)))
         self.ui.dupesText.setText(str(self.numDupes))
         self.ui.textureUsageText.setText(formatUnits(self.textureUsage, "pixels"))
         self.ui.memoryUsageText.setText(formatUnitsBinary(self.memoryUsage, "Bytes"))
