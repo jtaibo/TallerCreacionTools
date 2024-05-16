@@ -1014,6 +1014,8 @@ class RenderCamera():
             self.configure(camera_name)
 
     def configure(self, camera_name):
+        if not camera_name:
+            return
         self.camera = camera_name
         self.center = cmds.objectCenter(self.camera)
         resolution = cmds.listConnections("defaultRenderGlobals.resolution")[0]
