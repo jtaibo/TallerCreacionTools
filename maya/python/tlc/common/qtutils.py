@@ -6,9 +6,9 @@ implemenation in every module.
 """
 """
 This file is part of TLC (https://github.com/jtaibo/TallerCreacionTools).
-Copyright (c) 2023 Universidade da Coruña
+Copyright (c) 2023-2024 Universidade da Coruña
 Copyright (c) 2023 Andres Mendez <amenrio@gmail.com>
-Copyright (c) 2023 Javier Taibo <javier.taibo@udc.es>
+Copyright (c) 2023-2024 Javier Taibo <javier.taibo@udc.es>
 
 This program is free software: you can redistribute it and/or modify it under 
 the terms of the GNU General Public License as published by the Free Software 
