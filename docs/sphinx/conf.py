@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'TLC'
-copyright = '2022-2023, Universidade da Coruña'
+copyright = '2022-2024, Universidade da Coruña'
 author = 'Universidade da Coruña'
 release = 'v0.1'
 
@@ -21,7 +21,7 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 #autodoc_mock_imports = ["maya", "shiboken2", "PySide2"]
-autodoc_mock_imports = ["shiboken2", "PySide2"]
+autodoc_mock_imports = ["shiboken6", "PySide6"]
 
 import os
 import sys
