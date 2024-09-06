@@ -1,0 +1,39 @@
+tlc.common.miscutils.BoundingBox
+================================
+
+.. currentmodule:: tlc.common.miscutils
+
+.. uml:: tlc.common.miscutils
+    :classes:
+
+.. autoclass:: BoundingBox
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~BoundingBox.__init__
+      ~BoundingBox.center
+      ~BoundingBox.createDebugWireframe
+      ~BoundingBox.depth
+      ~BoundingBox.diameter
+      ~BoundingBox.get
+      ~BoundingBox.height
+      ~BoundingBox.max
+      ~BoundingBox.maxDim
+      ~BoundingBox.min
+      ~BoundingBox.radius
+      ~BoundingBox.width
+   
+   
+
+   
+   
+   

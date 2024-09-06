@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlc.common.naming.DCCProjTopDirs &mdash; TLC v0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=34cd777e"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="tlc.common.naming.DCCSceneExtension" href="tlc.common.naming.DCCSceneExtension.html" />
+    <link rel="prev" title="tlc.common.naming.topDirs" href="tlc.common.naming.topDirs.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            TLC
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="tlc.html">tlc</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="tlc.common.html">tlc.common</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tlc.common.about.html">tlc.common.about</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tlc.common.conditionchecker.html">tlc.common.conditionchecker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tlc.common.miscutils.html">tlc.common.miscutils</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="tlc.common.naming.html">tlc.common.naming</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.topDirs.html">tlc.common.naming.topDirs</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">tlc.common.naming.DCCProjTopDirs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.DCCSceneExtension.html">tlc.common.naming.DCCSceneExtension</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.assetTypeAbbr.html">tlc.common.naming.assetTypeAbbr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.assetTypeDir.html">tlc.common.naming.assetTypeDir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.libraryAssetTypeAbbr.html">tlc.common.naming.libraryAssetTypeAbbr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.libraryAssetTypeDir.html">tlc.common.naming.libraryAssetTypeDir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.workingDir.html">tlc.common.naming.workingDir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.libraryDir.html">tlc.common.naming.libraryDir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.prepDptDir.html">tlc.common.naming.prepDptDir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.prepDptTask.html">tlc.common.naming.prepDptTask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.prepTaskRenamingSuggestions.html">tlc.common.naming.prepTaskRenamingSuggestions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.srcImgDirs.html">tlc.common.naming.srcImgDirs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.imgPlanePos.html">tlc.common.naming.imgPlanePos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.prodDptDir.html">tlc.common.naming.prodDptDir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.prodDptTask.html">tlc.common.naming.prodDptTask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.filesToIgnore.html">tlc.common.naming.filesToIgnore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.directoriesToIgnore.html">tlc.common.naming.directoriesToIgnore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.assetTypeFromAbbr.html">tlc.common.naming.assetTypeFromAbbr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.libraryAssetTypeFromAbbr.html">tlc.common.naming.libraryAssetTypeFromAbbr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.prepDptKeyFromDir.html">tlc.common.naming.prepDptKeyFromDir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.naming.prepDptTaskFromAbbr.html">tlc.common.naming.prepDptTaskFromAbbr</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlc.common.pipeline.html">tlc.common.pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tlc.common.qtutils.html">tlc.common.qtutils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tlc.modeling.html">tlc.modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tlc.rigging.html">tlc.rigging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tlc.shading.html">tlc.shading</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TLC</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="tlc.html">tlc</a></li>
+          <li class="breadcrumb-item"><a href="tlc.common.html">tlc.common</a></li>
+          <li class="breadcrumb-item"><a href="tlc.common.naming.html">tlc.common.naming</a></li>
+      <li class="breadcrumb-item active">tlc.common.naming.DCCProjTopDirs</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/tlc.common.naming.DCCProjTopDirs.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tlc-common-naming-dccprojtopdirs">
+<h1>tlc.common.naming.DCCProjTopDirs<a class="headerlink" href="#tlc-common-naming-dccprojtopdirs" title="Link to this heading"></a></h1>
+<dl class="py data">
+<dt class="sig sig-object py" id="tlc.common.naming.DCCProjTopDirs">
+<span class="sig-prename descclassname"><span class="pre">tlc.common.naming.</span></span><span class="sig-name descname"><span class="pre">DCCProjTopDirs</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'ASSETS':</span> <span class="pre">'assets',</span> <span class="pre">'SCENES':</span> <span class="pre">'scenes',</span> <span class="pre">'SOURCEIMAGES':</span> <span class="pre">'sourceimages'}</span></em><a class="headerlink" href="#tlc.common.naming.DCCProjTopDirs" title="Link to this definition"></a></dt>
+<dd><p>Top directories inside DCC project</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tlc.common.naming.topDirs.html" class="btn btn-neutral float-left" title="tlc.common.naming.topDirs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tlc.common.naming.DCCSceneExtension.html" class="btn btn-neutral float-right" title="tlc.common.naming.DCCSceneExtension" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2024, Universidade da Coruña.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

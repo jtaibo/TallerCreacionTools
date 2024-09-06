@@ -1,0 +1,6 @@
+tlc.modeling.meshcheck.checkUVTile
+==================================
+
+.. currentmodule:: tlc.modeling.meshcheck
+
+.. autofunction:: checkUVTile

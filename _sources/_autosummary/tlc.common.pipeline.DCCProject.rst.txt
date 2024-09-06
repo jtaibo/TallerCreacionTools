@@ -1,0 +1,38 @@
+tlc.common.pipeline.DCCProject
+==============================
+
+.. currentmodule:: tlc.common.pipeline
+
+.. uml:: tlc.common.pipeline
+    :classes:
+
+.. autoclass:: DCCProject
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~DCCProject.__init__
+      ~DCCProject.getAssets
+      ~DCCProject.getAssetsPath
+      ~DCCProject.getSourceImagesPath
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DCCProject.path
+      ~DCCProject.projID
+   
+   

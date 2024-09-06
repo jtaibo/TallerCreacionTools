@@ -1,0 +1,6 @@
+tlc.shading.textureanalyzer.getUsedTextureNodes
+===============================================
+
+.. currentmodule:: tlc.shading.textureanalyzer
+
+.. autofunction:: getUsedTextureNodes

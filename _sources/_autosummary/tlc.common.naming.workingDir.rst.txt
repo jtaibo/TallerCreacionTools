@@ -1,0 +1,6 @@
+tlc.common.naming.workingDir
+============================
+
+.. currentmodule:: tlc.common.naming
+
+.. autodata:: workingDir

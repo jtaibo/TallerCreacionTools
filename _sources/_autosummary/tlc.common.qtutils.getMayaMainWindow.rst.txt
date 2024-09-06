@@ -1,0 +1,6 @@
+tlc.common.qtutils.getMayaMainWindow
+====================================
+
+.. currentmodule:: tlc.common.qtutils
+
+.. autofunction:: getMayaMainWindow

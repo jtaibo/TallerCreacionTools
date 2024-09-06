@@ -1,0 +1,6 @@
+tlc.common.miscutils.isNameUnique
+=================================
+
+.. currentmodule:: tlc.common.miscutils
+
+.. autofunction:: isNameUnique

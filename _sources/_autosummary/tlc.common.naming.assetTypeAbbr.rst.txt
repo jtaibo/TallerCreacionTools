@@ -1,0 +1,6 @@
+tlc.common.naming.assetTypeAbbr
+===============================
+
+.. currentmodule:: tlc.common.naming
+
+.. autodata:: assetTypeAbbr

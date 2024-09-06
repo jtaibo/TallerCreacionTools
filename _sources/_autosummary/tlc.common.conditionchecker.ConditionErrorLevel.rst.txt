@@ -1,0 +1,31 @@
+tlc.common.conditionchecker.ConditionErrorLevel
+===============================================
+
+.. currentmodule:: tlc.common.conditionchecker
+
+.. uml:: tlc.common.conditionchecker
+    :classes:
+
+.. autoclass:: ConditionErrorLevel
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ConditionErrorLevel.NONE
+      ~ConditionErrorLevel.OK
+      ~ConditionErrorLevel.WARN
+      ~ConditionErrorLevel.ERROR
+   
+   

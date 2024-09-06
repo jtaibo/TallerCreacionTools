@@ -1,0 +1,6 @@
+tlc.common.miscutils.uninstance
+===============================
+
+.. currentmodule:: tlc.common.miscutils
+
+.. autofunction:: uninstance

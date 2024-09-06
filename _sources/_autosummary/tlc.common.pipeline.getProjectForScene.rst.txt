@@ -1,0 +1,6 @@
+tlc.common.pipeline.getProjectForScene
+======================================
+
+.. currentmodule:: tlc.common.pipeline
+
+.. autofunction:: getProjectForScene

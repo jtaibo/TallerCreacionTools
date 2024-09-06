@@ -1,0 +1,43 @@
+tlc.common.conditionchecker.ConditionChecker
+============================================
+
+.. currentmodule:: tlc.common.conditionchecker
+
+.. uml:: tlc.common.conditionchecker
+    :classes:
+
+.. autoclass:: ConditionChecker
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ConditionChecker.__init__
+      ~ConditionChecker.reset
+      ~ConditionChecker.select
+      ~ConditionChecker.setErrorLevel
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ConditionChecker.name
+      ~ConditionChecker.displayName
+      ~ConditionChecker.toolTip
+      ~ConditionChecker.selectable
+      ~ConditionChecker.count
+      ~ConditionChecker.errorLevel
+      ~ConditionChecker.elms
+   
+   

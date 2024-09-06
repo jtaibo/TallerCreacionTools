@@ -1,0 +1,43 @@
+tlc.common.pipeline.Asset
+=========================
+
+.. currentmodule:: tlc.common.pipeline
+
+.. uml:: tlc.common.pipeline
+    :classes:
+
+.. autoclass:: Asset
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Asset.__init__
+      ~Asset.getDirectoryName
+      ~Asset.getFullPathDirectory
+      ~Asset.getLastPublishedVersionPath
+      ~Asset.getLastWorkingVersionPath
+      ~Asset.getPublishedVersionsPaths
+      ~Asset.getWorkingVersionsPaths
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Asset.project
+      ~Asset.assetType
+      ~Asset.assetID
+      ~Asset.inLibrary
+   
+   

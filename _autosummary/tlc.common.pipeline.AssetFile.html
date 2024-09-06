@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlc.common.pipeline.AssetFile &mdash; TLC v0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=34cd777e"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="tlc.common.pipeline.DCCProject" href="tlc.common.pipeline.DCCProject.html" />
+    <link rel="prev" title="tlc.common.pipeline.Asset" href="tlc.common.pipeline.Asset.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            TLC
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="tlc.html">tlc</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="tlc.common.html">tlc.common</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tlc.common.about.html">tlc.common.about</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tlc.common.conditionchecker.html">tlc.common.conditionchecker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tlc.common.miscutils.html">tlc.common.miscutils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tlc.common.naming.html">tlc.common.naming</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="tlc.common.pipeline.html">tlc.common.pipeline</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.pipeline.createDirectoryTemplate.html">tlc.common.pipeline.createDirectoryTemplate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.pipeline.getProjectForScene.html">tlc.common.pipeline.getProjectForScene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.pipeline.isThisPathAProject.html">tlc.common.pipeline.isThisPathAProject</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.pipeline.Asset.html">tlc.common.pipeline.Asset</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">tlc.common.pipeline.AssetFile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.pipeline.DCCProject.html">tlc.common.pipeline.DCCProject</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlc.common.pipeline.Shot.html">tlc.common.pipeline.Shot</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlc.common.qtutils.html">tlc.common.qtutils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tlc.modeling.html">tlc.modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tlc.rigging.html">tlc.rigging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tlc.shading.html">tlc.shading</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TLC</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="tlc.html">tlc</a></li>
+          <li class="breadcrumb-item"><a href="tlc.common.html">tlc.common</a></li>
+          <li class="breadcrumb-item"><a href="tlc.common.pipeline.html">tlc.common.pipeline</a></li>
+      <li class="breadcrumb-item active">tlc.common.pipeline.AssetFile</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/tlc.common.pipeline.AssetFile.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tlc-common-pipeline-assetfile">
+<h1>tlc.common.pipeline.AssetFile<a class="headerlink" href="#tlc-common-pipeline-assetfile" title="Link to this heading"></a></h1>
+<a class="reference internal image-reference" href="../_images/classes_tlc.common.pipeline.png"><img alt="../_images/classes_tlc.common.pipeline.png" src="../_images/classes_tlc.common.pipeline.png" style="width: 1049.0px; height: 625.0px;" /></a>
+<dl class="py class">
+<dt class="sig sig-object py" id="tlc.common.pipeline.AssetFile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tlc.common.pipeline.</span></span><span class="sig-name descname"><span class="pre">AssetFile</span></span><a class="headerlink" href="#tlc.common.pipeline.AssetFile" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The AssetFile class represents a file for a version of an asset in a
+project in any of the departments and tasks defined in the pipeline</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.common.pipeline.AssetFile.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.common.pipeline.AssetFile.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.__init__" title="tlc.common.pipeline.AssetFile.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.buildFullPath" title="tlc.common.pipeline.AssetFile.buildFullPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">buildFullPath</span></code></a>()</p></td>
+<td><p>Build the full path for the asset file from AssetFile object attributes</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.createForOpenScene" title="tlc.common.pipeline.AssetFile.createForOpenScene"><code class="xref py py-obj docutils literal notranslate"><span class="pre">createForOpenScene</span></code></a>()</p></td>
+<td><p>Constructor for currently open scene file</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.createFromFields" title="tlc.common.pipeline.AssetFile.createFromFields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">createFromFields</span></code></a>(asset, dptID, taskID, version)</p></td>
+<td><p>Constructor from the asset fields</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.createFromPath" title="tlc.common.pipeline.AssetFile.createFromPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">createFromPath</span></code></a>(path)</p></td>
+<td><p>Constructor from an (hopefully) existing path</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.parsePath" title="tlc.common.pipeline.AssetFile.parsePath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parsePath</span></code></a>(path)</p></td>
+<td><p>Parse asset file path to initialize AssetFile object</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.verifyPath" title="tlc.common.pipeline.AssetFile.verifyPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verifyPath</span></code></a>()</p></td>
+<td><p>Check whether the asset path matches the pipeline constraints</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.asset" title="tlc.common.pipeline.AssetFile.asset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asset</span></code></a></p></td>
+<td><p>Asset object</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.dptID" title="tlc.common.pipeline.AssetFile.dptID"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dptID</span></code></a></p></td>
+<td><p>Department ID</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.taskID" title="tlc.common.pipeline.AssetFile.taskID"><code class="xref py py-obj docutils literal notranslate"><span class="pre">taskID</span></code></a></p></td>
+<td><p>Task ID inside the department</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.version" title="tlc.common.pipeline.AssetFile.version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">version</span></code></a></p></td>
+<td><p>Public version</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.workingVersion" title="tlc.common.pipeline.AssetFile.workingVersion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">workingVersion</span></code></a></p></td>
+<td><p>Working version (-1 if this is a published version, not working)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.pipeline.AssetFile.fullPath" title="tlc.common.pipeline.AssetFile.fullPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fullPath</span></code></a></p></td>
+<td><p>Full path for the asset file</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tlc.common.pipeline.AssetFile.asset">
+<span class="sig-name descname"><span class="pre">asset</span></span><a class="headerlink" href="#tlc.common.pipeline.AssetFile.asset" title="Link to this definition"></a></dt>
+<dd><p>Asset object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.common.pipeline.AssetFile.buildFullPath">
+<span class="sig-name descname"><span class="pre">buildFullPath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.common.pipeline.AssetFile.buildFullPath" title="Link to this definition"></a></dt>
+<dd><p>Build the full path for the asset file from AssetFile object attributes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Full path of the asset file</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.common.pipeline.AssetFile.createForOpenScene">
+<span class="sig-name descname"><span class="pre">createForOpenScene</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.common.pipeline.AssetFile.createForOpenScene" title="Link to this definition"></a></dt>
+<dd><p>Constructor for currently open scene file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.common.pipeline.AssetFile.createFromFields">
+<span class="sig-name descname"><span class="pre">createFromFields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">asset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dptID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">taskID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workingVersion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.common.pipeline.AssetFile.createFromFields" title="Link to this definition"></a></dt>
+<dd><p>Constructor from the asset fields</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> (<a class="reference internal" href="tlc.common.pipeline.Asset.html#tlc.common.pipeline.Asset" title="tlc.common.pipeline.Asset"><em>Asset</em></a>) – Asset object</p></li>
+<li><p><strong>dptID</strong> (<em>str</em>) – ID (key) of the department</p></li>
+<li><p><strong>taskID</strong> (<em>str</em>) – ID (key) of the task inside the department</p></li>
+<li><p><strong>version</strong> (<em>int</em>) – Public version of this asset file</p></li>
+<li><p><strong>workingVersion</strong> (<em>int</em><em>, </em><em>optional</em>) – Working version of the asset file (-1 if public version, not working version). Defaults to -1.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.common.pipeline.AssetFile.createFromPath">
+<span class="sig-name descname"><span class="pre">createFromPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.common.pipeline.AssetFile.createFromPath" title="Link to this definition"></a></dt>
+<dd><p>Constructor from an (hopefully) existing path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Full path of the asset file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tlc.common.pipeline.AssetFile.dptID">
+<span class="sig-name descname"><span class="pre">dptID</span></span><a class="headerlink" href="#tlc.common.pipeline.AssetFile.dptID" title="Link to this definition"></a></dt>
+<dd><p>Department ID</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tlc.common.pipeline.AssetFile.fullPath">
+<span class="sig-name descname"><span class="pre">fullPath</span></span><a class="headerlink" href="#tlc.common.pipeline.AssetFile.fullPath" title="Link to this definition"></a></dt>
+<dd><p>Full path for the asset file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.common.pipeline.AssetFile.parsePath">
+<span class="sig-name descname"><span class="pre">parsePath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tlc.common.pipeline.AssetFile.parsePath" title="Link to this definition"></a></dt>
+<dd><p>Parse asset file path to initialize AssetFile object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Full path of the asset</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – File path is not well formatted (following the pipeline)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tlc.common.pipeline.AssetFile.taskID">
+<span class="sig-name descname"><span class="pre">taskID</span></span><a class="headerlink" href="#tlc.common.pipeline.AssetFile.taskID" title="Link to this definition"></a></dt>
+<dd><p>Task ID inside the department</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.common.pipeline.AssetFile.verifyPath">
+<span class="sig-name descname"><span class="pre">verifyPath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.common.pipeline.AssetFile.verifyPath" title="Link to this definition"></a></dt>
+<dd><p>Check whether the asset path matches the pipeline constraints</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current path matches the pipeline constraints</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tlc.common.pipeline.AssetFile.version">
+<span class="sig-name descname"><span class="pre">version</span></span><a class="headerlink" href="#tlc.common.pipeline.AssetFile.version" title="Link to this definition"></a></dt>
+<dd><p>Public version</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tlc.common.pipeline.AssetFile.workingVersion">
+<span class="sig-name descname"><span class="pre">workingVersion</span></span><a class="headerlink" href="#tlc.common.pipeline.AssetFile.workingVersion" title="Link to this definition"></a></dt>
+<dd><p>Working version (-1 if this is a published version, not working)</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tlc.common.pipeline.Asset.html" class="btn btn-neutral float-left" title="tlc.common.pipeline.Asset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tlc.common.pipeline.DCCProject.html" class="btn btn-neutral float-right" title="tlc.common.pipeline.DCCProject" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2024, Universidade da Coruña.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

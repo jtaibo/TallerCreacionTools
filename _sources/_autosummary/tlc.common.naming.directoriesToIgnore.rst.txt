@@ -1,0 +1,6 @@
+tlc.common.naming.directoriesToIgnore
+=====================================
+
+.. currentmodule:: tlc.common.naming
+
+.. autodata:: directoriesToIgnore

@@ -1,0 +1,30 @@
+tlc.shading.textureanalyzer.RenderCamera
+========================================
+
+.. currentmodule:: tlc.shading.textureanalyzer
+
+.. uml:: tlc.shading.textureanalyzer
+    :classes:
+
+.. autoclass:: RenderCamera
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~RenderCamera.__init__
+      ~RenderCamera.configure
+      ~RenderCamera.getVisibleObjects
+   
+   
+
+   
+   
+   

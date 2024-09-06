@@ -1,0 +1,31 @@
+tlc.common.conditionchecker.ConditionErrorCriteria
+==================================================
+
+.. currentmodule:: tlc.common.conditionchecker
+
+.. uml:: tlc.common.conditionchecker
+    :classes:
+
+.. autoclass:: ConditionErrorCriteria
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO
+      ~ConditionErrorCriteria.ERROR_WHEN_NOT_ONE
+      ~ConditionErrorCriteria.WARN_WHEN_NOT_ZERO
+      ~ConditionErrorCriteria.WARN_WHEN_NOT_ONE
+   
+   

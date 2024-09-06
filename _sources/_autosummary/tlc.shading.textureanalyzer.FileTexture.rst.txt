@@ -1,0 +1,79 @@
+tlc.shading.textureanalyzer.FileTexture
+=======================================
+
+.. currentmodule:: tlc.shading.textureanalyzer
+
+.. uml:: tlc.shading.textureanalyzer
+    :classes:
+
+.. autoclass:: FileTexture
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~FileTexture.__init__
+      ~FileTexture.buildFileTextureName
+      ~FileTexture.buildResolutionString
+      ~FileTexture.bytesPerPixel
+      ~FileTexture.checkAlpha
+      ~FileTexture.checkDestination
+      ~FileTexture.checkFileTexture
+      ~FileTexture.checkShadingGroup
+      ~FileTexture.fixColorSpace
+      ~FileTexture.fixFilePath
+      ~FileTexture.getConnectionsThroughAttrs
+      ~FileTexture.getFirstConnectionThroughAttrs
+      ~FileTexture.getImageSource
+      ~FileTexture.getMeshes
+      ~FileTexture.getNormalizedTexelDensity
+      ~FileTexture.getTexelsPerPixel
+      ~FileTexture.missingFile
+      ~FileTexture.notInProject
+      ~FileTexture.parseTextureName
+      ~FileTexture.reCheck
+      ~FileTexture.setColorSpace
+      ~FileTexture.valid
+      ~FileTexture.validMaterial
+      ~FileTexture.validateColorSpace
+      ~FileTexture.validateNormalNode
+      ~FileTexture.verifyFileNameAmbientCG
+      ~FileTexture.verifyFileNameHDRIHaven
+      ~FileTexture.verifyFileNameMegaScans
+      ~FileTexture.verifyFileNameTextureHaven
+      ~FileTexture.verifyFileTextureNameOwn
+      ~FileTexture.verifyTextureName
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~FileTexture.errorMessage
+      ~FileTexture.pathInProject
+      ~FileTexture.fileName
+      ~FileTexture.resX
+      ~FileTexture.resY
+      ~FileTexture.colorSpace
+      ~FileTexture.channel
+      ~FileTexture.mapType
+      ~FileTexture.target
+      ~FileTexture.shadingGroup
+      ~FileTexture.imgSrc
+      ~FileTexture.nodeName
+      ~FileTexture.fullPath
+      ~FileTexture.errors
+      ~FileTexture.warnings
+      ~FileTexture.assetFile
+   
+   

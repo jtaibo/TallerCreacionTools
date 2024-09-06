@@ -1,0 +1,6 @@
+tlc.common.naming.assetTypeFromAbbr
+===================================
+
+.. currentmodule:: tlc.common.naming
+
+.. autofunction:: assetTypeFromAbbr

@@ -1,0 +1,6 @@
+tlc.common.naming.filesToIgnore
+===============================
+
+.. currentmodule:: tlc.common.naming
+
+.. autodata:: filesToIgnore
