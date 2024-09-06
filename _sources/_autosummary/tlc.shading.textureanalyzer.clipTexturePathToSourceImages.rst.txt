@@ -1,6 +1,0 @@
-tlc.shading.textureanalyzer.clipTexturePathToSourceImages
-=========================================================
-
-.. currentmodule:: tlc.shading.textureanalyzer
-
-.. autofunction:: clipTexturePathToSourceImages

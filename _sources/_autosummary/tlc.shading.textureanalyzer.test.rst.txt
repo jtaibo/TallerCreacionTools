@@ -1,6 +1,0 @@
-tlc.shading.textureanalyzer.test
-================================
-
-.. currentmodule:: tlc.shading.textureanalyzer
-
-.. autofunction:: test

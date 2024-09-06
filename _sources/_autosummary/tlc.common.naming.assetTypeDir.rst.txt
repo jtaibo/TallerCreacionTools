@@ -1,6 +1,0 @@
-tlc.common.naming.assetTypeDir
-==============================
-
-.. currentmodule:: tlc.common.naming
-
-.. autodata:: assetTypeDir

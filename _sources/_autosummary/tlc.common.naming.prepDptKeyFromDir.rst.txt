@@ -1,6 +1,0 @@
-tlc.common.naming.prepDptKeyFromDir
-===================================
-
-.. currentmodule:: tlc.common.naming
-
-.. autofunction:: prepDptKeyFromDir

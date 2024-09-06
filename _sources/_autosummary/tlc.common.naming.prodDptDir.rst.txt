@@ -1,6 +1,0 @@
-tlc.common.naming.prodDptDir
-============================
-
-.. currentmodule:: tlc.common.naming
-
-.. autodata:: prodDptDir

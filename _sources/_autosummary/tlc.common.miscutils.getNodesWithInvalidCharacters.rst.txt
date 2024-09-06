@@ -1,6 +1,0 @@
-tlc.common.miscutils.getNodesWithInvalidCharacters
-==================================================
-
-.. currentmodule:: tlc.common.miscutils
-
-.. autofunction:: getNodesWithInvalidCharacters

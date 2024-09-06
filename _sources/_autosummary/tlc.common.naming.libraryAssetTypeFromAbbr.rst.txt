@@ -1,6 +1,0 @@
-tlc.common.naming.libraryAssetTypeFromAbbr
-==========================================
-
-.. currentmodule:: tlc.common.naming
-
-.. autofunction:: libraryAssetTypeFromAbbr
