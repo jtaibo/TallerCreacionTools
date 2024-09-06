@@ -31,10 +31,10 @@ tlc.common
    :template: custom-module-template.rst
    :recursive:
 
-   tlc.common.about
-   tlc.common.conditionchecker
-   tlc.common.miscutils
-   tlc.common.naming
-   tlc.common.pipeline
-   tlc.common.qtutils
+   about
+   conditionchecker
+   miscutils
+   naming
+   pipeline
+   qtutils
 

@@ -31,6 +31,6 @@ tlc.modeling
    :template: custom-module-template.rst
    :recursive:
 
-   tlc.modeling.meshcheck
-   tlc.modeling.meshcheck_ui
+   meshcheck
+   meshcheck_ui
 

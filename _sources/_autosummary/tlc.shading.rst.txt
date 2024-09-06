@@ -31,6 +31,6 @@ tlc.shading
    :template: custom-module-template.rst
    :recursive:
 
-   tlc.shading.textureanalyzer
-   tlc.shading.textureanalyzer_ui
+   textureanalyzer
+   textureanalyzer_ui
 

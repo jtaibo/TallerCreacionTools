@@ -31,8 +31,8 @@
    :template: custom-module-template.rst
    :recursive:
 
-   tlc.common
-   tlc.modeling
-   tlc.rigging
-   tlc.shading
+   common
+   modeling
+   rigging
+   shading
 
