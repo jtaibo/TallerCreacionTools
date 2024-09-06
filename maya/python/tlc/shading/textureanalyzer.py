@@ -680,10 +680,11 @@ class FileTexture():
                 self.errorMessage += "MegaScans texture name mismatch: " + str(len(fields)) + " fields (should be 3) " + "\n"
             return False
         ms_id = fields[0]
-        if not ms_id.islower():
-            if set_errors:
-                self.errorMessage += "Not a Megascans texture ID: " + ms_id + "\n"
-            return False
+        # Megascans IDs are not all lowercase (!)
+        # if not ms_id.islower():
+        #     if set_errors:
+        #         self.errorMessage += "Not a Megascans texture ID: " + ms_id + "\n"
+        #     return False
         res = fields[1].replace("K", "k")
         if not res in self.buildResolutionString():
             if set_errors:
