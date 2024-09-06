@@ -26,10 +26,10 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 import sys
 import os
 import maya.OpenMayaUI as omui
-from shiboken2 import wrapInstance
-from PySide2 import QtWidgets
-from PySide2 import QtCore
-from PySide2 import QtUiTools
+from shiboken6 import wrapInstance
+from PySide6 import QtWidgets
+from PySide6 import QtCore
+from PySide6 import QtUiTools
 
 from abc import abstractmethod
 

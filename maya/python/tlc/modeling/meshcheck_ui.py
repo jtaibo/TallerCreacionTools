@@ -25,10 +25,10 @@ import tlc.common.qtutils
 import tlc.modeling.meshcheck
 import os
 
-from PySide2 import QtWidgets
-from PySide2 import QtCore
-from PySide2 import QtUiTools
-from PySide2 import QtGui
+from PySide6 import QtWidgets
+from PySide6 import QtCore
+from PySide6 import QtUiTools
+from PySide6 import QtGui
 
 import tlc.common.qtutils as qtutils
 import maya.cmds as cmds

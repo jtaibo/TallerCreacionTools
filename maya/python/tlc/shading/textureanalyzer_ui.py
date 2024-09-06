@@ -27,10 +27,10 @@ import os
 import time
 from functools import partial
 
-from PySide2 import QtWidgets
-from PySide2 import QtCore
-from PySide2 import QtUiTools
-from PySide2 import QtGui
+from PySide6 import QtWidgets
+from PySide6 import QtCore
+from PySide6 import QtUiTools
+from PySide6 import QtGui
 
 import tlc.common.qtutils as qtutils
 import tlc.shading.textureanalyzer
