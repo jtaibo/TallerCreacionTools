@@ -5,7 +5,7 @@ Naming conventions.
 """
 This file is part of TLC (https://github.com/jtaibo/TallerCreacionTools).
 Copyright (c) 2023 Universidade da Coruña
-Copyright (c) 2023 Javier Taibo <javier.taibo@udc.es>
+Copyright (c) 2023,2024 Javier Taibo <javier.taibo@udc.es>
 Copyright (c) 2023 Andres Mendez <amenrio@gmail.com>
 
 This program is free software: you can redistribute it and/or modify it under 
@@ -154,6 +154,7 @@ def prepDptKeyFromDir(search_dir):
 prepDptTask = {
     "MODELING": {
         "LOWPOLY":"mlp",
+        "MIDPOLY":"mmp",
         "HIGHPOLY":"mhp",
         "SCULPT":"msc",
         "BLENDSHAPE":"mbs"
