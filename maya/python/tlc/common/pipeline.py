@@ -8,7 +8,7 @@ and functions to perform general operations on the project and its contents
 """
 This file is part of TLC (https://github.com/jtaibo/TallerCreacionTools).
 Copyright (c) 2023 Universidade da Coruña
-Copyright (c) 2023 Javier Taibo <javier.taibo@udc.es>
+Copyright (c) 2023,2024 Javier Taibo <javier.taibo@udc.es>
 
 This program is free software: you can redistribute it and/or modify it under 
 the terms of the GNU General Public License as published by the Free Software 
@@ -55,6 +55,13 @@ class DCCProject():
         """Project folder name (project ID)
         """
 
+    def setAsActive(self):
+        """Set project as current active project in Maya
+        """
+        project_path = self.path + "/" + self.projID + "/" + naming.topDirs["PRE+PROD"]
+        print("Setting project " + project_path)
+        cmds.workspace(project_path, openWorkspace=True)
+
     def getAssetsPath(self):
         """Return assets absolute path "normalized" (using UNIX slashes, not Windows backslashes)
 
@@ -76,7 +83,7 @@ class DCCProject():
             asset_dir = os.path.basename(a)
             fields = asset_dir.split("_")
             if len(fields) != 3:
-                print("Invalid asset directory name")
+                print("Invalid asset directory name: " + asset_dir)
                 continue
             asset_id = fields[2]
             assets_list.append( Asset(self, asset_type, asset_id) )
