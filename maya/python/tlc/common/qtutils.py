@@ -39,10 +39,11 @@ def getMayaMainWindow():
     Return the Maya main window widget as a Python object
     """
     main_window_ptr = omui.MQtUtil.mainWindow()
-    if sys.version_info.major >= 3:
-        return wrapInstance(int(main_window_ptr), QtWidgets.QWidget)
-    else:
-        return wrapInstance(long(main_window_ptr), QtWidgets.QWidget)
+    if main_window_ptr:
+        if sys.version_info.major >= 3:
+            return wrapInstance(int(main_window_ptr), QtWidgets.QWidget)
+        else:
+            return wrapInstance(long(main_window_ptr), QtWidgets.QWidget)
 
 
 class CheckerWindow(QtWidgets.QDialog):
