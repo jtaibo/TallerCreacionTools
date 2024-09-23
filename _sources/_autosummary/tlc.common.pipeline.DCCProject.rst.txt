@@ -23,6 +23,7 @@ tlc.common.pipeline.DCCProject
       ~DCCProject.getAssets
       ~DCCProject.getAssetsPath
       ~DCCProject.getSourceImagesPath
+      ~DCCProject.setAsActive
    
    
 
