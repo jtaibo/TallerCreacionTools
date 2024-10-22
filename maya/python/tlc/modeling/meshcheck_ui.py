@@ -67,6 +67,7 @@ class MeshCheckerUI(qtutils.CheckerWindow):
         ui_file = os.path.basename(__file__).split(".")[0].replace("_", ".")
         title = "Mesh analyzer"
         super(MeshCheckerUI, self).__init__(os.path.dirname(__file__) + "/" + ui_file, title, parent)
+        self.resize(700, 800)
 
     def addConditionChecker(self, table_widget, cond):
         """Add a condition checker
@@ -177,5 +178,6 @@ def run():
 
     meshcheck_ui = MeshCheckerUI()
     mchecker = tlc.modeling.meshcheck.MeshChecker()
+    mchecker.analyze()
     meshcheck_ui.populateUI(mchecker)
     meshcheck_ui.show()
