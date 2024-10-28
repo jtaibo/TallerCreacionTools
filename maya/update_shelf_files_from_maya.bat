@@ -1,6 +1,6 @@
 @echo off
 
-set MAYA_VERSION=2023
+set MAYA_VERSION=2025
 set MAYA_DOCS=%HOMEDRIVE%\%HOMEPATH%\Documents\maya\%MAYA_VERSION%\
 
 set SHELVES_DIR=%MAYA_DOCS%\prefs\shelves
