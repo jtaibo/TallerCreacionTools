@@ -113,6 +113,7 @@ class MeshChecker():
         self.uvConditions["uvSets"] = ConditionChecker("uvSets", "UV sets", "Number of UV sets in selected elements", False)           # Number of UV sets
         self.uvConditions["uvShells"] = ConditionChecker("uvShells", "UV shells", "Number of UV shells in selected elements", False)         # Number of UV shells
         self.uvConditions["uvMissing"] = ConditionChecker("uvMissing", "UV missing", "Number of face vertices missing UV coordinates")        # Faces with no UVs
+        self.uvConditions["uvNaN"] = ConditionChecker("uvNaN", "UV NaN", "Number of face vertices with invalid UV values (NaN)")        # Faces with invalid UVs (NaN)
         self.uvConditions["uvFlipped"] = ConditionChecker("uvFlipped", "UV flipped", "Number of faces flipped in UV space")        # Faces flipped in UV
         self.uvConditions["uvZeroArea"] = ConditionChecker("uvZeroArea", "UV zero area", "Number of faces occupying zero (or near zero) area in UV space")       # Faces with zero area in UV space
         self.uvConditions["uvOverlapping"] = ConditionChecker("uvOverlapping", "UV overlaps", "Number of faces overlapped in UV space")    # Overlapping faces
@@ -335,7 +336,13 @@ class MeshChecker():
                 if uvs:
                     the_set = set()
                     for i in range(len(uvs[0])):
-                        checkUVTile( uvs[0][i], uvs[1][i], the_set )
+                        try:
+                            checkUVTile( uvs[0][i], uvs[1][i], the_set )
+                        except ValueError:
+                            self.uvConditions["uvNaN"].count += 1
+                            self.uvConditions["uvNaN"].elms.append(dag.fullPathName()+".f["+str(itFaces.index())+"]")
+                            print("ERROR: Invalid UV values")
+
                     if len(the_set) > 1:
                         self.uvConditions["uvCrossingBorders"].count += 1
                         self.uvConditions["uvCrossingBorders"].elms.append(dag.fullPathName()+".f["+str(itFaces.index())+"]")
@@ -390,6 +397,7 @@ class MeshChecker():
         self.geoConditions["zeroAreaQuads"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
         self.uvConditions["uvOverlapping"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
         self.uvConditions["uvMissing"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
+        self.uvConditions["uvNaN"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
         self.uvConditions["uvFlipped"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
         self.uvConditions["uvZeroArea"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
         self.uvConditions["uvCrossingBorders"].setErrorLevel(ConditionErrorCriteria.ERROR_WHEN_NOT_ZERO)
