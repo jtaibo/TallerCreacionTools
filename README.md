@@ -15,12 +15,12 @@ procedure.
 
 ## Manual installation
 
-Copy `maya/shelves` contents to `Documents/Maya/\<version\>/shelves`, where
-`\<version\>` should be replaced with the Maya version you are using (e.g.
+Copy `maya/shelves` contents to `Documents/Maya/<version>/shelves`, where
+`<version>` should be replaced with the Maya version you are using (e.g.
 2025).
 
-Edit `Documents/Maya/\<version\>/Maya.env` and make sure `PYTHONPATH` points to
-the absolute path where `maya\\python` directory is located in your system
-(e.g. `PYTHONPATH=C:\\devel\\TallerCreacionTools\\maya\\python`).
+Edit `Documents/Maya/<version>/Maya.env` and make sure `PYTHONPATH` points to
+the absolute path where `maya\python` directory is located in your system
+(e.g. `PYTHONPATH=C:\devel\TallerCreacionTools\maya\python`).
 
 Start Maya. Two new shelves (TLC and TLC_devel) should appear.
