@@ -8,6 +8,8 @@ https://instrum3d.citic.udc.es
 This file is part of TLC (https://github.com/jtaibo/TallerCreacionTools).
 Copyright (c) 2025 Universidade da Coruña
 Copyright (c) 2025 Javier Taibo <javier.taibo@udc.es>
+Copyright (c) 2025 Miguel Novoa Cuiñas <miguel.novoa.cuinas@udc.es>
+
 This program is free software: you can redistribute it and/or modify it under 
 the terms of the GNU General Public License as published by the Free Software 
 Foundation, either version 3 of the License, or (at your option) any later 
@@ -26,6 +28,7 @@ import os
 import glob
 import maya.standalone
 import maya.cmds as cmds
+import maya.mel as mel
 import argparse
 import time
 import datetime
@@ -137,6 +140,14 @@ def exportAssetFile(export_dir,path, out_formats):
     #print("Loading asset " + path)
     cmds.file(path, open=True, force=True)
 
+    # Select all geometry and bake animations
+    mel.eval("FBXExportBakeComplexAnimation -v 1")
+    all_geometry = cmds.ls(geometry=True)
+    cmds.select(all_geometry)
+    minTime = cmds.playbackOptions(query=True, min=True)
+    maxTime = cmds.playbackOptions(query=True, max=True)
+    cmds.bakeResults(t=(minTime, maxTime), preserveOutsideKeys=False)
+
     # Export asset
     for fmt in out_formats:
         format = fmt[0]
@@ -169,6 +180,10 @@ def exportAsset(asset):
     mhp = asset.getLastPublishedVersionPath("MODELING", "HIGHPOLY")
     if mhp:
         exportAssetFile(out_asset_dir, mhp, out_formats)
+
+    anim = asset.getLastPublishedVersionPath("RIGGING", "ANIM")
+    if anim:
+        exportAssetFile(out_asset_dir, anim, out_formats)
 
 
 if proj and assets:
