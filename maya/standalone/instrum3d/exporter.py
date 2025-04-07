@@ -211,6 +211,9 @@ def exportAssetFile(export_dir, path, asset):
     #cmds.file(exportAll=True, type=format, force=True)
     cmds.file(exportSelected=True, type="FBX export", force=True)
 
-    # TO-DO: copy normal textures
-    for file in glob.glob(asset.project.getImagesPath() + "/" + asset.getDirectoryName() + "/Normals/T_" + asset.assetID + "_N_v*"):
-        shutil.copy(file, export_dir)
+    # Copy normal textures (last version, removing version)
+    normal_files = glob.glob(asset.project.getImagesPath() + "/" + asset.getDirectoryName() + "/Normals/T_" + asset.assetID + "_N_v*")
+    if normal_files:
+        last_normal_file = sorted(normal_files, reverse=True)[0]
+        ext = os.path.splitext(last_normal_file)[1]
+        shutil.copy(last_normal_file, export_dir + "/T_" + asset.assetID + "_N" + ext)
