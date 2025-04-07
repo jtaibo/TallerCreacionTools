@@ -33,6 +33,8 @@ import argparse
 import time
 import datetime
 
+import instrum3d
+
 default_output_dir="."
 
 # Argument parsing
@@ -60,6 +62,9 @@ if not proj_dir and not input_dir and not list_file and not input_list:
 if not os.path.isdir(output_dir):
     print("ERROR: Output directory does not exist")
     exit(1)
+
+log_path = output_dir + "/exporter.log"
+log = open(log_path, 'w')
 
 print("Starting Maya")
 maya.standalone.initialize("Python")
@@ -135,13 +140,17 @@ def exportScene(filename):
         print("ERROR. Cannot open scene file %s"%filename)
         return
 
-def exportAssetFile(export_dir,path, out_formats):
+def exportAssetFile(export_dir, path, out_formats):
     # Load asset
     #print("Loading asset " + path)
     cmds.file(path, open=True, force=True)
 
     # Select all geometry and bake animations
+
+    # Options for FBX exporter are set through MEL commands
+    # https://help.autodesk.com/view/MAYAUL/2025/ENU/?guid=GUID-6CCE943A-2ED4-4CEE-96D4-9CB19C28F4E0
     mel.eval("FBXExportBakeComplexAnimation -v 1")
+
     all_geometry = cmds.ls(geometry=True)
     cmds.select(all_geometry)
     minTime = cmds.playbackOptions(query=True, min=True)
@@ -183,7 +192,12 @@ def exportAsset(asset):
 
     anim = asset.getLastPublishedVersionPath("RIGGING", "ANIM")
     if anim:
-        exportAssetFile(out_asset_dir, anim, out_formats)
+         exportAssetFile(out_asset_dir, anim, out_formats)
+         try:
+             instrum3d.exporter.exportAssetFile(out_asset_dir, anim, asset)
+         except:
+             print("ERROR. Asset {} failed to fix animations and export".format(asset.assetID))
+             log.write("{} - ERROR: Asset {} failed to fix animations and export\n".format(anim, asset.assetID))
 
 
 if proj and assets:
@@ -200,6 +214,8 @@ elif filenames:
 
     for fn in filenames:
         exportScene(fn)
+
+log.close()
 
 print("DONE!")
 end_time = time.perf_counter()
