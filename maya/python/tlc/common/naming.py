@@ -35,6 +35,7 @@ DCCProjTopDirs={
     "ASSETS":"assets",
     "SCENES":"scenes",
     "SOURCEIMAGES":"sourceimages",
+    "IMAGES":"images"
 }
 """Top directories inside DCC project
 """

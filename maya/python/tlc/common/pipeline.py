@@ -78,6 +78,14 @@ class DCCProject():
         """
         return pathlib.Path(self.path + "/" + self.projID + "/" + naming.topDirs["PRE+PROD"] + "/" + naming.DCCProjTopDirs["SOURCEIMAGES"]).absolute().as_posix()
 
+    def getImagesPath(self):
+        """Return images absolute path "normalized" (using UNIX slashes, not Windows backslashes)
+
+        Returns:
+            str: Path to images directory in this project
+        """
+        return pathlib.Path(self.path + "/" + self.projID + "/" + naming.topDirs["PRE+PROD"] + "/" + naming.DCCProjTopDirs["IMAGES"]).absolute().as_posix()
+
     def _addAssetsToList(self, assets_list, assets_dirs, asset_type):
         for a in assets_dirs:
             asset_dir = os.path.basename(a)
