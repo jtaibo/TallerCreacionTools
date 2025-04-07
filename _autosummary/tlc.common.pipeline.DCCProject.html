@@ -134,10 +134,13 @@ different software in the future.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.pipeline.DCCProject.getAssetsPath" title="tlc.common.pipeline.DCCProject.getAssetsPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getAssetsPath</span></code></a>()</p></td>
 <td><p>Return assets absolute path &quot;normalized&quot; (using UNIX slashes, not Windows backslashes)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.pipeline.DCCProject.getSourceImagesPath" title="tlc.common.pipeline.DCCProject.getSourceImagesPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getSourceImagesPath</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.pipeline.DCCProject.getImagesPath" title="tlc.common.pipeline.DCCProject.getImagesPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getImagesPath</span></code></a>()</p></td>
+<td><p>Return images absolute path &quot;normalized&quot; (using UNIX slashes, not Windows backslashes)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.pipeline.DCCProject.getSourceImagesPath" title="tlc.common.pipeline.DCCProject.getSourceImagesPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getSourceImagesPath</span></code></a>()</p></td>
 <td><p>Return sourceimages absolute path &quot;normalized&quot; (using UNIX slashes, not Windows backslashes)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tlc.common.pipeline.DCCProject.setAsActive" title="tlc.common.pipeline.DCCProject.setAsActive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setAsActive</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tlc.common.pipeline.DCCProject.setAsActive" title="tlc.common.pipeline.DCCProject.setAsActive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setAsActive</span></code></a>()</p></td>
 <td><p>Set project as current active project in Maya</p></td>
 </tr>
 </tbody>
@@ -180,6 +183,20 @@ different software in the future.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Path to assets directory in this project</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tlc.common.pipeline.DCCProject.getImagesPath">
+<span class="sig-name descname"><span class="pre">getImagesPath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tlc.common.pipeline.DCCProject.getImagesPath" title="Link to this definition"></a></dt>
+<dd><p>Return images absolute path “normalized” (using UNIX slashes, not Windows backslashes)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path to images directory in this project</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
