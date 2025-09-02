@@ -52,7 +52,7 @@ REM
 REM A different installer will be created for end users
 REM This installer will place scripts in Maya scripts directory
 
-set MAYA_VERSIONS=2023 2024 2025
+set MAYA_VERSIONS=2023 2024 2025 2026
 
 FOR /F "tokens=3* delims= " %%a in ('reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v "Personal"') do (set MYDOCUMENTS=%%a)
 
