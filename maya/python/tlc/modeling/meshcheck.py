@@ -101,13 +101,18 @@ class MeshChecker():
         self.geoConditions["quadsToLines"] = ConditionChecker("quadsToLines", "Quads to lines", "Number of quads degenerated to lines (vertices in two different positions)")       # 2+2 or 3+1 vertices grouped
         self.geoConditions["quadsToPoints"] = ConditionChecker("quadsToPoints", "Quads to points", "Number of quads degenerated to points (all vertices in the same position)")      # All four vertices in the same position
         self.geoConditions["zeroAreaQuads"] = ConditionChecker("zeroAreaQuads", "Zero area quads", "Zero area quads")      # More than two vertices in the same position
-        
+
         # Edge checks
         self.geoConditions["borderEdges"] = ConditionChecker("borderEdges", "Border edges", "Number of border edges in selected elements")        # Border edges (only one face uses this edge)
         self.geoConditions["evilEdges"] = ConditionChecker("evilEdges", "Evil edges", "Number of edges sharing more than two faces. Non-manifold geometry")          # Edges connecting more than 2 faces
-        
+
         # Vertex checks
         self.geoConditions["poles"] = ConditionChecker("poles", "Poles", "Number of poles in selected elements (vertices connecting a number of edges other than 4)")
+
+        # Position
+        self.geoConditions["minY"] = ConditionChecker("minY", "Min Y", "Min Y of meshes bounding box", False)
+        self.geoConditions["centerX"] = ConditionChecker("centerX", "Center X", "Center in X axis of meshes bounding box", False)
+        self.geoConditions["centerZ"] = ConditionChecker("centerZ", "Center Z", "Center in Z axis of meshes bounding box", False)
 
         # UVs
         self.uvConditions["uvSets"] = ConditionChecker("uvSets", "UV sets", "Number of UV sets in selected elements", False)           # Number of UV sets
@@ -237,6 +242,11 @@ class MeshChecker():
             for bi in range(3,6):
                 if bbox[bi] > self.bbox[bi]:
                     self.bbox[bi] = bbox[bi]
+
+        # BBox position
+        self.geoConditions["minY"].count = self.bbox[1]
+        self.geoConditions["centerX"].count = (self.bbox[0] + self.bbox[3]) / 2.
+        self.geoConditions["centerZ"].count = (self.bbox[2] + self.bbox[5]) / 2.
 
         # TO-DO: copy checkers implementation from mayaptools
         # Iterate over selected elements
