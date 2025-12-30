@@ -169,8 +169,8 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
             status = "WARN"
             bgcolor = QtGui.QColor(255,127,0)   # Orange
         cell = self.addTextCell(row, col, status)
-        cell.setBackgroundColor(bgcolor)
-        cell.setTextColor(fgcolor)
+        cell.setBackground(bgcolor)
+        cell.setForeground(fgcolor)
         self.table_widget.item(row, col).setToolTip(file_tex.errorMessage)
 
         # Duplicate
@@ -186,8 +186,8 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         text = file_tex.target + "." + file_tex.channel
         cell = self.addTextCell(row, col, text)
         if text == ".":
-            cell.setBackgroundColor(QtCore.Qt.red)
-            cell.setTextColor(QtCore.Qt.black)
+            cell.setBackground(QtCore.Qt.red)
+            cell.setForeground(QtCore.Qt.black)
             cell.setText("NO CONNECTION")
 
         # Shading group
@@ -420,28 +420,28 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
     def contextMenuFileTextureNode(self, index, pos):
         cell = self.ui.texCheckerTableWidget.itemFromIndex(index)
         menu = QtWidgets.QMenu()
-        action1 = QtWidgets.QAction("Select")
+        action1 = QtGui.QAction("Select")
         action1.triggered.connect(lambda: self.selectTexture(index.row()))
         menu.addAction(action1)
-        action2 = QtWidgets.QAction("Preview")
+        action2 = QtGui.QAction("Preview")
         action2.triggered.connect(lambda: self.previewTexture(index.row()))
         menu.addAction(action2)
-        action3 = QtWidgets.QAction("Open folder")
+        action3 = QtGui.QAction("Open folder")
         action3.triggered.connect(lambda: self.openFolder(index.row()))
         menu.addAction(action3)
         if "alpha" in self.fileTextureObjects[index.row()].errors:
-            action4 = QtWidgets.QAction("Fix alpha channel")
+            action4 = QtGui.QAction("Fix alpha channel")
             action4.triggered.connect(lambda: self.fixAlphaFromLuminance(index.row()))
             menu.addAction(action4)
         if "colorSpace" in self.fileTextureObjects[index.row()].errors:
-            action5 = QtWidgets.QAction("Fix colorspace")
+            action5 = QtGui.QAction("Fix colorspace")
             action5.triggered.connect(lambda: self.fixColorSpace(index.row()))
             menu.addAction(action5)
-        action6 = QtWidgets.QAction("Recheck")
+        action6 = QtGui.QAction("Recheck")
         action6.triggered.connect(lambda: self.recheckTexture(index.row()))
         menu.addAction(action6)
         if self.fileTextureObjects[index.row()].missingFile():
-            action7 = QtWidgets.QAction("Fix path")
+            action7 = QtGui.QAction("Fix path")
             action7.triggered.connect(lambda: self.fixPath(index.row()))
             menu.addAction(action7)
         #menu.setTearOffEnabled(True)
@@ -452,7 +452,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         if "colorSpace" in self.fileTextureObjects[index.row()].errors:
             cell = self.ui.texCheckerTableWidget.itemFromIndex(index)
             menu = QtWidgets.QMenu()
-            action1 = QtWidgets.QAction("Fix ColorSpace")
+            action1 = QtGui.QAction("Fix ColorSpace")
             action1.triggered.connect(lambda: self.fixColorSpace(index.row()))
             menu.addAction(action1)
             #menu.setTearOffEnabled(True)
@@ -467,7 +467,7 @@ class TextureAnalyzerUI(qtutils.CheckerWindow):
         mesh_names = []
         for m in meshes:
             mesh_names.append(m)
-            action = QtWidgets.QAction(m)
+            action = QtGui.QAction(m)
             action.triggered.connect(partial(self.selectGeometry, m))
             menu.addAction(action)
             actions.append(action)  # We need to store the actions, otherwise only one will be present in the QMenu
