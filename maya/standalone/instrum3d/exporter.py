@@ -98,7 +98,7 @@ def ZEROrientRotate(attrZERO):
 
 def exportAssetFile(export_dir, path, asset):
 
-    print(">>>>>>>>>>>>>>>>>>> exportAssetFile: ", path)
+    print("INSTRUM3D - exportAssetFile: ", path)
 
     # Open file
     cmds.file(path, open=True, force=True)
