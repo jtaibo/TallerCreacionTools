@@ -29,5 +29,6 @@ tlc.shading.textureanalyzer.ImageSource
       ~ImageSource.IMG_SRC_TEXTUREHAVEN
       ~ImageSource.IMG_SRC_HDRIHAVEN
       ~ImageSource.IMG_SRC_AMBIENTCG
+      ~ImageSource.IMG_SRC_UNREAL
    
    

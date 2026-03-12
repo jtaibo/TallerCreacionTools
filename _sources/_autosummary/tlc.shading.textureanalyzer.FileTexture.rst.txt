@@ -48,6 +48,7 @@ tlc.shading.textureanalyzer.FileTexture
       ~FileTexture.verifyFileNameHDRIHaven
       ~FileTexture.verifyFileNameMegaScans
       ~FileTexture.verifyFileNameTextureHaven
+      ~FileTexture.verifyFileNameUnreal
       ~FileTexture.verifyFileTextureNameOwn
       ~FileTexture.verifyTextureName
    
