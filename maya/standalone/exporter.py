@@ -159,6 +159,37 @@ def exportScene(filename):
         print("ERROR. Cannot open scene file %s"%filename)
         return
 
+# WARNING: assimp exports correctly geometry, rig, animations and textures, but not materials
+def exportGLBWithAssimp(fbx_file, out_path):
+    # Ejecuta $ assimp export <fbx_file> <out_path> -fglb2
+    subprocess.run(
+#        [r"C:\Program Files\Assimp\bin\x64\assimp", "export", fbx_file, out_path, "-fglb2"],
+        ["assimp", "export", fbx_file, out_path, "-fglb2"],
+        check=True,
+        shell=True,
+        creationflags=subprocess.CREATE_NO_WINDOW  # Evita la apertura de consolas
+    )
+
+def exportGLBWithBlender(fbx_file, out_path):
+    script_path = "instrum3d/blender_export_2_glb.py"
+    mat_lib_path = "MED_materials.blend"
+    if proj:
+        mat_lib_path = proj.getAssetsPath() + "/99_library/01_lbprops/MED_pr_materialCatalog/04_shading/MED_materials.blend"
+
+    print("blender --background --python", script_path, "--", fbx_file, out_path, mat_lib_path)
+
+    subprocess.run([
+        "blender",  # Blender executable is already in the PATH (set from standalone_env.bat)
+        "--background",
+        "--python", script_path,
+        "--",
+        fbx_file,
+        out_path,
+        mat_lib_path
+    ], 
+    check=True,
+    shell=True)
+
 def exportAssetFile(export_dir, path, out_formats):
     # Load asset
     print("Loading asset " + path)
@@ -187,14 +218,11 @@ def exportAssetFile(export_dir, path, out_formats):
         if format == "GLB":
             # Exported from assimp (WARNING: Previous export to FBX is mandatory)
             if fbx_file:
-                # Ejecuta $ assimp export <fbx_file> <out_path> -fglb2
-                subprocess.run(
-#                    [r"C:\Program Files\Assimp\bin\x64\assimp", "export", fbx_file, out_path, "-fglb2"],
-                    ["assimp", "export", fbx_file, out_path, "-fglb2"],
-                    check=True,
-                    shell=True,
-                    creationflags=subprocess.CREATE_NO_WINDOW  # Evita la apertura de consolas
-                )
+                try:
+                    exportGLBWithBlender(fbx_file, out_path)
+                except:
+                    print("Exportation with Blender failed. Falling back to assimp...")
+                    exportGLBWithAssimp(fbx_file, out_path)
             else:
                 print("ERROR. Cannot convert to GLB. FBX file not found:", fbx_file)
                 log.write("ERROR: Cannot convert to GLB. FBX file not found: {}\n".format(fbx_file))
@@ -215,6 +243,10 @@ def export2GLB4InstruM3D(export_dir, asset, path):
 
 def exportAsset(asset):
     #print("Exporting asset " + asset.getDirectoryName())
+
+    # High poly is not exported because it is meant as an intermediate version to bake normals to a texture to be used in mmp
+    # High poly models have not an adequate topology, so they are not meant to be published, and we omit them from the export
+    export_high_poly = False
 
     out_asset_dir = output_dir + "/" + asset.getDirectoryName()
     if not os.path.exists(out_asset_dir):
@@ -237,10 +269,11 @@ def exportAsset(asset):
         exportAssetFile(out_asset_dir, mmp, out_formats)
         best_version = mmp
 
-    mhp = asset.getLastPublishedVersionPath("MODELING", "HIGHPOLY")
-    if mhp:
-        exportAssetFile(out_asset_dir, mhp, out_formats)
-        best_version = mhp
+    if export_high_poly:
+        mhp = asset.getLastPublishedVersionPath("MODELING", "HIGHPOLY")
+        if mhp:
+            exportAssetFile(out_asset_dir, mhp, out_formats)
+            best_version = mhp
 
     shd = asset.getLastPublishedVersionPath("SHADING", "SHADING")
     if shd:
