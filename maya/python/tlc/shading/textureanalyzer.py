@@ -38,7 +38,8 @@ class ImageSource(Enum):
     IMG_SRC_MEGASCANS=2,
     IMG_SRC_TEXTUREHAVEN=3,
     IMG_SRC_HDRIHAVEN=4,
-    IMG_SRC_AMBIENTCG=5
+    IMG_SRC_AMBIENTCG=5,
+    IMG_SRC_UNREAL=6
 
 class NormalType(Enum):
     NORMAL_TYPE_GL=0,
@@ -50,7 +51,8 @@ imgSrcName = {
     ImageSource.IMG_SRC_MEGASCANS : "Megascans",
     ImageSource.IMG_SRC_TEXTUREHAVEN : "Texture Haven",
     ImageSource.IMG_SRC_HDRIHAVEN : "HDRI Haven",
-    ImageSource.IMG_SRC_AMBIENTCG: "AmbientCG"
+    ImageSource.IMG_SRC_AMBIENTCG: "AmbientCG",
+    ImageSource.IMG_SRC_UNREAL: "Unreal Engine"
 }
 
 inputConnectionsToMapType = {
@@ -132,6 +134,13 @@ ambientCGMapType = {
     "Roughness":"roughness",
     "NormalGL":"normal",
     "NormalDX":"normal"
+}
+
+unrealType = {
+    "D":"albedo",
+    "R":"roughness",
+    "M":"metalness",
+    "N":"normal",
 }
 
 nonColorMapTypes = [
@@ -599,6 +608,8 @@ class FileTexture():
             return self.verifyFileNameAmbientCG(set_errors)
         elif self.imgSrc == ImageSource.IMG_SRC_HDRIHAVEN:
             return self.verifyFileNameHDRIHaven(set_errors)
+        elif self.imgSrc == ImageSource.IMG_SRC_UNREAL:
+            return self.verifyFileNameUnreal(set_errors)
         else:
             return False
 
@@ -789,6 +800,31 @@ class FileTexture():
             return False
         return True
 
+    def verifyFileNameUnreal(self, set_errors=True):
+        fields = self.fileName.split("_")
+        if len(fields) != 3:
+            return False
+        if fields[0] != "T":
+            return False
+        # Check texture map type
+        map_type_field = fields[2]
+        if map_type_field in unrealType:
+            map_type = unrealType[map_type_field]
+            if map_type != self.mapType:
+                if set_errors:
+                    self.errors.add("mapType")
+                    self.errorMessage += "Unreal texture type mismatch: " + map_type + " vs. " + self.mapType + "\n"
+            # if set_errors:
+            #     if map_type_field == "NormalDX":
+            #         self.normalMapType = NormalType.NORMAL_TYPE_DX
+            #     elif map_type_field == "NormalGL":
+            #         self.normalMapType = NormalType.NORMAL_TYPE_GL
+        else:
+            if set_errors:
+                self.errorMessage += "Unknown map type\n"
+            return False
+        return True
+
     def getImageSource(self, set_errors=True):
         if self.mapType == "hdri":
             if self.verifyFileNameHDRIHaven(set_errors):
@@ -802,6 +838,8 @@ class FileTexture():
                 return ImageSource.IMG_SRC_TEXTUREHAVEN
             elif self.verifyFileNameAmbientCG(set_errors):
                 return ImageSource.IMG_SRC_AMBIENTCG
+            elif self.verifyFileNameUnreal(set_errors):
+                return ImageSource.IMG_SRC_UNREAL
         return ImageSource.IMG_SRC_UNKNOWN
     
     def validateColorSpace(self):
@@ -819,7 +857,7 @@ class FileTexture():
                     self.errorMessage += "Map type " + self.mapType + " should be in Raw color space\n"
             else:   # Color textures
                 if self.fileFormat in eightBitFormats:
-                    if self.colorSpace != "sRGB":
+                    if self.colorSpace != "sRGB" and self.colorSpace != "sRGB Encoded Rec.709 (sRGB)":
                         self.errorMessage += "8-bit color image not in sRGB space"
                         self.errors.add("colorSpace")
                 else:
