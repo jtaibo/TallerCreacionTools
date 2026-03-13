@@ -141,6 +141,8 @@ unrealType = {
     "R":"roughness",
     "M":"metalness",
     "N":"normal",
+    "T":"transmission",
+    "E":"emission"
 }
 
 nonColorMapTypes = [
