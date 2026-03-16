@@ -246,6 +246,14 @@ class Asset():
             # TO-DO: sort alphabetically?
             return files[-1]    # last element
         return None
+    
+    def getTexturesDirectoryPath(self):
+        """Get path for the textures directory of this asset
+
+        Returns:
+            str: Path to textures directory
+        """
+        return self.project.getSourceImagesPath() + "/" + naming.assetTypeDir[self.assetType] + "/" + self.getDirectoryName() + "/" + naming.srcImgDirs["TEXTURES"]
 
 
 ###############################################################################
