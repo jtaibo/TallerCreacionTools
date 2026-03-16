@@ -182,10 +182,11 @@ def fixMaterial(mat_name, asset_file: tlc.common.pipeline.AssetFile):
         for t in textures_maybe:
             tex_name = os.path.splitext(os.path.basename(t))[0]
             fields = tex_name.split("_")
-            tex_id = fields[1]
-            tex_type = fields[2]
-            if tex_id == asset_id:
-                connectTextureToShader(mat_name, tex_name, tex_type)
+            if len(fields) == 3 and fields[0] == "T":
+                tex_id = fields[1]
+                tex_type = fields[2]
+                if tex_id == asset_id:
+                    connectTextureToShader(mat_name, t, tex_type)
     else:
         # Material from catalog
         catalog_assetid = "MED_lbpr_materialCatalog"
