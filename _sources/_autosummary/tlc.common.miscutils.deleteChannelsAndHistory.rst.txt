@@ -1,6 +1,0 @@
-tlc.common.miscutils.deleteChannelsAndHistory
-=============================================
-
-.. currentmodule:: tlc.common.miscutils
-
-.. autofunction:: deleteChannelsAndHistory

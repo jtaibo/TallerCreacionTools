@@ -1,6 +1,0 @@
-tlc.common.miscutils.getCurrentProject
-======================================
-
-.. currentmodule:: tlc.common.miscutils
-
-.. autofunction:: getCurrentProject

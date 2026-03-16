@@ -1,6 +1,0 @@
-tlc.common.pipeline.isThisPathAProject
-======================================
-
-.. currentmodule:: tlc.common.pipeline
-
-.. autofunction:: isThisPathAProject

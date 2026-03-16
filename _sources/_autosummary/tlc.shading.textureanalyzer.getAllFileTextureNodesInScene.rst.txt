@@ -1,6 +1,0 @@
-tlc.shading.textureanalyzer.getAllFileTextureNodesInScene
-=========================================================
-
-.. currentmodule:: tlc.shading.textureanalyzer
-
-.. autofunction:: getAllFileTextureNodesInScene

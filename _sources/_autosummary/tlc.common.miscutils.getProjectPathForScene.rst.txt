@@ -1,6 +1,0 @@
-tlc.common.miscutils.getProjectPathForScene
-===========================================
-
-.. currentmodule:: tlc.common.miscutils
-
-.. autofunction:: getProjectPathForScene

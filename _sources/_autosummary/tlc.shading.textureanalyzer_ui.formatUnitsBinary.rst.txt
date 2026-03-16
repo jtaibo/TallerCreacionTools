@@ -1,6 +1,0 @@
-tlc.shading.textureanalyzer\_ui.formatUnitsBinary
-=================================================
-
-.. currentmodule:: tlc.shading.textureanalyzer_ui
-
-.. autofunction:: formatUnitsBinary

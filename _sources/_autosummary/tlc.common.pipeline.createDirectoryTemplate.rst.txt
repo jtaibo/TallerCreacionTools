@@ -1,6 +1,0 @@
-tlc.common.pipeline.createDirectoryTemplate
-===========================================
-
-.. currentmodule:: tlc.common.pipeline
-
-.. autofunction:: createDirectoryTemplate

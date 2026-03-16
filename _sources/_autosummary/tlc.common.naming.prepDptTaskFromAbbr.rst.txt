@@ -1,6 +1,0 @@
-tlc.common.naming.prepDptTaskFromAbbr
-=====================================
-
-.. currentmodule:: tlc.common.naming
-
-.. autofunction:: prepDptTaskFromAbbr

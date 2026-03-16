@@ -1,6 +1,0 @@
-tlc.common.naming.srcImgDirs
-============================
-
-.. currentmodule:: tlc.common.naming
-
-.. autodata:: srcImgDirs

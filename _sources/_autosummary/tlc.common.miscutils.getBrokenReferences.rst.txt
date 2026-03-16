@@ -1,6 +1,0 @@
-tlc.common.miscutils.getBrokenReferences
-========================================
-
-.. currentmodule:: tlc.common.miscutils
-
-.. autofunction:: getBrokenReferences

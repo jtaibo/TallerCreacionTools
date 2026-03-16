@@ -1,6 +1,0 @@
-tlc.common.about.about
-======================
-
-.. currentmodule:: tlc.common.about
-
-.. autofunction:: about

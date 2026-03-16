@@ -1,6 +1,0 @@
-tlc.shading.textureanalyzer.inputConnectionsToMapType
-=====================================================
-
-.. currentmodule:: tlc.shading.textureanalyzer
-
-.. autodata:: inputConnectionsToMapType

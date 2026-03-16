@@ -1,6 +1,0 @@
-tlc.common.naming.DCCProjTopDirs
-================================
-
-.. currentmodule:: tlc.common.naming
-
-.. autodata:: DCCProjTopDirs

@@ -1,6 +1,0 @@
-tlc.common.miscutils.getEmptyGroups
-===================================
-
-.. currentmodule:: tlc.common.miscutils
-
-.. autofunction:: getEmptyGroups
