@@ -1,6 +1,6 @@
 @echo off
 
-call standalone_env.bat
+call standalone\standalone_env.bat
 
 set MAYA_DOCS=%HOMEDRIVE%\%HOMEPATH%\Documents\maya\%MAYA_VERSION%\
 
