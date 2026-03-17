@@ -67,7 +67,8 @@ inputConnectionsToMapType = {
         "metalness":"metalness",
         "specularRoughness":"roughness",
         "opacity":"opacity",
-        "emissionColor":"emission"
+        "emissionColor":"emission",
+        "transmission":"transmission"
     },
     "standardSurface":{
         "baseColor":"albedo",
@@ -151,7 +152,8 @@ nonColorMapTypes = [
     "normal",
     "displacement",
     "opacity",
-    "bump"
+    "bump",
+    "transmission"
 ]
 
 nodesToBypass = {
