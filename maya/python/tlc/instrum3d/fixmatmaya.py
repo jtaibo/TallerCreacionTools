@@ -32,6 +32,11 @@ import tlc.common.pipeline
 import tlc.common.naming as naming
 
 
+valid_texture_extensions = [
+    ".png",
+    ".jpg"
+]
+
 def getAssetNameFromFile(asset_full_path):
     asset_id = None
     asset_file_name = os.path.basename(asset_full_path)
@@ -78,7 +83,7 @@ def connectTextureToShader(shader_name, file_path, attribute):
         attribute (str): Target attribute ('D', 'M', 'R', 
                          'N', 'E', 'T'), following InstruM3D documentation.
     """
-    print("connectTextureToShader", shader_name, file_path, attribute)
+    #print("connectTextureToShader", shader_name, file_path, attribute)
 
     if not cmds.objExists(shader_name):
         cmds.error(f"Shader {shader_name} does not exist.")
@@ -133,9 +138,25 @@ def connectTextureToShader(shader_name, file_path, attribute):
             # For Color/Emission, connect the whole RGB
             cmds.connectAttr(f"{file_node}.outColor", f"{shader_name}.{target_attr}")
             cmds.setAttr(f"{file_node}.colorSpace", "sRGB", type="string")
+            if attribute == "E":
+                # Control the emission weight with alpha channel of the texture
+                cmds.connectAttr(f"{file_node}.outAlpha", f"{shader_name}.emission")
 
-    print(f"Connected {file_path} to {shader_name}.{attribute}")
+    #print(f"Connected {file_path} to {shader_name}.{attribute}")
 
+
+def checkAndConnectTexture(mat_name, tex_candidate, id):
+    tex_name, extension = os.path.splitext(os.path.basename(tex_candidate))
+
+    if extension not in valid_texture_extensions:
+        return
+
+    fields = tex_name.split("_")
+    if len(fields) == 3 and fields[0] == "T":
+        tex_id = fields[1]
+        tex_type = fields[2]
+        if tex_id == id:
+            connectTextureToShader(mat_name, tex_candidate, tex_type)
 
 def fixMaterial(mat_name, asset_file: tlc.common.pipeline.AssetFile):
 
@@ -161,7 +182,7 @@ def fixMaterial(mat_name, asset_file: tlc.common.pipeline.AssetFile):
     # Reconnect to all Shading Groups that were using the old material
     for sg in list(set(shading_groups)):
         cmds.connectAttr(f"{new_shader}.outColor", f"{sg}.surfaceShader", force=True)
-        print(f"Updated Shading Group: {sg} with new shader: {new_shader}")
+        #print(f"Updated Shading Group: {sg} with new shader: {new_shader}")
 
     # Delete the old material node
     cmds.delete(temp_name)
@@ -180,13 +201,7 @@ def fixMaterial(mat_name, asset_file: tlc.common.pipeline.AssetFile):
         pattern = textures_dir + "/T_*_*"
         textures_maybe = glob.glob(pattern)
         for t in textures_maybe:
-            tex_name = os.path.splitext(os.path.basename(t))[0]
-            fields = tex_name.split("_")
-            if len(fields) == 3 and fields[0] == "T":
-                tex_id = fields[1]
-                tex_type = fields[2]
-                if tex_id == asset_id:
-                    connectTextureToShader(mat_name, t, tex_type)
+            checkAndConnectTexture(mat_name, t, asset_id)
     else:
         # Material from catalog
         catalog_assetid = "MED_lbpr_materialCatalog"
@@ -194,24 +209,12 @@ def fixMaterial(mat_name, asset_file: tlc.common.pipeline.AssetFile):
         pattern = catalog_textures_dir + "/T_*_*"
         textures_maybe = glob.glob(pattern)
         for t in textures_maybe:
-            tex_name = os.path.splitext(os.path.basename(t))[0]
-            fields = tex_name.split("_")
-            if len(fields) == 3 and fields[0] == "T":
-                tex_id = fields[1]
-                tex_type = fields[2]
-                if tex_id == mat_id:
-                    connectTextureToShader(mat_name, t, tex_type)
+            checkAndConnectTexture(mat_name, t, mat_id)
         # Add custom normal map
         pattern = textures_dir + "/T_*_N.*"
         textures_maybe = glob.glob(pattern)
         for t in textures_maybe:
-            tex_name = os.path.splitext(os.path.basename(t))[0]
-            fields = tex_name.split("_")
-            if len(fields) == 3 and fields[0] == "T":
-                tex_id = fields[1]
-                tex_type = fields[2]
-                if tex_id == asset_id:
-                    connectTextureToShader(mat_name, t, tex_type)
+            checkAndConnectTexture(mat_name, t, asset_id)
 
 
 def fixMaterials():

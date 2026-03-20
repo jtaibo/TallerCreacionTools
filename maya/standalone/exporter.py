@@ -91,7 +91,7 @@ cmds.loadPlugin("objExport")
 cmds.loadPlugin("fbxmaya")
 
 import tlc.common.pipeline
-import tlc.common.naming
+import tlc.common.naming as naming
 
 proj = None
 filenames = []
@@ -170,13 +170,16 @@ def exportGLBWithAssimp(fbx_file, out_path):
         creationflags=subprocess.CREATE_NO_WINDOW  # Evita la apertura de consolas
     )
 
-def exportGLBWithBlender(fbx_file, out_path):
-    script_path = "instrum3d/blender_export_2_glb.py"
-    mat_lib_path = "MED_materials.blend"
-    if proj:
-        mat_lib_path = proj.getAssetsPath() + "/99_library/01_lbprops/MED_pr_materialCatalog/04_shading/MED_materials.blend"
+def exportGLBWithBlender(fbx_file, out_path, blend_shd_filepath):
+    script_path = "instrum3d/blender/export_2_glb.py"
+    # mat_lib_path = "MED_materials.blend"
+    # if proj:
+    #     mat_lib_path = proj.getAssetsPath() + "/99_library/01_lbprops/MED_pr_materialCatalog/04_shading/MED_materials.blend"
 
-    print("blender --background --python", script_path, "--", fbx_file, out_path, mat_lib_path)
+    # Path to Blender file with the latest shading version
+    blend_shd_filepath = None
+
+    print("blender --background --python", script_path, "--", fbx_file, out_path, blend_shd_filepath)
 
     subprocess.run([
         "blender",  # Blender executable is already in the PATH (set from standalone_env.bat)
@@ -185,12 +188,13 @@ def exportGLBWithBlender(fbx_file, out_path):
         "--",
         fbx_file,
         out_path,
-        mat_lib_path
+#        mat_lib_path
+        blend_shd_filepath
     ], 
     check=True,
     shell=True)
 
-def exportAssetFile(export_dir, path, out_formats):
+def exportAssetFile(export_dir, path, out_formats, dpt, blend_shd_filepath=None):
     # Load asset
     print("Loading asset " + path)
     cmds.file(path, open=True, force=True)
@@ -219,7 +223,7 @@ def exportAssetFile(export_dir, path, out_formats):
             # Exported from assimp (WARNING: Previous export to FBX is mandatory)
             if fbx_file:
                 try:
-                    exportGLBWithBlender(fbx_file, out_path)
+                    exportGLBWithBlender(fbx_file, out_path, blend_shd_filepath)
                 except:
                     print("Exportation with Blender failed. Falling back to assimp...")
                     exportGLBWithAssimp(fbx_file, out_path)
@@ -235,11 +239,46 @@ def exportAssetFile(export_dir, path, out_formats):
             if extension == "fbx":
                 fbx_file = out_path
 
+def exportAssetFileShading(blend_file, out_path):
+    """Export asset for special case of shading department (currently done in Blender instead of Maya)
+    """
+    #print(f"exportAssetFileShading({blend_file}, {out_path})")
+
+    # Export from Blender to GLB, FBX ...
+    script_path = "instrum3d/blender/export_shading.py"
+    print("blender --background --python", script_path, "--", blend_file, out_path)
+    subprocess.run([
+        "blender",  # Blender executable is already in the PATH (set from standalone_env.bat)
+        "--background",
+        "--python", script_path,
+        "--",
+        blend_file,
+        out_path,
+    ], 
+    check=True,
+    shell=True)
+
+    # NOTE: Converting this scene to Maya (so it can continue the pipeline)
+    # is performed in other tool. Maya files are kept in the Maya project, as oposed to
+    # this formats that are exported to the public dataset
+
 def export2GLB4InstruM3D(export_dir, asset, path):
     glb_orig = export_dir + "/" + os.path.splitext(os.path.basename(path))[0] + ".glb"
-    glb_dest = export_dir + "/" + asset.project.projID + "_" + tlc.common.naming.assetTypeAbbr[asset.assetType] + "_" + asset.assetID + ".glb"
+    glb_dest = export_dir + "/" + asset.project.projID + "_" + naming.assetTypeAbbr[asset.assetType] + "_" + asset.assetID + ".glb"
     print("Copying", glb_orig, "to", glb_dest)
     shutil.copyfile(glb_orig, glb_dest)
+
+
+def getLastBlenderShadingVersion(asset):
+    dpt = "SHADING"
+    dptTask = "SHADING"
+    pattern = asset.getFullPathDirectory() + "/" + naming.prepDptDir[dpt] + "/" + asset.project.projID + "_" + naming.assetTypeAbbr[asset.assetType] + "_" + naming.prepDptTask[dpt][dptTask] + "_" + asset.assetID + "_v??.blend"
+    files = glob.glob(pattern)
+    if files:
+        return files[-1]
+    else:
+        return None
+
 
 def exportAsset(asset):
     #print("Exporting asset " + asset.getDirectoryName())
@@ -259,30 +298,32 @@ def exportAsset(asset):
         ]
 
     best_version = None
+    blend_shd_filepath = None
     mlp = asset.getLastPublishedVersionPath("MODELING", "LOWPOLY")
     if mlp:
-        exportAssetFile(out_asset_dir, mlp, out_formats)
+        exportAssetFile(out_asset_dir, mlp, out_formats, "MODELING")
         best_version = mlp
 
     mmp = asset.getLastPublishedVersionPath("MODELING", "MIDPOLY")
     if mmp:
-        exportAssetFile(out_asset_dir, mmp, out_formats)
+        exportAssetFile(out_asset_dir, mmp, out_formats, "MODELING")
         best_version = mmp
 
     if export_high_poly:
         mhp = asset.getLastPublishedVersionPath("MODELING", "HIGHPOLY")
         if mhp:
-            exportAssetFile(out_asset_dir, mhp, out_formats)
+            exportAssetFile(out_asset_dir, mhp, out_formats, "MODELING")
             best_version = mhp
 
-    shd = asset.getLastPublishedVersionPath("SHADING", "SHADING")
+    shd = getLastBlenderShadingVersion(asset)  # Search Blender file for last shading version of the asset
     if shd:
-        exportAssetFile(out_asset_dir, shd, out_formats)
+        blend_shd_filepath = shd
+        exportAssetFileShading(blend_shd_filepath, out_asset_dir)
         best_version = shd
 
     anim = asset.getLastPublishedVersionPath("RIGGING", "ANIM")
     if anim:
-        exportAssetFile(out_asset_dir, anim, out_formats)
+        exportAssetFile(out_asset_dir, anim, out_formats, "RIGGING")
         try:
             instrum3d.exporter.exportAssetFile(out_asset_dir, anim, asset)
         except:
