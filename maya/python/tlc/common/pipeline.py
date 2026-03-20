@@ -8,7 +8,7 @@ and functions to perform general operations on the project and its contents
 """
 This file is part of TLC (https://github.com/jtaibo/TallerCreacionTools).
 Copyright (c) 2023 Universidade da Coruña
-Copyright (c) 2023,2024 Javier Taibo <javier.taibo@udc.es>
+Copyright (c) 2023,2024,2026 Javier Taibo <javier.taibo@udc.es>
 
 This program is free software: you can redistribute it and/or modify it under 
 the terms of the GNU General Public License as published by the Free Software 
@@ -471,6 +471,25 @@ def getProjectForScene(scene_path):
             return proj_path
         else:
             return None
+
+def getCurrentOpenProject():
+    """Returns the current open project (if it follows the pipeline conventions)
+
+    Returns:
+        DCCProject: project object
+    """
+    projectDirectory = os.path.dirname(cmds.workspace(q=True, rd=True))
+    dirs = projectDirectory.split("/")
+    if len(dirs) < 3:
+        return None
+    if dirs[-1] != naming.topDirs["PRE+PROD"]:
+        return None
+    proj_id = dirs[-2]
+    proj_path = "/".join(list(projectDirectory.split("/")[0:-2])) 
+    if isThisPathAProject(proj_path, proj_id):
+        return DCCProject(proj_id, proj_path)
+    else:
+        return None
 
 def createDirectoryTemplate(proj_ID="TPL"):
     """Create a directory structure template in disk to illustrate pipeline naming convention
