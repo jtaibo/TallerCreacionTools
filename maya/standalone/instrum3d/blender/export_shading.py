@@ -51,18 +51,32 @@ bpy.ops.wm.open_mainfile(filepath=blend_filepath)
 # TO-DO: review
 # We don't currently fix materials as we assume that shading blend file is well built
 
-# Export GLB
-bpy.ops.export_scene.gltf(
-    filepath=glb_filepath,
-    export_format='GLB',
-    export_image_format='AUTO',
-    export_materials='EXPORT',
-    export_animation_mode='ACTIVE_ACTIONS',
-    export_unused_textures=True,
-)
-
 # Export FBX
 bpy.ops.export_scene.fbx(
     filepath=fbx_filepath,
     embed_textures=True
+)
+
+# Blender applies a 0.01 factor to the scale of the top-most group because in the default
+# configuration the length unit is meter. However it messes the scale when exporting to GLB
+# We are going to remove this scale before exporting to GLB
+
+# Assumming that the top level group is named after the asset ID, following our pipeline
+node_name = "grp_x_" + asset_id
+if node_name in bpy.data.objects:
+    bpy.data.objects[node_name].scale = [1,1,1]
+else:
+    print(f"WARNING: Top-level group {node_name} not found in this scene")
+
+# Export GLB
+bpy.ops.export_scene.gltf(
+    filepath=glb_filepath,
+    export_format='GLB',
+    # TO-DO: check gltfpack options to compress textures
+    # TO-DO: Cite ZENODO!
+    export_copyright="This model belongs to InstruM3D dataset, Universidade da Coruña, CC BY-NC-SA 4.0 - https://instrum3d.citic.udc.es",
+    export_image_format='AUTO',
+    export_materials='EXPORT',
+    export_animation_mode='ACTIVE_ACTIONS',
+    export_unused_textures=True,
 )

@@ -181,6 +181,9 @@ fixMaterials()
 bpy.ops.export_scene.gltf(
     filepath=glb_filepath,
     export_format='GLB',
+    # TO-DO: check gltfpack options to compress textures
+    # TO-DO: Cite ZENODO!
+    export_copyright="This model belongs to InstruM3D dataset, Universidade da Coruña, CC BY-NC-SA 4.0 - https://instrum3d.citic.udc.es",
     export_image_format='AUTO',
     export_materials='EXPORT',
     export_animation_mode='ACTIVE_ACTIONS',
