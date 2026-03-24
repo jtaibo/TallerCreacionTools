@@ -36,7 +36,10 @@ import subprocess
 import shutil
 import zipfile
 
-import instrum3d
+import tlc.common.pipeline
+import tlc.common.naming as naming
+import tlc.instrum3d.buildcache
+
 
 default_output_dir="."
 
@@ -89,9 +92,6 @@ maya.standalone.initialize("Python")
 #    cmds.loadPlugin("objExport")
 cmds.loadPlugin("objExport")
 cmds.loadPlugin("fbxmaya")
-
-import tlc.common.pipeline
-import tlc.common.naming as naming
 
 proj = None
 filenames = []
@@ -324,13 +324,16 @@ def exportAsset(asset):
     anim = asset.getLastPublishedVersionPath("RIGGING", "ANIM")
     if anim:
         exportAssetFile(out_asset_dir, anim, out_formats, "RIGGING")
-        try:
-            instrum3d.exporter.exportAssetFile(out_asset_dir, anim, asset)
-        except:
-            print("ERROR. Asset {} failed to fix animations and export".format(asset.assetID))
-            log.write("{} - ERROR: Asset {} failed to fix animations and export\n".format(anim, asset.assetID))
+        # try:
+        #     instrum3d.exporter.exportAssetFile(out_asset_dir, anim, asset)
+        # except:
+        #     print("ERROR. Asset {} failed to fix animations and export".format(asset.assetID))
+        #     log.write("{} - ERROR: Asset {} failed to fix animations and export\n".format(anim, asset.assetID))
         best_version = anim
     
+    # FINAL CACHED VERSION
+    best_version = tlc.instrum3d.buildcache.buildCache(best_version)
+
     # Export last&better version to GLB for InstruM3D
     if best_version:
         export2GLB4InstruM3D(out_asset_dir, asset, best_version)

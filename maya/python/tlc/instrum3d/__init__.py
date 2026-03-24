@@ -2,3 +2,4 @@
 """
 from . import fixmatmaya
 from . import buildshdassets
+from . import buildcache
