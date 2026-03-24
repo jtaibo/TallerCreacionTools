@@ -111,7 +111,7 @@ def updateShdAssets():
                 lmsv_mt = os.path.getmtime(lmsv)
                 if lbsv_mt > lmsv_mt:
                     print(f"Blender file is more recent than Maya file. Maya file {lmsv} will be regenerated")
-                buildMayaFile(lbsv, lmsv) ################# INDENT AFTER TESTING!
+                    buildMayaFile(lbsv, lmsv)
             else:
                 # No Maya file, create it
                 buildMayaFile(lbsv, lmsv)
