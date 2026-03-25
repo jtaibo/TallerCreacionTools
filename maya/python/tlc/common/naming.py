@@ -163,7 +163,8 @@ prepDptTask = {
     "RIGGING": {
         "ANIM":"anim",
         "LAYOUT":"layout",
-        "RIG":"rig"
+        "RIG":"rig",        # Added for InstruM3D pipeline
+        "CACHE":"cache",    # Added for InstruM3D pipeline
     },
     "CLOTH": {
         "CLOTH":"cloth"

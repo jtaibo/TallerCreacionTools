@@ -31,13 +31,16 @@ def buildCache(file_to_cache):
         file_to_cache (str): Path to file to cache
 
     Returns:
-        str: Path of cached file
+        str: Path of cached file (or same file if caching failed)
     """
 
     # TO-DO: implement me!
 
+    # TO-DO: Where to put the cached file? 01_rigging, new task: "cache"
+
     # TO-DO: check if there is a cached file more recent than file to cache
 
+    # If no cache version could be made, return the previous one
     return file_to_cache
 
 

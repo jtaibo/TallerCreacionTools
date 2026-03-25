@@ -36,10 +36,6 @@ import subprocess
 import shutil
 import zipfile
 
-import tlc.common.pipeline
-import tlc.common.naming as naming
-import tlc.instrum3d.buildcache
-
 
 default_output_dir="."
 
@@ -92,6 +88,13 @@ maya.standalone.initialize("Python")
 #    cmds.loadPlugin("objExport")
 cmds.loadPlugin("objExport")
 cmds.loadPlugin("fbxmaya")
+
+# These python modules must be imported after initializing Maya Python
+# Do not move to the top with other import statements!
+import tlc.common.pipeline
+import tlc.common.naming as naming
+import tlc.instrum3d.buildcache
+
 
 proj = None
 filenames = []
@@ -321,9 +324,14 @@ def exportAsset(asset):
         exportAssetFileShading(blend_shd_filepath, out_asset_dir)
         best_version = shd
 
+    rig = asset.getLastPublishedVersionPath("RIGGING", "RIG")
+    if rig:
+        exportAssetFile(out_asset_dir, rig, out_formats, "RIGGING", blend_shd_filepath)
+        best_version = rig
+
     anim = asset.getLastPublishedVersionPath("RIGGING", "ANIM")
     if anim:
-        exportAssetFile(out_asset_dir, anim, out_formats, "RIGGING")
+        exportAssetFile(out_asset_dir, anim, out_formats, "RIGGING", blend_shd_filepath)
         # try:
         #     instrum3d.exporter.exportAssetFile(out_asset_dir, anim, asset)
         # except:
@@ -333,6 +341,10 @@ def exportAsset(asset):
     
     # FINAL CACHED VERSION
     best_version = tlc.instrum3d.buildcache.buildCache(best_version)
+    cache = asset.getLastPublishedVersionPath("RIGGING", "CACHE")
+    if cache:
+        exportAssetFile(out_asset_dir, rig, out_formats, "RIGGING", blend_shd_filepath)
+        best_version = cache
 
     # Export last&better version to GLB for InstruM3D
     if best_version:
