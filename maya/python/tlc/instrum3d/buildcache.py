@@ -211,23 +211,25 @@ def buildCache(file_to_cache):
         str: Path of cached file (or same file if caching failed)
     """
 
+    print(f"Building cache for {file_to_cache}")
+
     asset_file = tlc.common.pipeline.AssetFile()
     asset_file.createFromPath(file_to_cache)
 
     # Check if the file to cache is newer than current cached version
     last_cache_file_path = asset_file.asset.getLastPublishedVersionPath("RIGGING", "CACHE")
-    print("@@@@@ LAST CACHE FILE PATH:", last_cache_file_path)
     if last_cache_file_path:
         mod_time_source_file = os.path.getmtime(file_to_cache)
         mod_time_last_cache = os.path.getmtime(last_cache_file_path)
         if mod_time_source_file < mod_time_last_cache:
             # This file is already cached. Nothing to do here...
+            print("This scene has already been cached. Nothing to do here...")
             return last_cache_file_path
 
     # Open scene file
     cmds.file(file_to_cache, open=True, force=True)
 
-    if asset_file.taskID == "anim":
+    if asset_file.taskID == "ANIM":
         if not check_cycle_animation():
             cmds.warning("Animation is not cycle")
         bake_skin_joints()
