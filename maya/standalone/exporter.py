@@ -284,7 +284,7 @@ def getLastBlenderShadingVersion(asset):
 
 
 def exportAsset(asset):
-    #print("Exporting asset " + asset.getDirectoryName())
+    print("Exporting asset " + asset.getDirectoryName())
 
     # High poly is not exported because it is meant as an intermediate version to bake normals to a texture to be used in mmp
     # High poly models have not an adequate topology, so they are not meant to be published, and we omit them from the export
@@ -340,7 +340,7 @@ def exportAsset(asset):
         best_version = anim
     
     # FINAL CACHED VERSION
-    if best_version == rig or best_version == anim:
+    if best_version and ( best_version == rig or best_version == anim ):
         best_version = tlc.instrum3d.buildcache.buildCache(best_version)
         cache = asset.getLastPublishedVersionPath("RIGGING", "CACHE")
         if cache:

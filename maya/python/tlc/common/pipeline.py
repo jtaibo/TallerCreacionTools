@@ -329,7 +329,7 @@ class AssetFile():
         Raises:
             Exception: File path is not well formatted (following the pipeline)
         """
-        if not os.path.isfile(path) or not os.access(path, os.R_OK):
+        if not path or not os.path.isfile(path) or not os.access(path, os.R_OK):
             raise Exception("File not found: " + path)
 
         path = os.path.normpath(path)
