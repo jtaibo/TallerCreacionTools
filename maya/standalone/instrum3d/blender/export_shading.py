@@ -61,6 +61,8 @@ bpy.ops.export_scene.fbx(
 # configuration the length unit is meter. However it messes the scale when exporting to GLB
 # We are going to remove this scale before exporting to GLB
 
+bpy.context.scene.unit_settings.length_unit = 'CENTIMETERS'
+
 # Assumming that the top level group is named after the asset ID, following our pipeline
 node_name = "grp_x_" + asset_id
 if node_name in bpy.data.objects:
