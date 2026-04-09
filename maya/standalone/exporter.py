@@ -340,11 +340,12 @@ def exportAsset(asset):
         best_version = anim
     
     # FINAL CACHED VERSION
-    best_version = tlc.instrum3d.buildcache.buildCache(best_version)
-    cache = asset.getLastPublishedVersionPath("RIGGING", "CACHE")
-    if cache:
-        exportAssetFile(out_asset_dir, cache, out_formats, "RIGGING", blend_shd_filepath)
-        best_version = cache
+    if best_version == rig or best_version == anim:
+        best_version = tlc.instrum3d.buildcache.buildCache(best_version)
+        cache = asset.getLastPublishedVersionPath("RIGGING", "CACHE")
+        if cache:
+            exportAssetFile(out_asset_dir, cache, out_formats, "RIGGING", blend_shd_filepath)
+            best_version = cache
 
     # Export last&better version to GLB for InstruM3D
     if best_version:
