@@ -332,11 +332,11 @@ class AssetFile():
         if not os.path.isfile(path) or not os.access(path, os.R_OK):
             raise Exception("File not found: " + path)
 
-        elms = path.split("/")
-        file = elms[-1]
-        file_ext = file.split(".")
-        file = file_ext[0]
-        ext = file_ext[1]
+        path = os.path.normpath(path)
+        file, ext = os.path.splitext(os.path.basename(path))
+        # NOTE: Extension is not checked
+        elms = path.split(os.sep)
+
         fields = file.split("_")
         if len(fields) < 5:
             raise Exception("Asset bad formatted: " + path)
@@ -403,6 +403,7 @@ class AssetFile():
         the_path += "/" + self.asset.project.projID 
         the_path += "_" + naming.assetTypeAbbr[self.asset.assetType]
         the_path += "_" + naming.prepDptTask[self.dptID][self.taskID]
+        the_path += "_" + self.asset.assetID
         the_path += "_v" + "{:02d}".format(self.version)
         if self.workingVersion >= 0:
             the_path += "_" + "{:03d}".format(self.workingVersion)
