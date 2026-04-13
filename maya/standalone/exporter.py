@@ -180,7 +180,7 @@ def exportGLBWithBlender(fbx_file, out_path, blend_shd_filepath):
     #     mat_lib_path = proj.getAssetsPath() + "/99_library/01_lbprops/MED_pr_materialCatalog/04_shading/MED_materials.blend"
 
     # Path to Blender file with the latest shading version
-    blend_shd_filepath = None
+    #blend_shd_filepath = None
 
     print("blender --background --python", script_path, "--", fbx_file, out_path, blend_shd_filepath)
 

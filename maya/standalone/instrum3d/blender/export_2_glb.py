@@ -51,7 +51,7 @@ current_dir = str(os.path.dirname(os.path.abspath(__file__)))
 
 # Remove Blender suffixes
 def clean_name(name):
-    return re.sub(r"\.\d+$", "", name)
+    return re.sub(r"\.\d+$", "", name).split(":")[-1]
 
 # Reset Blender
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -176,6 +176,23 @@ def fixMaterials():
                         print("=====================================================================")
 
 fixMaterials()
+
+# Blender applies a 0.01 factor to the scale of the top-most group because in the default
+# configuration the length unit is meter. However it messes the scale when exporting to GLB
+# We are going to remove this scale before exporting to GLB
+
+bpy.context.scene.unit_settings.length_unit = 'CENTIMETERS'
+
+# Assumming that the top level group is named after the asset ID, following our pipeline
+node_name = "grp_x_" + asset_id
+if node_name in bpy.data.objects:
+    bpy.data.objects[node_name].scale = [1,1,1]
+else:
+    geo_name = "geo_x_" + asset_id
+    if geo_name in bpy.data.objects and "Armature" in bpy.data.objects:
+        bpy.data.objects["Armature"].scale = [1,1,1]
+    else:
+        print(f"WARNING: Top-level group {node_name} not found in this scene")
 
 # Export GLB
 bpy.ops.export_scene.gltf(
