@@ -34,6 +34,9 @@ argv = argv[argv.index("--") + 1:]
 fbx_filepath = argv[0]
 glb_filepath = argv[1]
 
+# Default location
+sourceimages_path = "P:/instrum3d/MED/02_prod/sourceimages"
+
 # # Material Library Path, path to the .blend file with master materials
 # mat_lib_path = argv[2]
 
@@ -42,6 +45,8 @@ blend_shd_filepath = None
 if len(argv) > 2:
     blend_shd_filepath = argv[2]
 
+if len(argv) > 3:
+    sourceimages_path = argv[3]
 
 # Extract the AssetID from the file name
 asset_id = os.path.basename(fbx_filepath).split("_")[3]
@@ -139,16 +144,27 @@ bpy.ops.import_scene.fbx(filepath=fbx_filepath)
 #                         print("=====================================================================")
 
 
+def fixTexturePaths():
+    for t in bpy.data.images:
+        if "sourceimages" in t.filepath:
+            path = os.path.normpath(t.filepath).split(os.path.sep)
+            path = os.path.normpath(sourceimages_path).split(os.path.sep) + path[path.index("sourceimages")+1:]
+#            path = os.path.normpath(sourceimages_path).split(os.path.sep) + ["..", "..", "..", ".."] + path[path.index("sourceimages"):]
+            print(f"Replacing {t.filepath} with {os.path.join(*path)}")
+            t.filepath = os.path.join(*path)
+
 def fixMaterials():
     # Replace material from shading version...
 
     # ...if there is a shading version, of course
     if not blend_shd_filepath:
         return
-
+    
     # Load materials from the shading version (Blender)
     with bpy.data.libraries.load(blend_shd_filepath, link=False) as (data_from, data_to):
         data_to.materials = data_from.materials
+
+    fixTexturePaths()
 
     # Clean material names
     shd_materials = {
@@ -205,4 +221,5 @@ bpy.ops.export_scene.gltf(
     export_materials='EXPORT',
     export_animation_mode='ACTIVE_ACTIONS',
     export_unused_textures=True,
+#    export_yup=False
 )

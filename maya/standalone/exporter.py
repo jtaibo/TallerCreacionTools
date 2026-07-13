@@ -173,8 +173,8 @@ def exportGLBWithAssimp(fbx_file, out_path):
         creationflags=subprocess.CREATE_NO_WINDOW  # Evita la apertura de consolas
     )
 
-def exportGLBWithBlender(fbx_file, out_path, blend_shd_filepath):
-    script_path = "instrum3d/blender/export_2_glb.py"
+def exportGLBWithBlender(fbx_file, out_path, blend_shd_filepath, sourceimages_path):
+    script_path = os.path.join( os.path.dirname(os.path.realpath(__file__)), "instrum3d/blender/export_2_glb.py" )
     # mat_lib_path = "MED_materials.blend"
     # if proj:
     #     mat_lib_path = proj.getAssetsPath() + "/99_library/01_lbprops/MED_pr_materialCatalog/04_shading/MED_materials.blend"
@@ -182,7 +182,7 @@ def exportGLBWithBlender(fbx_file, out_path, blend_shd_filepath):
     # Path to Blender file with the latest shading version
     #blend_shd_filepath = None
 
-    print("blender --background --python", script_path, "--", fbx_file, out_path, blend_shd_filepath)
+    print("blender --background --python", script_path, "--", fbx_file, out_path, blend_shd_filepath, sourceimages_path)
 
     subprocess.run([
         "blender",  # Blender executable is already in the PATH (set from standalone_env.bat)
@@ -192,12 +192,13 @@ def exportGLBWithBlender(fbx_file, out_path, blend_shd_filepath):
         fbx_file,
         out_path,
 #        mat_lib_path
-        blend_shd_filepath
+        blend_shd_filepath,
+        sourceimages_path
     ], 
     check=True,
     shell=True)
 
-def exportAssetFile(export_dir, path, out_formats, dpt, blend_shd_filepath=None):
+def exportAssetFile(export_dir, path, out_formats, dpt, blend_shd_filepath=None, sourceimages_path=None):
     # Load asset
     print("Loading asset " + path)
     cmds.file(path, open=True, force=True)
@@ -226,7 +227,7 @@ def exportAssetFile(export_dir, path, out_formats, dpt, blend_shd_filepath=None)
             # Exported from assimp (WARNING: Previous export to FBX is mandatory)
             if fbx_file:
                 try:
-                    exportGLBWithBlender(fbx_file, out_path, blend_shd_filepath)
+                    exportGLBWithBlender(fbx_file, out_path, blend_shd_filepath, sourceimages_path)
                 except:
                     print("Exportation with Blender failed. Falling back to assimp...")
                     exportGLBWithAssimp(fbx_file, out_path)
@@ -234,6 +235,9 @@ def exportAssetFile(export_dir, path, out_formats, dpt, blend_shd_filepath=None)
                 print("ERROR. Cannot convert to GLB. FBX file not found:", fbx_file)
                 log.write("ERROR: Cannot convert to GLB. FBX file not found: {}\n".format(fbx_file))
         else:
+            if extension == "obj" and dpt != "MODELING":
+                # OBJ format is used only for modeling versions
+                continue # skip it!
             # Exported from Maya
             print("cmds.file(rename=",out_path,")")
             cmds.file(rename=out_path)
@@ -248,7 +252,7 @@ def exportAssetFileShading(blend_file, out_path):
     #print(f"exportAssetFileShading({blend_file}, {out_path})")
 
     # Export from Blender to GLB, FBX ...
-    script_path = "instrum3d/blender/export_shading.py"
+    script_path = os.path.join( os.path.dirname(os.path.realpath(__file__)), "instrum3d/blender/export_shading.py" )
     print("blender --background --python", script_path, "--", blend_file, out_path)
     subprocess.run([
         "blender",  # Blender executable is already in the PATH (set from standalone_env.bat)
@@ -302,6 +306,7 @@ def exportAsset(asset):
 
     best_version = None
     blend_shd_filepath = None
+    sourceimages_path = asset.project.getSourceImagesPath()
     mlp = asset.getLastPublishedVersionPath("MODELING", "LOWPOLY")
     if mlp:
         exportAssetFile(out_asset_dir, mlp, out_formats, "MODELING")
@@ -326,12 +331,12 @@ def exportAsset(asset):
 
     rig = asset.getLastPublishedVersionPath("RIGGING", "RIG")
     if rig:
-        exportAssetFile(out_asset_dir, rig, out_formats, "RIGGING", blend_shd_filepath)
+        exportAssetFile(out_asset_dir, rig, out_formats, "RIGGING", blend_shd_filepath, sourceimages_path)
         best_version = rig
 
     anim = asset.getLastPublishedVersionPath("RIGGING", "ANIM")
     if anim:
-        exportAssetFile(out_asset_dir, anim, out_formats, "RIGGING", blend_shd_filepath)
+        exportAssetFile(out_asset_dir, anim, out_formats, "RIGGING", blend_shd_filepath, sourceimages_path)
         # try:
         #     instrum3d.exporter.exportAssetFile(out_asset_dir, anim, asset)
         # except:
@@ -344,7 +349,7 @@ def exportAsset(asset):
         best_version = tlc.instrum3d.buildcache.buildCache(best_version)
         cache = asset.getLastPublishedVersionPath("RIGGING", "CACHE")
         if cache:
-            exportAssetFile(out_asset_dir, cache, out_formats, "RIGGING", blend_shd_filepath)
+            exportAssetFile(out_asset_dir, cache, out_formats, "RIGGING", blend_shd_filepath, sourceimages_path)
             best_version = cache
 
     # Export last&better version to GLB for InstruM3D

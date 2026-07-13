@@ -81,4 +81,5 @@ bpy.ops.export_scene.gltf(
     export_materials='EXPORT',
     export_animation_mode='ACTIVE_ACTIONS',
     export_unused_textures=True,
+#    export_yup=False
 )
