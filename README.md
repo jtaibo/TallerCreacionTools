@@ -16,9 +16,9 @@ procedure.
 
 ## Manual installation
 
-Copy `maya/shelves` contents to `Documents/Maya/<version>/shelves`, where
+Copy `maya/shelves` contents to `Documents/Maya/<version>/prefs/shelves`, where
 `<version>` should be replaced with the Maya version you are using (e.g.
-2025).
+2027).
 
 Edit `Documents/Maya/<version>/Maya.env` and make sure `PYTHONPATH` points to
 the absolute path where `maya\python` directory is located in your system
